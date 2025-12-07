@@ -313,12 +313,12 @@ details[open] summary {
         <span class="points">30分</span>
       </div>
       <div class="math-content">
-        <p>设 \(H\) 是数域 \(\mathbb{K}\) 上的一个 Hilbert 空间，并设 \(T \in B(H)\) 且 \(\|T\| \leq 1\). </p>
+        <p>设 \(H\) 是数域 \(\mathbb{K}\) 上的一个 Hilbert 空间，并设 \(T \in \mathcal{B}(H)\) 且 \(\|T\| \leq 1\). </p>
         <p>(1) 证明：\(T(x) = x\) 当且仅当 \(T^*(x) = x, x \in H\). </p>
         <p class="hint">提示：考虑 \(\|T^*(x) - x\|^2\)，并利用条件 \(\|T\| \leq 1\). </p>
         <p>(2) 证明：\(\ker(I - T) = \ker(I - T^*)\). </p>
         <p>(3) 叙述 Hilbert 空间 \(H\) 上的正交分解定理. </p>
-        <p>(4) 证明：\(H = \ker(I - T) \oplus \operatorname{range}(I - T)\). </p>
+        <p>(4) 证明：\(H = \ker(I - T) \oplus \overline{\operatorname{range}(I - T)}\). </p>
         <p class="hint">提示：利用 (2) 和 (3) 的结论. </p>
       </div>
     </div>

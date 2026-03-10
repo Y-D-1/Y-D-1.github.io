@@ -12,7 +12,7 @@ location: "Shanghai, China"
 （待更新）
 
 <iframe 
-  src="/files/Complex-analysis.pdf" 
+  src="/files/Complex-Analysis.pdf" 
   width="100%" 
   height="600px"
   style="border:1px solid #ddd"

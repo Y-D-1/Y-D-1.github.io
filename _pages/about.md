@@ -24,7 +24,7 @@ redirect_from:
 ---
 我的部分[课程笔记](https://Y-D-1.github.io//notes/)
 
-我的笔记模板（待上传）
+我的[笔记模板](https://github.com/Y-D-1/template)
 
 （施工中，不定时更新）
 

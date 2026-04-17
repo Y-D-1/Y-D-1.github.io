@@ -1,60 +1,394 @@
 {
   "problems": [
     {
-      "id": "p-1",
+      "id": "dg-1-5-q1",
       "difficulty": 1,
-      "question": "求函数 $f(x)=x^2+3x$ 在 $x=2$ 处的导数。",
-      "answer": "$f'(x)=2x+3$，所以 $f'(2)=7$。"
+      "question": "请证明在一般参数下平面曲线 $\\mathbf{r}(t)=(x(t),y(t))$ 的相对曲率为 $\\kappa_r(t)=\\frac{x'(t)y''(t)-x''(t)y'(t)}{((x'(t))^2+(y'(t))^2)^{3/2}}$."
     },
     {
-      "id": "p-2",
+      "id": "dg-1-5-q2",
+      "difficulty": 1,
+      "question": "求半径为 $a>0$ 的圆 $\\mathbf{r}(t)=(a\\cos(-t),a\\sin(-t)),\\ t\\in(0,2\\pi)$ 的 Frenet 标架与相对曲率."
+    },
+    {
+      "id": "dg-1-5-q3",
+      "difficulty": 1,
+      "question": "请证明定理 \\ref{th:1.5.1}."
+    },
+    {
+      "id": "dg-1-5-q4",
+      "difficulty": 1,
+      "question": "求相对曲率 $\\kappa_r(s)=\\dfrac{1}{\\sqrt{a^2-s^2}}$（其中 $a>0$，$s$ 是弧长参数）的平面曲线."
+    },
+    {
+      "id": "dg-2-1-q1",
       "difficulty": 2,
-      "question": "设等比数列首项为 $1$，公比为 $2$，求前 $6$ 项和。",
-      "answer": "$S_6=\\dfrac{1-2^6}{1-2}=63$。"
+      "question": "证明参数曲面 $r_1(u,v)=(\\cos u^3,\\sin u^3,v),\\ u\\in(-\\pi^{1/3},\\pi^{1/3}),\\ v\\in\\mathbb{R}$ 不是正则曲面，但与正则曲面 $r_2(u,v)=(\\cos u,\\sin u,v),\\ u\\in(-\\pi,\\pi),\\ v\\in\\mathbb{R}$ 有同样的像."
     },
     {
-      "id": "p-3",
+      "id": "dg-2-1-q2",
       "difficulty": 2,
-      "question": "计算极限 $\\lim_{x \\to 0} \\dfrac{\\sin x}{x}$。",
-      "answer": "该经典极限结果为 $1$。"
+      "question": "请证明圆柱面、球面、环面、单叶双曲面、旋转面、马鞍面、正螺面都是正则曲面."
     },
     {
-      "id": "p-4",
+      "id": "dg-2-1-q3",
+      "difficulty": 2,
+      "question": "请写出球极投影（北极）表示与球极投影（南极）表示在 $S^2\\backslash(\\{N\\}\\cup\\{S\\})$ 之间的参数变换."
+    },
+    {
+      "id": "dg-2-1-q4",
+      "difficulty": 2,
+      "question": "请写出双曲抛物面的两个参数表示 $r_1(u,v)=(a(u+v),b(u-v),4uv)$ 与 $r_2(x,y)=(ax\\cosh y,bx\\sinh y,x^2)$ 之间的参数变换."
+    },
+    {
+      "id": "dg-2-1-q5",
+      "difficulty": 2,
+      "question": "请证明适当选取 $\\mathbb{R}^3$ 中的正交坐标系，总可以经参数变换将正则曲面 $\\mathbf{r}:D\\to\\mathbb{R}^3$ 局部表示为 $\\mathbf{r}(x,y)=(x,y,f(x,y))$."
+    },
+    {
+      "id": "dg-2-1-q6",
+      "difficulty": 2,
+      "question": "设 $F:U\\subset\\mathbb{R}^3\\to\\mathbb{R}$ 光滑且 $\\nabla F(P)\\neq0$（$\\forall P\\in U$），对 $C\\in\\mathbb{R}$，$S_C=\\{(x,y,z)\\in\\mathbb{R}^3:F(x,y,z)=C\\}$ 是等值面。请证明：$S_C$ 局部是正则曲面，$\\nabla F$ 所在直线是法线并写出切平面方程."
+    },
+    {
+      "id": "dg-2-1-q7",
+      "difficulty": 2,
+      "question": "设曲面 $S$ 与平面 $\\Pi$ 交于 $P$ 点，且 $S$ 位于 $\\Pi$ 的一侧. 请证明 $\\Pi$ 是曲面 $S$ 在 $P$ 点的切平面."
+    },
+    {
+      "id": "dg-2-2-q1",
+      "difficulty": 2,
+      "question": "请计算正螺面 $\\mathbf{r}(u,v)=(u\\cos v,u\\sin v,bv),\\ b\\neq0$ 的第一基本形式."
+    },
+    {
+      "id": "dg-2-2-q2",
+      "difficulty": 2,
+      "question": "请计算曲面 $z=f(x,y)$ 的第一基本形式."
+    },
+    {
+      "id": "dg-2-2-q3",
+      "difficulty": 2,
+      "question": "请计算旋转面 $\\mathbf{r}(u,v)=(f(u)\\cos v,f(u)\\sin v,g(u))$ 的第一基本形式."
+    },
+    {
+      "id": "dg-2-2-q4",
+      "difficulty": 2,
+      "question": "请通过 $\\mathrm{I}=E\\mathrm{d}u\\mathrm{d}u+2F\\mathrm{d}u\\mathrm{d}v+G\\mathrm{d}v\\mathrm{d}v=(\\mathrm{d}u,\\mathrm{d}v)\\begin{pmatrix}E&F\\\\F&G\\end{pmatrix}\\begin{pmatrix}\\mathrm{d}u\\\\\\mathrm{d}v\\end{pmatrix}$ 证明第一基本形式与曲面的参数变换无关."
+    },
+    {
+      "id": "dg-2-2-q5",
+      "difficulty": 2,
+      "question": "设环面 $T^2$ 上光滑函数满足 $f\\circ\\mathbf{r}(u,v)=\\frac{(R+2r\\cos u)^2}{4r^2(R+r\\cos u)^2}$，请求 $\\int_{T^2}f\\,\\mathrm{d}\\sigma$ 的值."
+    },
+    {
+      "id": "dg-2-3-q1",
+      "difficulty": 2,
+      "question": "设 $\\sigma:S_1\\to S_2$ 是光滑映射，若在 $P\\in S_1$ 处切映射 $\\sigma_*$ 是线性同构，请证明可取局部参数使 $\\sigma|_{U_1}$ 由 $u_2=u_1,\\ v_2=v_1$ 给出."
+    },
+    {
+      "id": "dg-2-3-q2",
+      "difficulty": 2,
+      "question": "请证明等距变换保持区域面积不变."
+    },
+    {
+      "id": "dg-2-3-q3",
+      "difficulty": 2,
+      "question": "已知悬链面参数表示 $\\mathbf{r}(\\rho,\\theta)=(\\rho\\cos\\theta,\\rho\\sin\\theta,\\operatorname{arccosh}\\rho),\\ \\rho>1$，请写出其第一基本形式."
+    },
+    {
+      "id": "dg-2-3-q4",
+      "difficulty": 2,
+      "question": "考虑正螺面 $\\tilde{\\mathbf{r}}(u,v)=(u\\cos v,u\\sin v,v)$，请证明由 $(u,v)\\mapsto(\\rho,\\theta)=(\\sqrt{1+u^2},v)$ 诱导到悬链面的映射是等距映射."
+    },
+    {
+      "id": "dg-3-1-q1",
       "difficulty": 3,
-      "question": "计算定积分 $\\int_{0}^{1}(x^2+2x)\\,dx$。",
-      "answer": "原函数为 $\\dfrac{x^3}{3}+x^2$，代入上下限得 $\\dfrac{4}{3}$。"
+      "question": "请计算正螺面 $\\mathbf{r}(u,v)=(u\\cos v,u\\sin v,av),\\ a>0$ 的第二基本形式."
     },
     {
-      "id": "p-5",
+      "id": "dg-3-1-q2",
       "difficulty": 3,
-      "question": "求矩阵 $A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$ 的特征值。",
-      "answer": "$|A-\\lambda I|=(2-\\lambda)^2-1=0$，解得 $\\lambda=1,3$。",
-      "special_source": "2023 线性代数期末第 2 题"
+      "question": "请计算曲面 $z=f(x,y)$ 的第二基本形式."
     },
     {
-      "id": "p-6",
+      "id": "dg-3-1-q3",
+      "difficulty": 3,
+      "question": "考虑曲面 $F(x,y,z)=0$ 且 $\\frac{\\partial F}{\\partial z}\\neq0$，请计算曲面的第二基本形式."
+    },
+    {
+      "id": "dg-3-1-q4",
+      "difficulty": 3,
+      "question": "请证明一个正则曲面是平面的一部分当且仅当它的第二基本形式为零."
+    },
+    {
+      "id": "dg-3-1-q5",
+      "difficulty": 3,
+      "question": "请证明一个正则曲面是球面的一部分当且仅当它的第二基本形式是第一基本形式的非零常数倍."
+    },
+    {
+      "id": "dg-3-2-q1",
+      "difficulty": 3,
+      "question": "请求出曲面 $\\mathbf{r}(u,v)=(u,v,u^2+v^2)$ 的椭圆点、双曲点与抛物点."
+    },
+    {
+      "id": "dg-3-2-q2",
+      "difficulty": 3,
+      "question": "请求出曲面 $\\mathbf{r}(u,v)=(u^3,v^3,u+v)$ 上抛物点的轨迹."
+    },
+    {
+      "id": "dg-3-2-q3",
+      "difficulty": 3,
+      "question": "请找出猴鞍面 $z=x^3-3xy^2$ 的平点."
+    },
+    {
+      "id": "dg-3-2-q4",
+      "difficulty": 3,
+      "question": "请求出曲面 $z=x^4y^4$ 的平点轨迹并简要描述曲面在 $(0,0,0)$ 附近的形状."
+    },
+    {
+      "id": "dg-3-2-q5",
+      "difficulty": 3,
+      "question": "设曲面由 $x^2+y^2=f(z)$ 给定，满足 $f(0)=0,\\ f'(0)\\neq0$，请证明其在 $(0,0,0)$ 点的法曲率为常数."
+    },
+    {
+      "id": "dg-3-2-q6",
+      "difficulty": 3,
+      "question": "设两曲面交线曲率为 $\\kappa$，在两曲面上的法曲率分别为 $k_1,k_2$，两法向夹角为 $\\theta$，请证明 $\\kappa^2\\sin^2\\theta=k_1^2+k_2^2-2k_1k_2\\cos\\theta$."
+    },
+    {
+      "id": "dg-3-3-q1",
+      "difficulty": 3,
+      "question": "请证明第二基本形式 $\\mathrm{II}=\\langle\\mathcal{W}(\\mathrm{d}\\mathbf{r}),\\mathrm{d}\\mathbf{r}\\rangle$."
+    },
+    {
+      "id": "dg-3-3-q2",
+      "difficulty": 3,
+      "question": "请证明曲面的主曲率 $k_1,k_2$ 是连续函数，并且在每个非脐点邻域内是光滑函数."
+    },
+    {
+      "id": "dg-3-3-q3",
+      "difficulty": 3,
+      "question": "请证明若 $X=\\xi\\mathbf{r}_u+\\eta\\mathbf{r}_v$ 是主方向，则 $(\\xi,\\eta)$ 满足题目中给出的两个行列式方程."
+    },
+    {
+      "id": "dg-3-3-q4",
+      "difficulty": 3,
+      "question": "请计算环面的高斯曲率与平均曲率."
+    },
+    {
+      "id": "dg-3-3-q5",
+      "difficulty": 3,
+      "question": "请计算曲面 $z=f(x,y)$ 的高斯曲率与平均曲率."
+    },
+    {
+      "id": "dg-3-3-q6",
+      "difficulty": 3,
+      "question": "定义第三基本形式 $\\mathrm{III}=\\langle\\mathrm{d}\\mathbf{n},\\mathrm{d}\\mathbf{n}\\rangle$，请证明 $K\\mathrm{I}-2H\\mathrm{II}+\\mathrm{III}=0$."
+    },
+    {
+      "id": "dg-3-4-q1",
+      "difficulty": 3,
+      "question": "请写出曳物线的参数表示，并说明它与 $f(u)=\\frac{1}{c}e^{-cu},\\ g(u)=\\int_0^u\\sqrt{1-e^{-2ct}}\\,\\mathrm{d}t$ 表示同一曲线（$a=c^{-1}$）."
+    },
+    {
+      "id": "dg-3-4-q2",
+      "difficulty": 3,
+      "question": "伪球面由曳物线旋转得到，请写出其参数表示并计算高斯曲率."
+    },
+    {
+      "id": "dg-3-4-q3",
+      "difficulty": 3,
+      "question": "请证明曲面 $z=f(x,y)$ 为极小曲面的充要条件是 $(1+f_y^2)f_{xx}-2f_xf_yf_{xy}+(1+f_x^2)f_{yy}=0$."
+    },
+    {
+      "id": "dg-3-4-q4",
+      "difficulty": 3,
+      "question": "请证明 Scherk 曲面 $z=\\frac{1}{a}\\ln\\frac{\\cos ay}{\\cos ax}$ 是极小曲面."
+    },
+    {
+      "id": "dg-3-4-q5",
+      "difficulty": 3,
+      "question": "请证明若非平面极小曲面可表示为 $z=f(x)+g(y)$，则它一定是 Scherk 曲面."
+    },
+    {
+      "id": "dg-3-4-q6",
+      "difficulty": 3,
+      "question": "请证明可展曲面局部上是柱面、锥面和切线面之一，或由这三类曲面沿直母线光滑拼接而成."
+    },
+    {
+      "id": "dg-4-1-q1",
       "difficulty": 4,
-      "question": "判断级数 $\\sum_{n=1}^{\\infty}\\dfrac{1}{n^2}$ 是否收敛。",
-      "answer": "这是 $p$ 级数，$p=2>1$，故收敛。"
+      "question": "请证明在正交坐标系下 Christoffel 符号可化为题目给出的公式."
     },
     {
-      "id": "p-7",
+      "id": "dg-4-1-q2",
       "difficulty": 4,
-      "question": "证明函数 $f(x)=x^2$ 在区间 $[0,1]$ 上一致连续。",
-      "answer": "由 Heine-Cantor 定理：连续函数在紧区间上一致连续。",
-      "special_source": "2022 数学分析期末证明题"
+      "question": "请证明：(a) $g^{\\alpha\\beta}g_{\\alpha\\beta}=2$；(b) $\\dfrac{\\partial\\ln\\sqrt{g}}{\\partial u^{\\alpha}}=\\Gamma_{1\\alpha}^1+\\Gamma_{2\\alpha}^2$."
     },
     {
-      "id": "p-8",
-      "difficulty": 5,
-      "question": "判断 $\\mathbb{R}^3$ 中向量组 $v_1=(1,0,1),\\ v_2=(0,1,1),\\ v_3=(1,1,2)$ 是否线性无关。",
-      "answer": "有 $v_3=v_1+v_2$，故该向量组线性相关。"
+      "id": "dg-4-1-q3",
+      "difficulty": 4,
+      "question": "设参数变换 $\\sigma:(u^1,u^2)\\to(\\tilde u^1,\\tilde u^2)$，请证明 $\\tilde g_{ij},\\tilde b_{ij},\\tilde\\Gamma_{ij}^k$ 与旧坐标量满足题中变换公式."
     },
     {
-      "id": "p-9",
+      "id": "dg-4-1-q4",
+      "difficulty": 4,
+      "question": "请证明平均曲率 $H=\\frac{1}{2}b_{\\alpha\\beta}g^{\\beta\\alpha}$."
+    },
+    {
+      "id": "dg-4-2-q1",
+      "difficulty": 4,
+      "question": "请证明正交参数下 Gauss 方程与 Codazzi 方程可化为题中给出的简化形式."
+    },
+    {
+      "id": "dg-4-2-q2",
+      "difficulty": 4,
+      "question": "请证明若 $F=M=0$，则 Codazzi 方程化为 $\\frac{\\partial L}{\\partial v}=H\\frac{\\partial E}{\\partial v},\\ \\frac{\\partial N}{\\partial u}=H\\frac{\\partial G}{\\partial u}$."
+    },
+    {
+      "id": "dg-4-3-q1",
+      "difficulty": 4,
+      "question": "请问是否存在曲面以 $\\varphi=\\mathrm{d}u\\mathrm{d}u+\\cos^2u\\mathrm{d}v\\mathrm{d}v$ 与 $\\psi=\\cos^2u\\mathrm{d}u\\mathrm{d}u+\\mathrm{d}v\\mathrm{d}v$ 为第一、第二基本形式？"
+    },
+    {
+      "id": "dg-4-3-q2",
+      "difficulty": 4,
+      "question": "设曲面第一第二基本形式分别为 $\\mathrm{I}=\\mathrm{d}u\\mathrm{d}u+\\mathrm{d}v\\mathrm{d}v,\\ \\mathrm{II}=2M(u,v)\\mathrm{d}u\\mathrm{d}v$，请证明曲面一定为平面."
+    },
+    {
+      "id": "dg-5-1-q1",
       "difficulty": 5,
-      "question": "说明在什么条件下可交换极限与定积分：$\\lim\\limits_{n\\to\\infty} \\int_a^b f_n(x)\\,dx = \\int_a^b \\lim\\limits_{n\\to\\infty}f_n(x)\\,dx$。",
-      "answer": "常见充分条件：$f_n$ 在 $[a,b]$ 上一致收敛，且每个 $f_n$ 可积。"
+      "question": "请证明曲面上曲线的测地曲率满足 $\\kappa_g=(\\gamma',\\gamma'',\\mathbf{n})=\\kappa\\mathbf{b}\\cdot\\mathbf{n}$."
+    },
+    {
+      "id": "dg-5-1-q2",
+      "difficulty": 5,
+      "question": "请证明对于旋转曲面，经过旋转轴的平面与曲面的交线都是测地线."
+    },
+    {
+      "id": "dg-5-1-q3",
+      "difficulty": 5,
+      "question": "考虑环面 $\\mathbf{r}(u,v)=((R+r\\cos u)\\cos v,(R+r\\cos u)\\sin v,r\\sin u)$，请证明 $v=v_0,\\ u=0,\\ u=\\pi$ 三条曲线都是测地线."
+    },
+    {
+      "id": "dg-5-2-q1",
+      "difficulty": 5,
+      "question": "设 $S$ 是伪球面，记测地三角形面积为 $S_{abc}$，内角为 $A,B,C$，请证明 $S_{abc}=a^2(\\pi-A-B-C)$."
+    },
+    {
+      "id": "dg-5-2-q2",
+      "difficulty": 5,
+      "question": "请证明如果曲面上存在两族相交成固定角的测地线，则其高斯曲率处处为零."
+    },
+    {
+      "id": "dg-5-2-q3",
+      "difficulty": 5,
+      "question": "请证明直纹面上不存在围成单连通区域的光滑闭测地线."
+    },
+    {
+      "id": "dg-5-3-q1",
+      "difficulty": 5,
+      "question": "请用定义直接证明协变微分 $DX$ 与协变导数 $D_YX$ 的取值均不依赖参数系选取."
+    },
+    {
+      "id": "dg-5-3-q2",
+      "difficulty": 5,
+      "question": "在单位球面参数下，请证明不为零的 Christoffel 符号是 $\\Gamma_{12}^2=\\Gamma_{21}^2=-\\tan u,\\ \\Gamma_{22}^1=\\sin u\\cos u$."
+    },
+    {
+      "id": "dg-5-3-q3",
+      "difficulty": 5,
+      "question": "设 $X(t)=x^1(t)\\mathbf{r}_u+x^2(t)\\mathbf{r}_v$ 为沿曲线 $\\gamma$ 的平行切向量场，给定初值条件，请写出 $x^1(t),x^2(t)$ 的具体形式."
+    },
+    {
+      "id": "dg-5-3-q4",
+      "difficulty": 5,
+      "question": "请计算该题中 $v$-曲线围成区域对应的角差."
+    },
+    {
+      "id": "dg-5-4-q1",
+      "difficulty": 5,
+      "question": "请证明由 $\\int_D:\\Omega^2(D)\\to\\mathbb{R}$ 定义的积分映射不依赖同向参数变换的选取."
+    },
+    {
+      "id": "dg-5-4-q2",
+      "difficulty": 5,
+      "question": "请验证在正交参数下取 $\\mathbf{e}_1=\\mathbf{r}_u/\\sqrt{E},\\mathbf{e}_2=\\mathbf{r}_v/\\sqrt{G}$ 时，结构方程组与 Gauss/Codazzi 方程一致."
+    },
+    {
+      "id": "dg-5-4-q3",
+      "difficulty": 5,
+      "question": "设 $\\{\\mathbf{e}_1,\\mathbf{e}_2\\}$ 为单位正交主方向标架，主曲率为 $k_1,k_2$，请证明 Codazzi 方程等价于题中两条外微分方程."
+    },
+    {
+      "id": "dg-5-4-q4",
+      "difficulty": 5,
+      "question": "请证明 $\\int_D K\\,\\mathrm{d}\\sigma=-\\int_D\\mathrm{d}\\omega_{12}=-\\int_\\gamma\\omega_{12}$ 等价于局部 Gauss-Bonnet 公式."
+    },
+    {
+      "id": "dg-6-1-q1",
+      "difficulty": 5,
+      "question": "请证明曲面的面积元与同向参数变换无关."
+    },
+    {
+      "id": "dg-6-1-q2",
+      "difficulty": 5,
+      "question": "设直纹面 $\\mathbf{r}(v,\\theta)=\\mathbf{a}(\\theta)+v\\mathbf{b}(\\theta)$（M\"obius 带），请证明它是整体曲面并证明其不可定向."
+    },
+    {
+      "id": "dg-6-2-q1",
+      "difficulty": 5,
+      "question": "设 $U$ 是可定向带边曲面，若 $U$ 同胚于单位圆盘，请证明 $\\chi(U)=1$."
+    },
+    {
+      "id": "dg-6-2-q2",
+      "difficulty": 5,
+      "question": "设 $M$ 是闭可定向曲面且高斯曲率处处为正，请证明 $M$ 一定同胚于球面."
+    },
+    {
+      "id": "dg-6-2-q3",
+      "difficulty": 5,
+      "question": "若闭可定向正曲率曲面 $M$ 上存在两条闭测地线，请证明这两条闭测地线一定相交."
+    },
+    {
+      "id": "dg-6-3-q1",
+      "difficulty": 5,
+      "question": "设管状曲面 $\\mathbf{r}(s,\\theta)=\\gamma(s)+a(\\mathbf{e}_2\\cos\\theta+\\mathbf{e}_3\\sin\\theta)$，请证明其第一基本形式为题中所给形式."
+    },
+    {
+      "id": "dg-6-3-q2",
+      "difficulty": 5,
+      "question": "请证明该管状曲面的高斯曲率 $K=-\\frac{\\kappa\\cos\\theta}{a(1-a\\kappa\\cos\\theta)}$."
+    },
+    {
+      "id": "dg-6-3-q3",
+      "difficulty": 5,
+      "question": "请证明对高斯曲率非负点集 $M_+$ 有 $\\int_{M_+}K\\,\\mathrm{d}\\sigma=2\\int_\\gamma\\kappa\\,\\mathrm{d}s$，并由此得到 $\\int_\\gamma\\kappa\\,\\mathrm{d}s\\ge2\\pi$."
+    },
+    {
+      "id": "dg-6-3-q4",
+      "difficulty": 5,
+      "question": "(Milnor) 若 $\\gamma$ 为 $\\mathbb{R}^3$ 中扭结曲线，请证明 $\\int_\\gamma\\kappa\\,\\mathrm{d}s\\ge4\\pi$."
+    },
+    {
+      "id": "dg-7-1-q1",
+      "difficulty": 5,
+      "question": "设 $M,N$ 都是微分流形，请证明笛卡尔积 $M\\times N$ 也是微分流形."
+    },
+    {
+      "id": "dg-7-1-q2",
+      "difficulty": 5,
+      "question": "定义 $n$ 维环面 $T^n:=S^1\\times\\cdots\\times S^1$，请证明 $T^n$ 是微分流形."
+    },
+    {
+      "id": "dg-7-3-q1",
+      "difficulty": 5,
+      "question": "请计算上半平面 Poincar\'e 度量下曲线 $\\gamma(t)=\\{(0,t):t\\in[a,b],a>0\\}$ 的长度，并说明当 $a\\to0$ 时的现象."
+    },
+    {
+      "id": "dg-7-3-q2",
+      "difficulty": 5,
+      "question": "设 $X,X',Y,Y'$ 是流形 $M$ 上切向量场，$f$ 为光滑函数。请证明协变导数满足线性性、Leibniz 公式及与度量相容的三条性质."
     }
   ]
 }

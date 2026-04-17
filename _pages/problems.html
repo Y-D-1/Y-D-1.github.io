@@ -48,12 +48,6 @@ author_profile: true
   font-size: 1.02rem;
 }
 
-.problem-special-source {
-  margin: 0 0 0.85rem;
-  color: var(--global-text-color-light);
-  font-size: 0.88rem;
-}
-
 .problem-empty {
   margin: 0;
   color: var(--global-text-color-light);
@@ -104,17 +98,42 @@ html[data-theme="dark"] .problem-difficulty {
   }
 
   function formatMathText(value) {
-    return escapeHtml(value || "").replace(/\n/g, "<br>");
+    return String(value || "").replace(/\n/g, "<br>");
   }
 
+  var mathRetryTimer = null;
+
   function typesetMath(target) {
-    if (!window.MathJax) {
+    if (!window.MathJax || !target) {
+      if (mathRetryTimer) {
+        return;
+      }
+
+      mathRetryTimer = setTimeout(function () {
+        mathRetryTimer = null;
+        typesetMath(target);
+      }, 120);
       return;
+    }
+
+    if (mathRetryTimer) {
+      clearTimeout(mathRetryTimer);
+      mathRetryTimer = null;
+    }
+
+    if (typeof window.MathJax.typesetClear === "function") {
+      window.MathJax.typesetClear([target]);
     }
 
     if (typeof window.MathJax.typesetPromise === "function") {
       window.MathJax.typesetPromise([target]).catch(function () {
-        return;
+        setTimeout(function () {
+          if (window.MathJax && typeof window.MathJax.typesetPromise === "function") {
+            window.MathJax.typesetPromise([target]).catch(function () {
+              return;
+            });
+          }
+        }, 120);
       });
       return;
     }
@@ -131,14 +150,10 @@ html[data-theme="dark"] .problem-difficulty {
   function renderProblem(problem) {
     var diff = Number(problem.difficulty);
     var diffLabel = !isNaN(diff) ? String(diff) : "未标注";
-    var sourceLine = problem.special_source
-      ? '<p class="problem-special-source">(' + escapeHtml(problem.special_source) + ')</p>'
-      : "";
 
     problemCard.innerHTML = [
       '<div class="problem-header"><span class="problem-difficulty">难度：' + escapeHtml(diffLabel) + '</span></div>',
-      '<p class="problem-question">' + formatMathText(problem.question || "暂无题面") + '</p>',
-      sourceLine
+      '<p class="problem-question">' + formatMathText(problem.question || "暂无题面") + '</p>'
     ].join("");
 
     typesetMath(problemCard);

@@ -14,6 +14,31 @@
 
 
 <!-- Support for MatJax -->
+<script>
+	window.MathJax = {
+		tex: {
+			inlineMath: [['$', '$'], ['\\(', '\\)']],
+			displayMath: [['$$', '$$'], ['\\[', '\\]']],
+			processEscapes: true,
+			macros: {
+				ma: '\\mathbf{a}',
+				rd: '\\mathrm{d}',
+				mr: '\\mathbf{r}',
+				mn: '\\mathbf{n}',
+				me: '\\mathbf{e}',
+				mb: '\\mathbf{b}',
+				ri: '\\mathrm{I}',
+				rii: '\\mathrm{II}',
+				riii: '\\mathrm{III}',
+				bbR: '\\mathbb{R}',
+				mc: '\\mathcal{C}',
+				spn: '\\mathrm{span}',
+				pp: ['\\frac{\\partial #1}{\\partial #2}', 2],
+				dpp: ['\\frac{\\partial #1}{\\partial #2}', 2]
+			}
+		}
+	};
+</script>
 <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 

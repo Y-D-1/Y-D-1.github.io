@@ -11,6 +11,9 @@ body {
   /* Set via _themes.scss */
   color: var(--global-text-color);
   background-color: var(--global-bg-color);
+  background-image: var(--global-bg-gradient, none);
+  background-repeat: no-repeat;
+  background-size: cover;
 
   margin: 0;
   padding: $masthead-height 0 0;

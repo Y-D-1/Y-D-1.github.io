@@ -8,6 +8,9 @@ html {
   /* apply a natural box layout model to all elements */
   box-sizing: border-box;
   background-color: var(--global-bg-color);
+  background-image: var(--global-bg-gradient, none);
+  background-repeat: no-repeat;
+  background-size: cover;
   font-size: 16px;
 
   @include breakpoint($medium) {

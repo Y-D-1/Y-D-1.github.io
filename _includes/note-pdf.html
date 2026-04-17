@@ -1,0 +1,157 @@
+{% include base_path %}
+{% assign pdf_url = include.file | default: "" %}
+{% assign pdf_title = include.title | default: "PDF preview" %}
+
+{% if pdf_url != "" %}
+  {% if pdf_url contains "://" %}
+    {% assign resolved_pdf_url = pdf_url %}
+  {% else %}
+    {% assign resolved_pdf_url = pdf_url | prepend: base_path %}
+  {% endif %}
+
+  <div class="note-pdf-viewer" role="region" aria-label="{{ pdf_title }}">
+    <div class="note-pdf-viewer__toolbar">
+      <span class="note-pdf-viewer__label">PDF 预览</span>
+      <div class="note-pdf-viewer__actions">
+        <a class="note-pdf-viewer__btn" href="{{ resolved_pdf_url }}" target="_blank" rel="noopener noreferrer">全屏预览</a>
+        <a class="note-pdf-viewer__btn" href="{{ resolved_pdf_url }}" download>下载 PDF</a>
+      </div>
+    </div>
+
+    <div class="note-pdf-viewer__frame">
+      <iframe
+        src="{{ resolved_pdf_url }}#view=FitH&toolbar=0&navpanes=0"
+        title="{{ pdf_title }}"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <p class="note-pdf-viewer__hint">若手机内嵌预览为空白，请点击上方“全屏预览”。</p>
+  </div>
+
+  <style>
+    .note-pdf-viewer {
+      margin: 1.2rem 0 0.4rem;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(250, 252, 255, 0.55));
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .note-pdf-viewer__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .note-pdf-viewer__label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: inherit;
+    }
+
+    .note-pdf-viewer__actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .note-pdf-viewer__btn {
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(47, 125, 225, 0.35);
+      background: rgba(47, 125, 225, 0.07);
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .note-pdf-viewer__btn:hover {
+      border-color: rgba(47, 125, 225, 0.65);
+      background: rgba(47, 125, 225, 0.16);
+    }
+
+    .note-pdf-viewer__frame {
+      height: min(75vh, 960px);
+      min-height: 460px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .note-pdf-viewer__frame iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .note-pdf-viewer__hint {
+      margin: 0;
+      padding: 0.65rem 1rem 0.85rem;
+      font-size: 0.8rem;
+      color: rgba(90, 90, 90, 0.95);
+    }
+
+    html[data-theme="dark"] .note-pdf-viewer {
+      border-color: rgba(255, 255, 255, 0.12);
+      background: linear-gradient(145deg, rgba(23, 27, 34, 0.92), rgba(35, 40, 52, 0.72));
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+    }
+
+    html[data-theme="dark"] .note-pdf-viewer__toolbar {
+      border-bottom-color: rgba(255, 255, 255, 0.11);
+    }
+
+    html[data-theme="dark"] .note-pdf-viewer__btn {
+      border-color: rgba(124, 170, 255, 0.45);
+      background: rgba(124, 170, 255, 0.14);
+    }
+
+    html[data-theme="dark"] .note-pdf-viewer__btn:hover {
+      border-color: rgba(157, 193, 255, 0.75);
+      background: rgba(124, 170, 255, 0.25);
+    }
+
+    html[data-theme="dark"] .note-pdf-viewer__frame {
+      background: rgba(14, 18, 25, 0.85);
+    }
+
+    html[data-theme="dark"] .note-pdf-viewer__hint {
+      color: rgba(210, 220, 235, 0.9);
+    }
+
+    @media (max-width: 768px) {
+      .note-pdf-viewer {
+        margin-top: 0.9rem;
+      }
+
+      .note-pdf-viewer__toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 0.7rem 0.78rem;
+      }
+
+      .note-pdf-viewer__actions {
+        justify-content: flex-start;
+      }
+
+      .note-pdf-viewer__frame {
+        height: 68vh;
+        min-height: 360px;
+      }
+
+      .note-pdf-viewer__hint {
+        padding: 0.6rem 0.78rem 0.78rem;
+      }
+    }
+  </style>
+{% endif %}

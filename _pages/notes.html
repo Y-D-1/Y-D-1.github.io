@@ -176,6 +176,78 @@ mark.search-mark {
   padding: 0 0.08em;
 }
 
+html[data-theme="dark"] .exam-course-item {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: linear-gradient(135deg, rgba(26, 32, 44, 0.86), rgba(35, 46, 66, 0.62));
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.34);
+}
+
+html[data-theme="dark"] .exam-course-item::before {
+  background: linear-gradient(90deg, #70a6ff, #73d8bf);
+  opacity: 0.82;
+}
+
+html[data-theme="dark"] .exam-course-item:hover {
+  border-color: rgba(126, 169, 255, 0.5);
+  box-shadow: 0 15px 32px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .archive__item-title a:hover {
+  color: #8cb8ff;
+}
+
+html[data-theme="dark"] .course-meta span {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(204, 221, 255, 0.28);
+  color: rgba(232, 239, 252, 0.95);
+}
+
+html[data-theme="dark"] .course-type {
+  border-color: rgba(112, 166, 255, 0.48) !important;
+}
+
+html[data-theme="dark"] .course-venue {
+  border-color: rgba(115, 216, 191, 0.52) !important;
+}
+
+html[data-theme="dark"] .course-notice {
+  border-top-color: rgba(255, 255, 255, 0.2);
+  color: rgba(210, 220, 235, 0.88);
+}
+
+html[data-theme="dark"] .search-input {
+  border-color: rgba(190, 208, 240, 0.42);
+  background: rgba(17, 24, 35, 0.6);
+  color: rgba(238, 244, 255, 0.95);
+}
+
+html[data-theme="dark"] .search-input::placeholder {
+  color: rgba(181, 197, 225, 0.85);
+}
+
+html[data-theme="dark"] .search-input:focus {
+  border-color: rgba(133, 176, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(77, 131, 224, 0.25);
+}
+
+html[data-theme="dark"] .clear-search-btn {
+  border-color: rgba(190, 208, 240, 0.42);
+  background: rgba(17, 24, 35, 0.62);
+}
+
+html[data-theme="dark"] .clear-search-btn:hover {
+  border-color: rgba(133, 176, 255, 0.9);
+  background: rgba(77, 131, 224, 0.23);
+}
+
+html[data-theme="dark"] .search-results.no-results {
+  color: #ff9d9d;
+}
+
+html[data-theme="dark"] mark.search-mark {
+  background: rgba(255, 204, 102, 0.56);
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .exam-course-item {

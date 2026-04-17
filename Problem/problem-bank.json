@@ -383,7 +383,7 @@
     {
       "id": "dg-7-3-q1",
       "difficulty": 5,
-      "question": "请计算上半平面 Poincar\'e 度量下曲线 $\\gamma(t)=\\{(0,t):t\\in[a,b],a>0\\}$ 的长度，并说明当 $a\\to0$ 时的现象."
+      "question": "请计算上半平面 Poincar\\'e 度量下曲线 $\\gamma(t)=\\{(0,t):t\\in[a,b],a>0\\}$ 的长度，并说明当 $a\\to0$ 时的现象."
     },
     {
       "id": "dg-7-3-q2",

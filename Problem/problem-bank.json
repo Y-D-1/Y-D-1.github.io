@@ -381,11 +381,6 @@
       "question": "定义 $n$ 维环面 $T^n:=S^1\\times\\cdots\\times S^1$，请证明 $T^n$ 是微分流形."
     },
     {
-      "id": "dg-7-3-q1",
-      "difficulty": 5,
-      "question": "请计算上半平面 Poincar\\'e 度量下曲线 $\\gamma(t)=\\{(0,t):t\\in[a,b],a>0\\}$ 的长度，并说明当 $a\\to0$ 时的现象."
-    },
-    {
       "id": "dg-7-3-q2",
       "difficulty": 5,
       "question": "设 $X,X',Y,Y'$ 是流形 $M$ 上切向量场，$f$ 为光滑函数。请证明协变导数满足线性性、Leibniz 公式及与度量相容的三条性质."

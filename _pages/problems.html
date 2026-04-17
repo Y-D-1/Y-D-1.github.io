@@ -6,16 +6,11 @@ author_profile: true
 ---
 
 <p class="problems-subtitle">随机题目</p>
-<p class="problems-desc">可选择难度并从题库随机抽取题目。</p>
+<p class="problems-desc">支持 TeX 题干（如 $...$ 或 $$...$$），可用难度滑条在题库中随机抽题。</p>
 
 <div class="problems-toolbar">
-  <label class="problems-label" for="difficultySelect">选择难度</label>
-  <select id="difficultySelect" class="problems-select">
-    <option value="all">全部</option>
-    <option value="easy">简单</option>
-    <option value="medium">中等</option>
-    <option value="hard">困难</option>
-  </select>
+  <label class="problems-label" for="difficultyRange">难度：<span id="difficultyValue">3</span></label>
+  <input id="difficultyRange" class="problems-range" type="range" min="1" max="5" step="1" value="3" />
 </div>
 
 <div id="problemCard" class="problem-card" aria-live="polite">
@@ -37,24 +32,19 @@ author_profile: true
 }
 
 .problems-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  flex-wrap: wrap;
+  display: block;
   margin-bottom: 1rem;
 }
 
 .problems-label {
+  display: inline-block;
   font-weight: 600;
+  margin-bottom: 0.35rem;
 }
 
-.problems-select {
-  min-width: 160px;
-  padding: 0.45rem 0.65rem;
-  border-radius: 10px;
-  border: 1px solid var(--global-border-color);
-  background: var(--global-bg-color);
-  color: inherit;
+.problems-range {
+  width: min(360px, 100%);
+  accent-color: #2f7de1;
 }
 
 .problem-card {
@@ -62,33 +52,20 @@ author_profile: true
   border-radius: 14px;
   padding: 1rem 1rem 0.85rem;
   margin-bottom: 1rem;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.78), rgba(250, 252, 255, 0.42));
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-}
-
-.problem-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.65rem;
-}
-
-.problem-tag {
-  font-size: 0.82rem;
-  padding: 0.2rem 0.58rem;
-  border-radius: 999px;
-  border: 1px solid rgba(92, 124, 168, 0.38);
-  background: rgba(47, 125, 225, 0.08);
-}
-
-.problem-title {
-  margin: 0.2rem 0 0.65rem;
-  font-size: 1.13rem;
+  background: var(--global-bg-color);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .problem-question {
-  margin: 0.25rem 0 0.85rem;
+  margin: 0.1rem 0 0.75rem;
   line-height: 1.6;
+  font-size: 1.02rem;
+}
+
+.problem-special-source {
+  margin: 0 0 0.85rem;
+  color: var(--global-text-color-light);
+  font-size: 0.88rem;
 }
 
 .problem-answer {
@@ -116,13 +93,8 @@ author_profile: true
 
 html[data-theme="dark"] .problem-card {
   border-color: rgba(197, 214, 244, 0.24);
-  background: linear-gradient(140deg, rgba(23, 30, 42, 0.88), rgba(35, 45, 63, 0.62));
+  background: rgba(24, 35, 52, 0.9);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36);
-}
-
-html[data-theme="dark"] .problem-tag {
-  border-color: rgba(146, 182, 237, 0.5);
-  background: rgba(124, 170, 255, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -134,15 +106,9 @@ html[data-theme="dark"] .problem-tag {
 
 <script>
 (function () {
-  var difficultyLabels = {
-    all: "全部",
-    easy: "简单",
-    medium: "中等",
-    hard: "困难"
-  };
-
   var bankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
-  var difficultySelect = document.getElementById("difficultySelect");
+  var difficultyRange = document.getElementById("difficultyRange");
+  var difficultyValue = document.getElementById("difficultyValue");
   var nextProblemBtn = document.getElementById("nextProblemBtn");
   var problemCard = document.getElementById("problemCard");
 
@@ -158,14 +124,33 @@ html[data-theme="dark"] .problem-tag {
       .replace(/'/g, "&#39;");
   }
 
-  function getPool() {
-    var selected = difficultySelect.value;
-    if (selected === "all") {
-      return allProblems.slice();
+  function formatMathText(value) {
+    return escapeHtml(value || "").replace(/\n/g, "<br>");
+  }
+
+  function typesetMath(target) {
+    if (!window.MathJax) {
+      return;
     }
 
+    if (typeof window.MathJax.typesetPromise === "function") {
+      window.MathJax.typesetPromise([target]).catch(function () {
+        return;
+      });
+      return;
+    }
+
+    if (typeof window.MathJax.typeset === "function") {
+      window.MathJax.typeset([target]);
+    }
+  }
+
+  function getPool() {
+    var selectedDifficulty = Number(difficultyRange.value);
+
     return allProblems.filter(function (item) {
-      return (item.difficulty || "").toLowerCase() === selected;
+      var diff = Number(item.difficulty);
+      return !isNaN(diff) && diff === selectedDifficulty;
     });
   }
 
@@ -174,30 +159,29 @@ html[data-theme="dark"] .problem-tag {
   }
 
   function renderProblem(problem) {
-    var diff = (problem.difficulty || "").toLowerCase();
-    var diffLabel = difficultyLabels[diff] || diff || "未标注";
-    var sourceLabel = problem.source ? '<span class="problem-tag">来源：' + escapeHtml(problem.source) + '</span>' : "";
+    var sourceLine = problem.special_source
+      ? '<p class="problem-special-source">(' + escapeHtml(problem.special_source) + ')</p>'
+      : "";
     var answerBlock = problem.answer
-      ? '<details class="problem-answer"><summary>参考答案</summary><p>' + escapeHtml(problem.answer) + '</p></details>'
+      ? '<details class="problem-answer"><summary>参考答案</summary><p>' + formatMathText(problem.answer) + '</p></details>'
       : "";
 
     problemCard.innerHTML = [
-      '<div class="problem-meta">',
-      '<span class="problem-tag">难度：' + escapeHtml(diffLabel) + '</span>',
-      sourceLabel,
-      '</div>',
-      '<h3 class="problem-title">' + escapeHtml(problem.title || "未命名题目") + '</h3>',
-      '<p class="problem-question">' + escapeHtml(problem.question || "暂无题面") + '</p>',
+      '<p class="problem-question">' + formatMathText(problem.question || "暂无题面") + '</p>',
+      sourceLine,
       answerBlock
     ].join("");
+
+    typesetMath(problemCard);
   }
 
   function drawProblem() {
+    var selectedDifficulty = Number(difficultyRange.value);
     var pool = getPool();
 
     if (!pool.length) {
       currentProblemId = null;
-      renderEmpty("当前难度下暂无题目，请先在题库文件中补充题目。");
+      renderEmpty("难度 " + selectedDifficulty + " 暂无题目，请先在题库文件中补充题目。");
       return;
     }
 
@@ -215,6 +199,10 @@ html[data-theme="dark"] .problem-tag {
     renderProblem(selected);
   }
 
+  function syncDifficultyLabel() {
+    difficultyValue.textContent = difficultyRange.value;
+  }
+
   function init() {
     fetch(bankUrl)
       .then(function (response) {
@@ -229,6 +217,7 @@ html[data-theme="dark"] .problem-tag {
         }
 
         allProblems = data.problems;
+        syncDifficultyLabel();
         drawProblem();
       })
       .catch(function () {
@@ -236,7 +225,10 @@ html[data-theme="dark"] .problem-tag {
       });
   }
 
-  difficultySelect.addEventListener("change", drawProblem);
+  difficultyRange.addEventListener("input", function () {
+    syncDifficultyLabel();
+    drawProblem();
+  });
   nextProblemBtn.addEventListener("click", drawProblem);
 
   init();

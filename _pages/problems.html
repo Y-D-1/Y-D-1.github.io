@@ -1,0 +1,244 @@
+---
+layout: single
+title: "Problems"
+permalink: /problems/
+author_profile: true
+---
+
+<p class="problems-subtitle">随机题目</p>
+<p class="problems-desc">可选择难度并从题库随机抽取题目。</p>
+
+<div class="problems-toolbar">
+  <label class="problems-label" for="difficultySelect">选择难度</label>
+  <select id="difficultySelect" class="problems-select">
+    <option value="all">全部</option>
+    <option value="easy">简单</option>
+    <option value="medium">中等</option>
+    <option value="hard">困难</option>
+  </select>
+</div>
+
+<div id="problemCard" class="problem-card" aria-live="polite">
+  <p class="problem-empty">正在加载题库...</p>
+</div>
+
+<button id="nextProblemBtn" type="button" class="btn problems-refresh">换一道</button>
+
+<style>
+.problems-subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 1.18rem;
+  font-weight: 700;
+}
+
+.problems-desc {
+  margin: 0.45rem 0 1.2rem;
+  color: var(--global-text-color-light);
+}
+
+.problems-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.problems-label {
+  font-weight: 600;
+}
+
+.problems-select {
+  min-width: 160px;
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--global-border-color);
+  background: var(--global-bg-color);
+  color: inherit;
+}
+
+.problem-card {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  padding: 1rem 1rem 0.85rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.78), rgba(250, 252, 255, 0.42));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.problem-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.problem-tag {
+  font-size: 0.82rem;
+  padding: 0.2rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 124, 168, 0.38);
+  background: rgba(47, 125, 225, 0.08);
+}
+
+.problem-title {
+  margin: 0.2rem 0 0.65rem;
+  font-size: 1.13rem;
+}
+
+.problem-question {
+  margin: 0.25rem 0 0.85rem;
+  line-height: 1.6;
+}
+
+.problem-answer {
+  margin-top: 0.35rem;
+}
+
+.problem-answer summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.problem-answer p {
+  margin: 0.5rem 0 0;
+  padding-left: 0.1rem;
+}
+
+.problem-empty {
+  margin: 0;
+  color: var(--global-text-color-light);
+}
+
+.problems-refresh {
+  min-width: 132px;
+}
+
+html[data-theme="dark"] .problem-card {
+  border-color: rgba(197, 214, 244, 0.24);
+  background: linear-gradient(140deg, rgba(23, 30, 42, 0.88), rgba(35, 45, 63, 0.62));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36);
+}
+
+html[data-theme="dark"] .problem-tag {
+  border-color: rgba(146, 182, 237, 0.5);
+  background: rgba(124, 170, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .problem-card {
+    padding: 0.9rem 0.86rem 0.82rem;
+  }
+}
+</style>
+
+<script>
+(function () {
+  var difficultyLabels = {
+    all: "全部",
+    easy: "简单",
+    medium: "中等",
+    hard: "困难"
+  };
+
+  var bankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
+  var difficultySelect = document.getElementById("difficultySelect");
+  var nextProblemBtn = document.getElementById("nextProblemBtn");
+  var problemCard = document.getElementById("problemCard");
+
+  var allProblems = [];
+  var currentProblemId = null;
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function getPool() {
+    var selected = difficultySelect.value;
+    if (selected === "all") {
+      return allProblems.slice();
+    }
+
+    return allProblems.filter(function (item) {
+      return (item.difficulty || "").toLowerCase() === selected;
+    });
+  }
+
+  function renderEmpty(message) {
+    problemCard.innerHTML = '<p class="problem-empty">' + escapeHtml(message) + '</p>';
+  }
+
+  function renderProblem(problem) {
+    var diff = (problem.difficulty || "").toLowerCase();
+    var diffLabel = difficultyLabels[diff] || diff || "未标注";
+    var sourceLabel = problem.source ? '<span class="problem-tag">来源：' + escapeHtml(problem.source) + '</span>' : "";
+    var answerBlock = problem.answer
+      ? '<details class="problem-answer"><summary>参考答案</summary><p>' + escapeHtml(problem.answer) + '</p></details>'
+      : "";
+
+    problemCard.innerHTML = [
+      '<div class="problem-meta">',
+      '<span class="problem-tag">难度：' + escapeHtml(diffLabel) + '</span>',
+      sourceLabel,
+      '</div>',
+      '<h3 class="problem-title">' + escapeHtml(problem.title || "未命名题目") + '</h3>',
+      '<p class="problem-question">' + escapeHtml(problem.question || "暂无题面") + '</p>',
+      answerBlock
+    ].join("");
+  }
+
+  function drawProblem() {
+    var pool = getPool();
+
+    if (!pool.length) {
+      currentProblemId = null;
+      renderEmpty("当前难度下暂无题目，请先在题库文件中补充题目。");
+      return;
+    }
+
+    var selected = pool[Math.floor(Math.random() * pool.length)];
+
+    if (pool.length > 1 && currentProblemId) {
+      var guard = 0;
+      while (selected.id === currentProblemId && guard < 10) {
+        selected = pool[Math.floor(Math.random() * pool.length)];
+        guard += 1;
+      }
+    }
+
+    currentProblemId = selected.id || null;
+    renderProblem(selected);
+  }
+
+  function init() {
+    fetch(bankUrl)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("题库加载失败");
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || !Array.isArray(data.problems)) {
+          throw new Error("题库格式错误");
+        }
+
+        allProblems = data.problems;
+        drawProblem();
+      })
+      .catch(function () {
+        renderEmpty("题库读取失败，请检查 Problem/problem-bank.json 文件。");
+      });
+  }
+
+  difficultySelect.addEventListener("change", drawProblem);
+  nextProblemBtn.addEventListener("click", drawProblem);
+
+  init();
+})();
+</script>

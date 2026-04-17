@@ -10,4 +10,7 @@
 main:
   
   - title: "Notes"
-    url: /notes/    
+    url: /notes/
+
+  - title: "Problems"
+    url: /problems/

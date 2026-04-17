@@ -5,12 +5,17 @@ permalink: /problems/
 author_profile: true
 ---
 
-<p class="problems-subtitle">随机题目</p>
-<p class="problems-desc">支持 TeX 题干（如 $...$ 或 $$...$$），可用难度滑条在题库中随机抽题。</p>
+<p class="problems-subtitle">来都来了，做几道题再走吧.</p>
 
 <div class="problems-toolbar">
-  <label class="problems-label" for="difficultyRange">难度：<span id="difficultyValue">3</span></label>
-  <input id="difficultyRange" class="problems-range" type="range" min="1" max="5" step="1" value="3" />
+  <label class="problems-label" for="difficultySelect">难度：</label>
+  <select id="difficultySelect" class="problems-select">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3" selected>3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
 </div>
 
 <div id="problemCard" class="problem-card" aria-live="polite">
@@ -26,25 +31,25 @@ author_profile: true
   font-weight: 700;
 }
 
-.problems-desc {
-  margin: 0.45rem 0 1.2rem;
-  color: var(--global-text-color-light);
-}
-
 .problems-toolbar {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
 .problems-label {
-  display: inline-block;
   font-weight: 600;
-  margin-bottom: 0.35rem;
 }
 
-.problems-range {
-  width: min(360px, 100%);
-  accent-color: #2f7de1;
+.problems-select {
+  min-width: 86px;
+  padding: 0.2rem 0.42rem;
+  border: 1px solid var(--global-border-color);
+  border-radius: 6px;
+  background: var(--global-bg-color);
+  color: inherit;
 }
 
 .problem-card {
@@ -107,10 +112,13 @@ html[data-theme="dark"] .problem-card {
 <script>
 (function () {
   var bankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
-  var difficultyRange = document.getElementById("difficultyRange");
-  var difficultyValue = document.getElementById("difficultyValue");
+  var difficultySelect = document.getElementById("difficultySelect");
   var nextProblemBtn = document.getElementById("nextProblemBtn");
   var problemCard = document.getElementById("problemCard");
+
+  if (!difficultySelect || !nextProblemBtn || !problemCard) {
+    return;
+  }
 
   var allProblems = [];
   var currentProblemId = null;
@@ -146,7 +154,7 @@ html[data-theme="dark"] .problem-card {
   }
 
   function getPool() {
-    var selectedDifficulty = Number(difficultyRange.value);
+    var selectedDifficulty = Number(difficultySelect.value);
 
     return allProblems.filter(function (item) {
       var diff = Number(item.difficulty);
@@ -176,7 +184,7 @@ html[data-theme="dark"] .problem-card {
   }
 
   function drawProblem() {
-    var selectedDifficulty = Number(difficultyRange.value);
+    var selectedDifficulty = Number(difficultySelect.value);
     var pool = getPool();
 
     if (!pool.length) {
@@ -199,10 +207,6 @@ html[data-theme="dark"] .problem-card {
     renderProblem(selected);
   }
 
-  function syncDifficultyLabel() {
-    difficultyValue.textContent = difficultyRange.value;
-  }
-
   function init() {
     fetch(bankUrl)
       .then(function (response) {
@@ -217,7 +221,6 @@ html[data-theme="dark"] .problem-card {
         }
 
         allProblems = data.problems;
-        syncDifficultyLabel();
         drawProblem();
       })
       .catch(function () {
@@ -225,10 +228,7 @@ html[data-theme="dark"] .problem-card {
       });
   }
 
-  difficultyRange.addEventListener("input", function () {
-    syncDifficultyLabel();
-    drawProblem();
-  });
+  difficultySelect.addEventListener("change", drawProblem);
   nextProblemBtn.addEventListener("click", drawProblem);
 
   init();

@@ -41,8 +41,8 @@ html[data-theme="dark"] {
     --global-footer-bg-color            : #111a27;
     --global-border-color               : rgba(159, 187, 233, 0.34);
     --global-dark-border-color          : rgba(120, 149, 196, 0.38);
-    --global-code-background-color      : #fafafa;
-    --global-code-text-color            : #{$darker-gray};
+    --global-code-background-color      : rgba(24, 35, 52, 0.9);
+    --global-code-text-color            : #dbe8fb;
     --global-fig-caption-color          : #b9c9e0;
     --global-link-color                 : #{$link};
     --global-link-color-hover           : #{$link-dark};
@@ -52,4 +52,45 @@ html[data-theme="dark"] {
     --global-text-color                 : #{$text};
     --global-text-color-light           : #b4c6df;
     --global-thead-color                : #{$background-lighter};
+
+    .notice,
+    .notice--primary,
+    .notice--info,
+    .notice--warning,
+    .notice--success,
+    .notice--danger,
+    .well {
+        background-color                : rgba(24, 35, 52, 0.84);
+        border                          : 1px solid rgba(159, 187, 233, 0.34);
+        color                           : #dbe8fb;
+        box-shadow                      : 0 1px 1px rgba(0, 0, 0, 0.32);
+    }
+
+    .notice a,
+    .notice--primary a,
+    .notice--info a,
+    .notice--warning a,
+    .notice--success a,
+    .notice--danger a {
+        color                           : #9dc1ff;
+    }
+
+    .notice a:hover,
+    .notice--primary a:hover,
+    .notice--info a:hover,
+    .notice--warning a:hover,
+    .notice--success a:hover,
+    .notice--danger a:hover {
+        color                           : #c7ddff;
+    }
+
+    div.highlighter-rouge:before,
+    figure.highlight:before {
+        background-color                : rgba(159, 187, 233, 0.16);
+        color                           : #dbe8fb;
+    }
+
+    .form:before {
+        background-color                : rgba(10, 15, 24, 0.55);
+    }
 }

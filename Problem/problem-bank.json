@@ -391,16 +391,18 @@
     {
       "id": "fa-all-01-02",
       "difficulty": 1,
-      "question": "在欧氏空间 $\\mathbb{R}$ 中，判断并说明 $\\mathbb{R}\\setminus\\mathbb{Q}$ 与 $\\mathbb{Z}$ 是否为开集或闭集",
+      "question": "在欧氏空间 $\\mathbb{R}$ 中",
       "subquestions": [
+        "判断并说明 $\\mathbb{R}\\setminus\\mathbb{Q}$ 与 $\\mathbb{Z}$ 是否为开集或闭集",
         "在子空间 $E=(-5,3]$ 中，判断 $A=(-5,1]$ 与 $B=(0,3]$ 是否开、是否闭."
       ]
     },
     {
       "id": "fa-all-01-03",
       "difficulty": 1,
-      "question": "设 $(E,d)$ 是度量空间. 证明 $d_1=\\sqrt{d}$ 与 $d_2=\\ln(1+d)$ 都是 $E$ 上的度量",
+      "question": "设 $(E,d)$ 是度量空间.",
       "subquestions": [
+        "证明 $d_1=\\sqrt{d}$ 与 $d_2=\\ln(1+d)$ 都是 $E$ 上的度量",
         "若 $f:E\\to E$ 单射，定义 $\\delta(x,y)=d(f(x),f(y))$，证明 $(E,\\delta)$ 是度量空间",
         "当 $E=\\mathbb{R}, f(x)=\\arctan x$ 时，证明 $x_n\\xrightarrow[\\delta]{}x\\iff |x_n-x|\\to0$，并由此说明两者诱导拓扑相同."
       ]
@@ -419,8 +421,9 @@
     {
       "id": "fa-all-01-05",
       "difficulty": 1,
-      "question": "在 $\\mathbb{R}^2$ 上定义 $d(x,y)=\\max\\{|x_1-y_1|,2|x_2-y_2|\\}$. 证明 $(\\mathbb{R}^2,d)$ 是度量空间",
+      "question": "在 $\\mathbb{R}^2$ 上定义 $d(x,y)=\\max\\{|x_1-y_1|,2|x_2-y_2|\\}$.",
       "subquestions": [
+        "证明 $(\\mathbb{R}^2,d)$ 是度量空间",
         "画出开球 $B(O,2)$",
         "并在同一图中画出闭球 $\\overline B((3,2),1)$."
       ]
@@ -428,8 +431,9 @@
     {
       "id": "fa-all-01-06",
       "difficulty": 1,
-      "question": "设 $f:(E,d_1)\\to(F,d_2)$. 证明：$f$ 连续当且仅当任意开集 $O\\subset F$ 的原像 $f^{-1}(O)$ 在 $E$ 中开",
+      "question": "设 $f:(E,d_1)\\to(F,d_2)$.",
       "subquestions": [
+        "证明：$f$ 连续当且仅当任意开集 $O\\subset F$ 的原像 $f^{-1}(O)$ 在 $E$ 中开",
         "当且仅当任意闭集 $A\\subset F$ 的原像在 $E$ 中闭",
         "当且仅当对任意 $A\\subset E$，$f(\\overline A)\\subset\\overline{f(A)}$."
       ]
@@ -462,8 +466,9 @@
     {
       "id": "fa-all-02-05",
       "difficulty": 2,
-      "question": "设 $(X,d)$ 完备，$f:X\\to X$ 满足存在 $C>1$ 使得 $d(f(x),f(y))\\ge C d(x,y)$. 若 $f$ 满射，证明 $f^{-1}$ 存在且是 Lipschitz 映射",
+      "question": "设 $(X,d)$ 完备，$f:X\\to X$ 满足存在 $C>1$ 使得 $d(f(x),f(y))\\ge C d(x,y)$.",
       "subquestions": [
+        "若 $f$ 满射，证明 $f^{-1}$ 存在且是 Lipschitz 映射",
         "并结合 Banach 压缩映射原理证明 $f$ 有唯一不动点."
       ]
     },
@@ -532,8 +537,9 @@
     {
       "id": "fa-all-04-01",
       "difficulty": 3,
-      "question": "设 $E$ 是赋范空间，$A,B\\subset E$，定义 $A+B=\\{x+y:x\\in A,y\\in B\\}$. 证明：若 $A$ 开则 $A+B$ 开",
+      "question": "设 $E$ 是赋范空间，$A,B\\subset E$，定义 $A+B=\\{x+y:x\\in A,y\\in B\\}$.",
       "subquestions": [
+        "证明：若 $A$ 开则 $A+B$ 开",
         "若 $A,B$ 紧则 $A+B$ 紧",
         "若 $A$ 紧且 $B$ 闭则 $A+B$ 闭",
         "并给出 $A,B$ 均闭但 $A+B$ 非闭的例子."
@@ -542,8 +548,9 @@
     {
       "id": "fa-all-04-02",
       "difficulty": 3,
-      "question": "在 $C([0,1],\\mathbb{R})$ 上定义 $\\|f\\|_\\infty=\\sup_{t\\in[0,1]}|f(t)|$，$\\|f\\|_1=\\int_0^1|f(t)|\\,dt$. 证明两者都是范数",
+      "question": "在 $C([0,1],\\mathbb{R})$ 上定义 $\\|f\\|_\\infty=\\sup_{t\\in[0,1]}|f(t)|$，$\\|f\\|_1=\\int_0^1|f(t)|\\,dt$.",
       "subquestions": [
+        "证明两者都是范数",
         "证明 $(C([0,1]),\\|\\cdot\\|_\\infty)$ 完备",
         "证明 $(C([0,1]),\\|\\cdot\\|_1)$ 不完备."
       ]
@@ -556,8 +563,9 @@
     {
       "id": "fa-all-04-04",
       "difficulty": 3,
-      "question": "令 $E=C([0,1],\\mathbb{R})$，定义 $N_1(f)=\\int_0^1 x^4|f(x)|\\,\\mathrm{d}x$，$N_2(f)=\\left(\\int_0^1 x^2 f(x)^2\\,\\mathrm{d}x\\right)^{1/2}$. 证明 $N_1,N_2$ 都是范数",
+      "question": "令 $E=C([0,1],\\mathbb{R})$，定义 $N_1(f)=\\int_0^1 x^4|f(x)|\\,\\mathrm{d}x$，$N_2(f)=\\left(\\int_0^1 x^2 f(x)^2\\,\\mathrm{d}x\\right)^{1/2}$.",
       "subquestions": [
+        "证明 $N_1,N_2$ 都是范数",
         "证明 $N_1(f)\\le\\frac1{\\sqrt7}N_2(f)$",
         "并利用题中函数列证明二者不等价."
       ]
@@ -565,8 +573,9 @@
     {
       "id": "fa-all-04-05",
       "difficulty": 3,
-      "question": "设 $E$ 是 Banach 空间，$A\\in\\mathcal{B}(E)$. 证明级数 $\\sum_{k\\ge0}\\frac{A^k}{k!}$ 在 $\\mathcal{B}(E)$ 中收敛并记作 $\\mathrm \\mathrm{e}^A$",
+      "question": "设 $E$ 是 Banach 空间，$A\\in\\mathcal{B}(E)$.",
       "subquestions": [
+        "证明级数 $\\sum_{k\\ge0}\\frac{A^k}{k!}$ 在 $\\mathcal{B}(E)$ 中收敛并记作 $\\mathrm \\mathrm{e}^A$",
         "证明 $\\|\\mathrm \\mathrm{e}^A\\|\\le \\mathrm \\mathrm{e}^{\\|A\\|}$",
         "说明一般 $\\mathrm \\mathrm{e}^A\\mathrm \\mathrm{e}^B\\neq \\mathrm \\mathrm{e}^{A+B}$，但当 $AB=BA$ 时成立，并推出 $(\\mathrm \\mathrm{e}^A)^{-1}=\\mathrm \\mathrm{e}^{-A}$."
       ]
@@ -579,8 +588,9 @@
     {
       "id": "fa-all-05-01",
       "difficulty": 3,
-      "question": "设 $E$ 是实系数多项式空间，$E_0=\\{P\\in E:P(0)=0\\}$，$\\|P\\|_\\infty=\\max_{x\\in[0,1]}|P(x)|$. 证明 $N(P)=\\|P'\\|_\\infty$ 定义 $E_0$ 上范数且 $\\|P\\|_\\infty\\le N(P)$",
+      "question": "设 $E$ 是实系数多项式空间，$E_0=\\{P\\in E:P(0)=0\\}$，$\\|P\\|_\\infty=\\max_{x\\in[0,1]}|P(x)|$.",
       "subquestions": [
+        "证明 $N(P)=\\|P'\\|_\\infty$ 定义 $E_0$ 上范数且 $\\|P\\|_\\infty\\le N(P)$",
         "证明 $L(P)=\\int_0^1\\frac{P(x)}{x}\\,\\mathrm{d}x$ 在 $(E_0,N)$ 上连续并求范数",
         "判断 $L$ 关于 $\\|\\cdot\\|_\\infty$ 的连续性以及 $N$ 与 $\\|\\cdot\\|_\\infty$ 的等价性."
       ]
@@ -588,8 +598,9 @@
     {
       "id": "fa-all-05-02",
       "difficulty": 3,
-      "question": "设有限维向量空间 $E$（$\\dim E=n$）及一组基 $(e_1,\\dots,e_n)$. 证明 $u\\mapsto [u]$ 给出 $\\mathcal L(E)$ 与 $M_n(\\mathbb K)$ 的同构",
+      "question": "设有限维向量空间 $E$（$\\dim E=n$）及一组基 $(e_1,\\dots,e_n)$.",
       "subquestions": [
+        "证明 $u\\mapsto [u]$ 给出 $\\mathcal L(E)$ 与 $M_n(\\mathbb K)$ 的同构",
         "在 $E=\\mathbb K^n$ 赋欧氏范数下，若 $u$ 可正交对角化，证明 $\\|u\\|=\\max_i|\\lambda_i|$",
         "并给出 $p=1,\\infty$ 时算子范数的矩阵表达."
       ]
@@ -602,8 +613,9 @@
     {
       "id": "fa-all-05-04",
       "difficulty": 3,
-      "question": "令 $E=C([0,1],\\mathbb R)$，赋一致范数. 定义 $T$：$(Tf)(x)=\\int_0^x t f(t)\\,dt + x\\int_x^1 f(t)\\,dt$. 证明 $T$ 线性",
+      "question": "令 $E=C([0,1],\\mathbb R)$，赋一致范数. 定义 $T$：$(Tf)(x)=\\int_0^x t f(t)\\,dt + x\\int_x^1 f(t)\\,dt$.",
       "subquestions": [
+        "证明 $T$ 线性",
         "证明 $|Tf(x)|\\le\\left(x-\\frac{x^2}{2}\\right)\\|f\\|_\\infty$",
         "证明 $T\\in\\mathcal B(E)$ 并计算 $\\|T\\|$",
         "讨论方程 $Tf=f$ 是否有非平凡解."
@@ -612,8 +624,9 @@
     {
       "id": "fa-all-05-05",
       "difficulty": 3,
-      "question": "设赋范空间 $E,F$，$\\varphi:E\\to\\mathbb K$ 是不连续线性泛函. 证明 $\\ker\\varphi$ 非闭，且存在 $u\\in\\overline{\\ker\\varphi}\\setminus\\ker\\varphi$ 使 $\\varphi(u)=1$",
+      "question": "设赋范空间 $E,F$，$\\varphi:E\\to\\mathbb K$ 是不连续线性泛函.",
       "subquestions": [
+        "证明 $\\ker\\varphi$ 非闭，且存在 $u\\in\\overline{\\ker\\varphi}\\setminus\\ker\\varphi$ 使 $\\varphi(u)=1$",
         "并证明任意 $x\\in E$ 都属于 $\\overline{\\ker\\varphi}$，从而 $\\ker\\varphi$ 在 $E$ 中稠密."
       ]
     },
@@ -659,8 +672,9 @@
     {
       "id": "fa-all-07-01",
       "difficulty": 4,
-      "question": "设 $f\\in L^2(\\mathbb R)$，$g(x)=\\frac1x\\mathbf1_{[1,\\infty)}(x)$. 证明 $fg\\in L^1(\\mathbb R)$",
+      "question": "设 $f\\in L^2(\\mathbb R)$，$g(x)=\\frac1x\\mathbf1_{[1,\\infty)}(x)$.",
       "subquestions": [
+        "证明 $fg\\in L^1(\\mathbb R)$",
         "并给出 $f_1,f_2\\in L^1(\\mathbb R)$ 但 $f_1f_2\\notin L^1(\\mathbb R)$ 的例子."
       ]
     },
@@ -677,8 +691,9 @@
     {
       "id": "fa-all-07-03",
       "difficulty": 4,
-      "question": "设 $f,g\\in L^1(\\mathbb R)$. 证明卷积积分恒等式并说明卷积几乎处处有定义",
+      "question": "设 $f,g\\in L^1(\\mathbb R)$.",
       "subquestions": [
+        "证明卷积积分恒等式并说明卷积几乎处处有定义",
         "证明 $f*g\\in L^1(\\mathbb R)$ 且 $\\|f*g\\|_1\\le\\|f\\|_1\\|g\\|_1$",
         "计算 $\\mathbf1_{[0,1]}*\\mathbf1_{[0,1]}$."
       ]
@@ -711,8 +726,9 @@
     {
       "id": "fa-all-08-04",
       "difficulty": 4,
-      "question": "设赋范空间 $E$ 上投影算子 $p\\in\\mathcal B(E)$（$p^2=p$）. 证明 $\\operatorname{Im}(p)$ 闭",
+      "question": "设赋范空间 $E$ 上投影算子 $p\\in\\mathcal B(E)$（$p^2=p$）.",
       "subquestions": [
+        "证明 $\\operatorname{Im}(p)$ 闭",
         "若 $E$ 为内积空间且 $p$ 为正交投影，证明 $\\|p\\|\\le1$ 且 $p\\neq0$ 时 $\\|p\\|=1$",
         "反之若投影满足 $\\|p\\|\\le1$，证明其必为正交投影."
       ]
@@ -720,16 +736,18 @@
     {
       "id": "fa-all-09-01",
       "difficulty": 5,
-      "question": "令 $E=c_{00}(\\mathbb N)$，内积 $\\langle u,v\\rangle=\\sum_{n\\ge0}u_nv_n$. 定义 $f(u)=\\sum_{n\\ge0}\\frac{u_n}{n+1}$，$F=\\ker f$. 证明 $f\\in \\mathrm{e}^*$、$F$ 闭并计算 $\\|f\\|$",
+      "question": "令 $E=c_{00}(\\mathbb N)$，内积 $\\langle u,v\\rangle=\\sum_{n\\ge0}u_nv_n$. 定义 $f(u)=\\sum_{n\\ge0}\\frac{u_n}{n+1}$，$F=\\ker f$.",
       "subquestions": [
+        "证明 $f\\in \\mathrm{e}^*$、$F$ 闭并计算 $\\|f\\|$",
         "证明 $F^\\perp=\\{0\\}$，从而 $F^{\\perp\\perp}\\neq\\overline F$，并解释其意义."
       ]
     },
     {
       "id": "fa-all-09-02",
       "difficulty": 5,
-      "question": "设 $E=C([0,1])$，$\\langle f,g\\rangle=\\int_0^1 f(t)\\overline{g(t)}\\,dt$，$E_0=\\{f:\\int_0^1f=0\\}$，$H=\\{f:f(1)=0\\}$，$H_0=E_0\\cap H$. 证明 $H_0$ 是 $H$ 的闭真子空间",
+      "question": "设 $E=C([0,1])$，$\\langle f,g\\rangle=\\int_0^1 f(t)\\overline{g(t)}\\,dt$，$E_0=\\{f:\\int_0^1f=0\\}$，$H=\\{f:f(1)=0\\}$，$H_0=E_0\\cap H$.",
       "subquestions": [
+        "证明 $H_0$ 是 $H$ 的闭真子空间",
         "设 $h(t)=t-\\frac12$，证明 $E=\\operatorname{span}(H,h)$、$E_0=\\operatorname{span}(H_0,h)$ 且 $h\\in\\overline{H_0}$",
         "并证明在 $E_0$ 中 $H_0^\\perp=\\{0\\}$."
       ]
@@ -752,24 +770,27 @@
     {
       "id": "fa-all-09-05",
       "difficulty": 5,
-      "question": "设 $H$ 是 Hilbert 空间，$T\\in\\mathcal B(H)$. 证明 $\\ker(T)=\\ker(T^*T)$",
+      "question": "设 $H$ 是 Hilbert 空间，$T\\in\\mathcal B(H)$.",
       "subquestions": [
+        "证明 $\\ker(T)=\\ker(T^*T)$",
         "若子空间 $E\\subset H$ 满足 $T(E)\\subset E$，证明 $T^*(\\mathrm{e}^\\perp)\\subset \\mathrm{e}^\\perp$."
       ]
     },
     {
       "id": "fa-all-10-01",
       "difficulty": 5,
-      "question": "令 $E=\\mathbb R_2[X]$，定义 $\\langle P,Q\\rangle=\\sum_{i=0}^2 2^iP(i)Q(i)$. 证明该式定义内积并说明 $E$ 是 Hilbert 空间",
+      "question": "令 $E=\\mathbb R_2[X]$，定义 $\\langle P,Q\\rangle=\\sum_{i=0}^2 2^iP(i)Q(i)$.",
       "subquestions": [
+        "证明该式定义内积并说明 $E$ 是 Hilbert 空间",
         "对基 $\\{1,x,x^2\\}$ 施行 Gram-Schmidt 正交化，求一组正交基."
       ]
     },
     {
       "id": "fa-all-10-02",
       "difficulty": 5,
-      "question": "设 $E=L^2(\\mathbb R_+,\\mathrm{e}^{-x}\\mathrm{d}x)$. 给出自然内积并证明 $E$ 是 Hilbert 空间",
+      "question": "设 $E=L^2(\\mathbb R_+,\\mathrm{e}^{-x}\\mathrm{d}x)$.",
       "subquestions": [
+        "给出自然内积并证明 $E$ 是 Hilbert 空间",
         "计算 $\\int_0^\\infty x^k \\mathrm{e}^{-px}\\,\\mathrm{d}x$（$k\\in\\mathbb N,p>0$）",
         "用正交投影求 $a,b,c\\in\\mathbb R$ 使 $\\int_0^\\infty|\\mathrm{e}^{-x}-ax^2-bx-c|^2e^{-x}\\mathrm{d}x$ 最小."
       ]
@@ -777,8 +798,9 @@
     {
       "id": "fa-all-10-03",
       "difficulty": 5,
-      "question": "设 $H$ 为内积空间，定义向量组 $(x_1,\\dots,x_n)$ 的 Gram 行列式 $G(x_1,\\dots,x_n)$. 证明 $G\\ge0$ 且 $G>0\\iff\\{x_i\\}$ 线性无关",
+      "question": "设 $H$ 为内积空间，定义向量组 $(x_1,\\dots,x_n)$ 的 Gram 行列式 $G(x_1,\\dots,x_n)$.",
       "subquestions": [
+        "证明 $G\\ge0$ 且 $G>0\\iff\\{x_i\\}$ 线性无关",
         "并在 $\\{x_i\\}$ 线性无关时证明 $d(x,\\operatorname{span}(x_1,\\dots,x_n))^2=\\frac{G(x,x_1,\\dots,x_n)}{G(x_1,\\dots,x_n)}$."
       ]
     },
@@ -823,8 +845,9 @@
     {
       "id": "fa-all-11-01",
       "difficulty": 5,
-      "question": "在 $E=C([0,1],\\mathbb R)$ 上定义算子 $T$：$Tf(0)=\\frac\\pi2 f(0)$，$Tf(x)=\\int_0^x\\frac{f(t)}{\\sqrt{x^2-t^2}}dt$（$x\\in(0,1]$）. 证明 $T\\in\\mathcal B(E)$ 且 $\\|T\\|=\\frac\\pi2$",
+      "question": "在 $E=C([0,1],\\mathbb R)$ 上定义算子 $T$：$Tf(0)=\\frac\\pi2 f(0)$，$Tf(x)=\\int_0^x\\frac{f(t)}{\\sqrt{x^2-t^2}}dt$（$x\\in(0,1]$）.",
       "subquestions": [
+        "证明 $T\\in\\mathcal B(E)$ 且 $\\|T\\|=\\frac\\pi2$",
         "对 $g(x)=x^r$（$r\\ge0$）分析特征值",
         "讨论 $0\\in\\sigma(T)$ 与谱半径 $r(T)$."
       ]
@@ -832,8 +855,9 @@
     {
       "id": "fa-all-11-02",
       "difficulty": 5,
-      "question": "令 $E=\\ell^2(\\mathbb N_+,\\mathbb R)$，$S$ 为左移算子 $S(u_1,u_2,\\dots)=(u_2,u_3,\\dots)$. 证明 $v^\\lambda=(\\lambda^n)_{n\\ge1}\\in E\\iff |\\lambda|<1$ 并计算其范数",
+      "question": "令 $E=\\ell^2(\\mathbb N_+,\\mathbb R)$，$S$ 为左移算子 $S(u_1,u_2,\\dots)=(u_2,u_3,\\dots)$.",
       "subquestions": [
+        "证明 $v^\\lambda=(\\lambda^n)_{n\\ge1}\\in E\\iff |\\lambda|<1$ 并计算其范数",
         "求点谱 $\\sigma_p(S)$ 及核空间",
         "计算 $\\|S\\|$、预解集、谱及谱半径."
       ]

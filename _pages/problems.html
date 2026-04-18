@@ -48,6 +48,24 @@ author_profile: true
   font-size: 1.02rem;
 }
 
+.problem-question-stem {
+  margin-bottom: 0.45rem;
+}
+
+.problem-subquestions {
+  margin: 0.05rem 0 0.8rem 1.35rem;
+  padding-left: 0.2rem;
+}
+
+.problem-subquestion {
+  margin: 0.3rem 0;
+  line-height: 1.65;
+}
+
+.problem-question-tail {
+  margin-top: 0.35rem;
+}
+
 .problem-empty {
   margin: 0;
   color: var(--global-text-color-light);
@@ -99,6 +117,151 @@ html[data-theme="dark"] .problem-difficulty {
 
   function formatMathText(value) {
     return String(value || "").replace(/\n/g, "<br>");
+  }
+
+  function formatQuestionSegment(value) {
+    return formatMathText(escapeHtml(value));
+  }
+
+  function parseLatexEnumerate(rawText) {
+    if (typeof rawText !== "string") {
+      return null;
+    }
+
+    var beginRegex = /\\begin\{enumerate\}(?:\[[^\]]*\])?/;
+    var beginMatch = rawText.match(beginRegex);
+    if (!beginMatch || typeof beginMatch.index !== "number") {
+      return null;
+    }
+
+    var beginIndex = beginMatch.index;
+    var beginEnd = beginIndex + beginMatch[0].length;
+    var endTag = "\\end{enumerate}";
+    var endIndex = rawText.indexOf(endTag, beginEnd);
+    if (endIndex === -1) {
+      return null;
+    }
+
+    var stem = rawText.slice(0, beginIndex).trim();
+    var body = rawText.slice(beginEnd, endIndex);
+    var tail = rawText.slice(endIndex + endTag.length).trim();
+
+    var itemRegex = /\\item(?:\[[^\]]*\])?\s*/g;
+    var markers = [];
+    var match;
+
+    while ((match = itemRegex.exec(body)) !== null) {
+      markers.push({
+        start: match.index,
+        end: itemRegex.lastIndex
+      });
+    }
+
+    if (!markers.length) {
+      return null;
+    }
+
+    var items = [];
+    for (var i = 0; i < markers.length; i += 1) {
+      var itemStart = markers[i].end;
+      var itemEnd = i + 1 < markers.length ? markers[i + 1].start : body.length;
+      var itemText = body.slice(itemStart, itemEnd).trim();
+      if (itemText) {
+        items.push(itemText);
+      }
+    }
+
+    if (!items.length) {
+      return null;
+    }
+
+    return {
+      stem: stem,
+      items: items,
+      tail: tail
+    };
+  }
+
+  function getStructuredQuestion(problem) {
+    if (!problem || typeof problem !== "object") {
+      return null;
+    }
+
+    var groups = [problem.subquestions, problem.parts, problem.questions];
+    for (var i = 0; i < groups.length; i += 1) {
+      var list = groups[i];
+      if (!Array.isArray(list) || !list.length) {
+        continue;
+      }
+
+      var cleaned = list
+        .map(function (entry) {
+          return String(entry || "").trim();
+        })
+        .filter(function (entry) {
+          return !!entry;
+        });
+
+      if (!cleaned.length) {
+        continue;
+      }
+
+      return {
+        stem: String(problem.question || "").trim(),
+        items: cleaned,
+        tail: ""
+      };
+    }
+
+    return parseLatexEnumerate(String(problem.question || ""));
+  }
+
+  function renderQuestionContent(problem) {
+    var structured = getStructuredQuestion(problem);
+
+    if (!structured) {
+      return '<p class="problem-question">' + formatQuestionSegment(problem.question || "暂无题面") + '</p>';
+    }
+
+    var html = [];
+
+    if (structured.stem) {
+      html.push('<p class="problem-question problem-question-stem">' + formatQuestionSegment(structured.stem) + '</p>');
+    }
+
+    html.push('<ol class="problem-subquestions">');
+    structured.items.forEach(function (item) {
+      html.push('<li class="problem-subquestion">' + formatQuestionSegment(item) + '</li>');
+    });
+    html.push('</ol>');
+
+    if (structured.tail) {
+      html.push('<p class="problem-question problem-question-tail">' + formatQuestionSegment(structured.tail) + '</p>');
+    }
+
+    return html.join("");
+  }
+
+  function hasRenderableQuestion(item) {
+    if (!item || typeof item !== "object") {
+      return false;
+    }
+
+    if (typeof item.question === "string" && item.question.trim()) {
+      return true;
+    }
+
+    var groups = [item.subquestions, item.parts, item.questions];
+    for (var i = 0; i < groups.length; i += 1) {
+      var list = groups[i];
+      if (Array.isArray(list) && list.some(function (entry) {
+        return String(entry || "").trim().length > 0;
+      })) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   var mathRetryTimer = null;
@@ -153,7 +316,7 @@ html[data-theme="dark"] .problem-difficulty {
 
     problemCard.innerHTML = [
       '<div class="problem-header"><span class="problem-difficulty">难度：' + escapeHtml(diffLabel) + '</span></div>',
-      '<p class="problem-question">' + formatMathText(problem.question || "暂无题面") + '</p>'
+      renderQuestionContent(problem)
     ].join("");
 
     typesetMath(problemCard);
@@ -161,7 +324,7 @@ html[data-theme="dark"] .problem-difficulty {
 
   function drawProblem() {
     var pool = allProblems.filter(function (item) {
-      return !!item && !!item.question;
+      return hasRenderableQuestion(item);
     });
 
     if (!pool.length) {

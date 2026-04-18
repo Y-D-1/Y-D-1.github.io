@@ -62,14 +62,21 @@ author_profile: true
 .bank-selector {
   margin: 0.45rem 0 0.45rem;
   font-size: 0.95rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
 }
 .bank-selector .bank-item {
-  margin-right: 0.9rem;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
   white-space: nowrap;
+  line-height: 1.2;
 }
-.bank-selector input[type="checkbox"] {
-  margin-right: 0.25rem;
+.bank-selector .bank-item input[type="checkbox"] {
+  display: inline-block;
+  flex: 0 0 auto;
+  margin: 0;
   vertical-align: middle;
 }
 

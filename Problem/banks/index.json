@@ -1,0 +1,14 @@
+{
+  "banks": [
+    {
+      "id": "dg",
+      "file": "/Problem/banks/dg.json",
+      "count": 95
+    },
+    {
+      "id": "fa",
+      "file": "/Problem/banks/fa.json",
+      "count": 58
+    }
+  ]
+}

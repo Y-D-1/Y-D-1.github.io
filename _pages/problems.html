@@ -7,6 +7,8 @@ author_profile: true
 
 <p class="problems-subtitle">来都来了，做几道题再走吧.</p>
 
+<div id="bankSelector" class="bank-selector" aria-hidden="false"></div>
+
 <div id="problemCard" class="problem-card" aria-live="polite">
   <p class="problem-empty">正在加载题库...</p>
 </div>
@@ -57,6 +59,20 @@ author_profile: true
   padding-left: 0.2rem;
 }
 
+.bank-selector {
+  margin: 0.45rem 0 0.45rem;
+  font-size: 0.95rem;
+}
+.bank-selector .bank-item {
+  margin-right: 0.9rem;
+  display: inline-block;
+  white-space: nowrap;
+}
+.bank-selector input[type="checkbox"] {
+  margin-right: 0.25rem;
+  vertical-align: middle;
+}
+
 .problem-subquestion {
   margin: 0.3rem 0;
   line-height: 1.65;
@@ -95,7 +111,8 @@ html[data-theme="dark"] .problem-difficulty {
 
 <script>
 (function () {
-  var bankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
+  var banksIndexUrl = "{{ '/Problem/banks/index.json' | relative_url }}";
+  var fallbackBankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
   var nextProblemBtn = document.getElementById("nextProblemBtn");
   var problemCard = document.getElementById("problemCard");
 
@@ -105,6 +122,8 @@ html[data-theme="dark"] .problem-difficulty {
 
   var allProblems = [];
   var currentProblemId = null;
+  var selectedBankFiles = new Set();
+  var bankSelectorEl = document.getElementById('bankSelector');
 
   function escapeHtml(value) {
     return String(value)
@@ -347,24 +366,82 @@ html[data-theme="dark"] .problem-difficulty {
     renderProblem(selected);
   }
 
+  function loadSelectedBanks() {
+    var files = Array.from(selectedBankFiles);
+    if (!files.length) {
+      allProblems = [];
+      renderEmpty("请至少选择一个题库");
+      return;
+    }
+
+    Promise.all(files.map(function (file) {
+      return fetch(file).then(function (r) {
+        if (!r.ok) return { problems: [] };
+        return r.json();
+      }).catch(function () {
+        return { problems: [] };
+      });
+    }))
+      .then(function (datasets) {
+        allProblems = [];
+        datasets.forEach(function (d) {
+          if (d && Array.isArray(d.problems)) {
+            allProblems = allProblems.concat(d.problems);
+          }
+        });
+        drawProblem();
+      });
+  }
+
   function init() {
-    fetch(bankUrl)
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("题库加载失败");
-        }
-        return response.json();
+    // 尝试加载 banks index（如果不存在则回退到 legacy 单文件）
+    fetch(banksIndexUrl)
+      .then(function (r) {
+        if (!r.ok) throw new Error('no-index');
+        return r.json();
       })
-      .then(function (data) {
-        if (!data || !Array.isArray(data.problems)) {
-          throw new Error("题库格式错误");
+      .then(function (idx) {
+        var banks = (idx && Array.isArray(idx.banks)) ? idx.banks : [];
+        bankSelectorEl = bankSelectorEl || document.getElementById('bankSelector');
+        if (!bankSelectorEl) {
+          bankSelectorEl = document.createElement('div');
+          bankSelectorEl.id = 'bankSelector';
+          bankSelectorEl.className = 'bank-selector';
+          problemCard.parentNode.insertBefore(bankSelectorEl, problemCard);
         }
 
-        allProblems = data.problems;
-        drawProblem();
+        if (!banks.length) {
+          selectedBankFiles.add(fallbackBankUrl);
+          loadSelectedBanks();
+          return;
+        }
+
+        banks.forEach(function (b) {
+          var file = b.file || b.path;
+          if (!file) return;
+          var label = document.createElement('label');
+          label.className = 'bank-item';
+          var input = document.createElement('input');
+          input.type = 'checkbox';
+          input.checked = true;
+          input.dataset.file = file;
+          input.addEventListener('change', function () {
+            if (this.checked) selectedBankFiles.add(this.dataset.file);
+            else selectedBankFiles.delete(this.dataset.file);
+            loadSelectedBanks();
+          });
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(' ' + (b.id || file) + (b.count ? ' (' + b.count + ')' : '')));
+          bankSelectorEl.appendChild(label);
+          selectedBankFiles.add(file);
+        });
+
+        loadSelectedBanks();
       })
       .catch(function () {
-        renderEmpty("题库读取失败，请检查 Problem/problem-bank.json 文件。");
+        // 回退：使用单一题库文件
+        selectedBankFiles.add(fallbackBankUrl);
+        loadSelectedBanks();
       });
   }
 

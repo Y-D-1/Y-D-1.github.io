@@ -111,6 +111,7 @@ html[data-theme="dark"] .problem-difficulty {
 
 <script>
 (function () {
+  var siteBasePath = "{{ '/' | relative_url }}".replace(/\/+$/, "");
   var banksIndexUrl = "{{ '/Problem/banks/index.json' | relative_url }}";
   var fallbackBankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
   var nextProblemBtn = document.getElementById("nextProblemBtn");
@@ -124,6 +125,10 @@ html[data-theme="dark"] .problem-difficulty {
   var currentProblemId = null;
   var selectedBankFiles = new Set();
   var bankSelectorEl = document.getElementById('bankSelector');
+  var bankNameMap = {
+    dg: "微分几何",
+    fa: "泛函分析"
+  };
 
   function escapeHtml(value) {
     return String(value)
@@ -329,6 +334,80 @@ html[data-theme="dark"] .problem-difficulty {
     problemCard.innerHTML = '<p class="problem-empty">' + escapeHtml(message) + '</p>';
   }
 
+  function toSiteUrl(path) {
+    var value = String(path || "").trim();
+    if (!value) {
+      return "";
+    }
+
+    if (/^https?:\/\//i.test(value)) {
+      return value;
+    }
+
+    if (siteBasePath && (value === siteBasePath || value.indexOf(siteBasePath + "/") === 0)) {
+      return value;
+    }
+
+    if (value.charAt(0) === "/") {
+      return siteBasePath + value;
+    }
+
+    return (siteBasePath ? siteBasePath : "") + "/" + value.replace(/^\.\//, "");
+  }
+
+  function fetchJsonWithTimeout(url, timeoutMs) {
+    return new Promise(function (resolve) {
+      var done = false;
+
+      function settle(result) {
+        if (done) {
+          return;
+        }
+        done = true;
+        resolve(result);
+      }
+
+      var timer = setTimeout(function () {
+        settle(null);
+      }, timeoutMs);
+
+      fetch(url)
+        .then(function (response) {
+          if (!response.ok) {
+            return null;
+          }
+          return response.json().catch(function () {
+            return null;
+          });
+        })
+        .catch(function () {
+          return null;
+        })
+        .then(function (data) {
+          clearTimeout(timer);
+          settle(data);
+        });
+    });
+  }
+
+  function getBankDisplayName(bank) {
+    if (!bank || typeof bank !== "object") {
+      return "未知题库";
+    }
+
+    var id = String(bank.id || "").trim();
+    if (id && bankNameMap[id]) {
+      return bankNameMap[id];
+    }
+
+    var customName = String(bank.name || "").trim();
+    if (customName) {
+      return customName;
+    }
+
+    return id || "题库";
+  }
+
   function renderProblem(problem) {
     var diff = Number(problem.difficulty);
     var diffLabel = !isNaN(diff) ? String(diff) : "未标注";
@@ -375,12 +454,7 @@ html[data-theme="dark"] .problem-difficulty {
     }
 
     Promise.all(files.map(function (file) {
-      return fetch(file).then(function (r) {
-        if (!r.ok) return { problems: [] };
-        return r.json();
-      }).catch(function () {
-        return { problems: [] };
-      });
+      return fetchJsonWithTimeout(file, 8000);
     }))
       .then(function (datasets) {
         allProblems = [];
@@ -389,6 +463,12 @@ html[data-theme="dark"] .problem-difficulty {
             allProblems = allProblems.concat(d.problems);
           }
         });
+
+        if (!allProblems.length) {
+          renderEmpty("题库读取失败或超时，请刷新后重试。");
+          return;
+        }
+
         drawProblem();
       });
   }
@@ -417,7 +497,7 @@ html[data-theme="dark"] .problem-difficulty {
         }
 
         banks.forEach(function (b) {
-          var file = b.file || b.path;
+          var file = toSiteUrl(b.file || b.path);
           if (!file) return;
           var label = document.createElement('label');
           label.className = 'bank-item';
@@ -431,7 +511,7 @@ html[data-theme="dark"] .problem-difficulty {
             loadSelectedBanks();
           });
           label.appendChild(input);
-          label.appendChild(document.createTextNode(' ' + (b.id || file) + (b.count ? ' (' + b.count + ')' : '')));
+          label.appendChild(document.createTextNode(' ' + getBankDisplayName(b) + (b.count ? ' (' + b.count + ')' : '')));
           bankSelectorEl.appendChild(label);
           selectedBankFiles.add(file);
         });
@@ -440,7 +520,7 @@ html[data-theme="dark"] .problem-difficulty {
       })
       .catch(function () {
         // 回退：使用单一题库文件
-        selectedBankFiles.add(fallbackBankUrl);
+        selectedBankFiles.add(toSiteUrl(fallbackBankUrl));
         loadSelectedBanks();
       });
   }

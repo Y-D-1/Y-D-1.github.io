@@ -474,7 +474,7 @@ html[data-theme="dark"] .problem-difficulty {
   }
 
   function init() {
-    // 尝试加载 banks index（如果不存在则回退到 legacy 单文件）
+    /* 尝试加载 banks index（如果不存在则回退到 legacy 单文件） */
     fetch(banksIndexUrl)
       .then(function (r) {
         if (!r.ok) throw new Error('no-index');
@@ -519,7 +519,7 @@ html[data-theme="dark"] .problem-difficulty {
         loadSelectedBanks();
       })
       .catch(function () {
-        // 回退：使用单一题库文件
+        /* 回退：使用单一题库文件 */
         selectedBankFiles.add(toSiteUrl(fallbackBankUrl));
         loadSelectedBanks();
       });

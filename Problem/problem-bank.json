@@ -236,11 +236,6 @@
       "question": "请证明平均曲率 $H=\\frac{1}{2}b_{\\alpha\\beta}g^{\\beta\\alpha}$."
     },
     {
-      "id": "dg-4-2-q1",
-      "difficulty": 4,
-      "question": "请证明正交参数下 Gauss 方程与 Codazzi 方程可化为题中给出的简化形式."
-    },
-    {
       "id": "dg-4-2-q2",
       "difficulty": 4,
       "question": "请证明若 $F=M=0$，则 Codazzi 方程化为 $\\frac{\\partial L}{\\partial v}=H\\frac{\\partial E}{\\partial v},\\ \\frac{\\partial N}{\\partial u}=H\\frac{\\partial G}{\\partial u}$."
@@ -301,11 +296,6 @@
       "question": "设 $X(t)=x^1(t)\\mathbf{r}_u+x^2(t)\\mathbf{r}_v$ 为沿曲线 $\\gamma$ 的平行切向量场，给定初值条件，请写出 $x^1(t),x^2(t)$ 的具体形式."
     },
     {
-      "id": "dg-5-3-q4",
-      "difficulty": 5,
-      "question": "请计算该题中 $v$-曲线围成区域对应的角差."
-    },
-    {
       "id": "dg-5-4-q1",
       "difficulty": 5,
       "question": "请证明由 $\\int_D:\\Omega^2(D)\\to\\mathbb{R}$ 定义的积分映射不依赖同向参数变换的选取."
@@ -351,11 +341,6 @@
       "question": "若闭可定向正曲率曲面 $M$ 上存在两条闭测地线，请证明这两条闭测地线一定相交."
     },
     {
-      "id": "dg-6-3-q1",
-      "difficulty": 5,
-      "question": "设管状曲面 $\\mathbf{r}(s,\\theta)=\\gamma(s)+a(\\mathbf{e}_2\\cos\\theta+\\mathbf{e}_3\\sin\\theta)$，请证明其第一基本形式为题中所给形式."
-    },
-    {
       "id": "dg-6-3-q2",
       "difficulty": 5,
       "question": "请证明该管状曲面的高斯曲率 $K=-\\frac{\\kappa\\cos\\theta}{a(1-a\\kappa\\cos\\theta)}$."
@@ -384,6 +369,406 @@
       "id": "dg-7-3-q2",
       "difficulty": 5,
       "question": "设 $X,X',Y,Y'$ 是流形 $M$ 上切向量场，$f$ 为光滑函数。请证明协变导数满足线性性、Leibniz 公式及与度量相容的三条性质."
+    },
+    {
+      "id": "fa-all-01-01",
+      "difficulty": 1,
+      "question": "设 $(X,d)$ 是度量空间，$A\\subset X$，记 $A^\\circ$ 为内部，$A^c=X\\setminus A$。证明：$A^\\circ$ 是包含于 $A$ 的所有开集之并（即包含于 $A$ 的最大开集）；$A$ 开当且仅当 $A=A^\\circ$；$(A^\\circ)^c=\\overline{A^c}$ 与 $(\\overline{A})^c=(A^c)^\\circ$；以及 $(\\bigcup_{n\\ge1}A_n)^c=\\bigcap_{n\\ge1}A_n^c$。"
+    },
+    {
+      "id": "fa-all-01-02",
+      "difficulty": 1,
+      "question": "在欧氏空间 $\\mathbb{R}$ 中，判断并说明 $\\mathbb{R}\\setminus\\mathbb{Q}$ 与 $\\mathbb{Z}$ 是否为开集或闭集；在子空间 $E=(-5,3]$ 中，判断 $A=(-5,1]$ 与 $B=(0,3]$ 是否开、是否闭。"
+    },
+    {
+      "id": "fa-all-01-03",
+      "difficulty": 1,
+      "question": "设 $(E,d)$ 是度量空间。证明 $d_1=\\sqrt{d}$ 与 $d_2=\\ln(1+d)$ 都是 $E$ 上的度量；若 $f:E\\to E$ 单射，定义 $\\delta(x,y)=d(f(x),f(y))$，证明 $(E,\\delta)$ 是度量空间；当 $E=\\mathbb{R}, f(x)=\\arctan x$ 时，证明 $x_n\\xrightarrow[\\delta]{}x\\iff |x_n-x|\\to0$，并由此说明两者诱导拓扑相同。"
+    },
+    {
+      "id": "fa-all-01-04",
+      "difficulty": 1,
+      "question": "设 $(E,d)$ 是度量空间，$A\\subset E$ 非空，定义 $d_A(x)=\\inf_{y\\in A}d(x,y)$。证明：$\\overline{A\\cup B}=\\overline A\\cup\\overline B$；$d_A(x)=0\\iff x\\in\\overline A$；$d_A$ 是 $1$-Lipschitz 因而连续；若 $F_1,F_2$ 为不交闭集，则 $f=\\frac{d_{F_1}}{d_{F_1}+d_{F_2}}$ 连续，并据此构造不交开集 $O_1,O_2$ 使 $F_i\\subset O_i$。"
+    },
+    {
+      "id": "fa-all-01-05",
+      "difficulty": 1,
+      "question": "在 $\\mathbb{R}^2$ 上定义 $d(x,y)=\\max\\{|x_1-y_1|,2|x_2-y_2|\\}$。证明 $(\\mathbb{R}^2,d)$ 是度量空间；画出开球 $B(O,2)$；并在同一图中画出闭球 $\\overline B((3,2),1)$。"
+    },
+    {
+      "id": "fa-all-01-06",
+      "difficulty": 1,
+      "question": "设 $f:(E,d_1)\\to(F,d_2)$。证明：$f$ 连续当且仅当任意开集 $O\\subset F$ 的原像 $f^{-1}(O)$ 在 $E$ 中开；当且仅当任意闭集 $A\\subset F$ 的原像在 $E$ 中闭；当且仅当对任意 $A\\subset E$，$f(\\overline A)\\subset\\overline{f(A)}$。"
+    },
+    {
+      "id": "fa-all-02-01",
+      "difficulty": 2,
+      "question": "令 $E=\\mathbb{R}$，$f(x)=\\arctan x$，$\\delta(x,y)=|f(x)-f(y)|$。已知 $(E,\\delta)$ 是度量空间且其拓扑与欧氏拓扑一致，证明 $(\\mathbb{R},\\delta)$ 不完备。"
+    },
+    {
+      "id": "fa-all-02-02",
+      "difficulty": 2,
+      "question": "在 $C[0,1]$ 上定义 $d_\\infty(f,g)=\\max_{x\\in[0,1]}|f(x)-g(x)|$ 与 $d_1(f,g)=\\int_0^1|f(x)-g(x)|\\,dx$。证明二者不拓扑等价，并说明诱导拓扑 $\\tau_\\infty$ 与 $\\tau_1$ 的细粗关系。"
+    },
+    {
+      "id": "fa-all-02-03",
+      "difficulty": 2,
+      "question": "记 $c_{00}=\\{x=(x_n):x_n\\in\\mathbb{R},\\text{仅有限项非零}\\}$，定义 $d(x,y)=\\sup_n|x_n-y_n|$。证明度量空间 $(c_{00},d)$ 不完备。"
+    },
+    {
+      "id": "fa-all-02-04",
+      "difficulty": 2,
+      "question": "设 $(X,d)$ 是度量空间，$(x_n)$ 是发散的 Cauchy 列。证明：对任意 $x\\in X$，数列 $d(x,x_n)$ 收敛；记其极限为 $g(x)$，证明 $g$ 是 $1$-Lipschitz；并证明函数 $x\\mapsto\\frac{1}{g(x)}$ 连续且无界。"
+    },
+    {
+      "id": "fa-all-02-05",
+      "difficulty": 2,
+      "question": "设 $(X,d)$ 完备，$f:X\\to X$ 满足存在 $C>1$ 使得 $d(f(x),f(y))\\ge C d(x,y)$。若 $f$ 满射，证明 $f^{-1}$ 存在且是 Lipschitz 映射；并结合 Banach 压缩映射原理证明 $f$ 有唯一不动点。"
+    },
+    {
+      "id": "fa-all-02-06",
+      "difficulty": 2,
+      "question": "设完备度量空间 $(X,d)$ 上映射 $g$ 满足 $x\\ne y\\Rightarrow d(g(x),g(y))<d(x,y)$。证明：在 $\\mathbb{R}$ 上 $h(x)=\\sqrt{x^2+1}$ 减少距离但无不动点；在 $E=\\mathbb{N}^*$ 配以 $d_1(p,q)=0$（$p=q$），$d_1(p,q)=2024+\\frac1p+\\frac1q$（$p\\ne q$）时，该空间完备，且 $f(1)=1,f(p)=p+1$（$p\\ge2$）减少距离、唯一不动点为 $1$，但 $f^n(p)$（$p\\ge2$）不收敛到 $1$。"
+    },
+    {
+      "id": "fa-all-03-01",
+      "difficulty": 2,
+      "question": "证明：度量空间中的紧子集必有界且闭；紧空间中的闭子集必紧。"
+    },
+    {
+      "id": "fa-all-03-02",
+      "difficulty": 2,
+      "question": "设 $K$ 是度量空间 $(X,d)$ 的紧子集，$f\\in C(K,\\mathbb{R})$。证明 $f$ 一致连续。"
+    },
+    {
+      "id": "fa-all-03-03",
+      "difficulty": 2,
+      "question": "设 $K$ 是度量空间 $(X,d)$ 的紧子集，$f\\in C(K,\\mathbb{R})$。证明 $f$ 有界并可取到最大值和最小值。"
+    },
+    {
+      "id": "fa-all-03-04",
+      "difficulty": 2,
+      "question": "设 $(X,d)$ 完备，$A\\subset X$。证明：$A$ 相对紧（即 $\\overline A$ 紧）当且仅当 $A$ 全有界（预紧）。"
+    },
+    {
+      "id": "fa-all-03-05",
+      "difficulty": 2,
+      "question": "设 $(E,d)$ 是紧度量空间，映射 $f:E\\to E$ 满足 $x\\ne y\\Rightarrow d(f(x),f(y))<d(x,y)$。证明 $f$ 有唯一不动点（可令 $h(x)=d(x,f(x))$ 并利用紧集上连续函数取极值）。"
+    },
+    {
+      "id": "fa-all-03-06",
+      "difficulty": 2,
+      "question": "设 $(X,d_1)$ 紧，$(Y,d_2)$ 为度量空间，$F\\subset C(X,Y)$。证明：$F$ 在 $X$ 上等度连续当且仅当一致等度连续；若 $(f_n)\\subset C(X,Y)$ 等度连续且逐点收敛到 $f$，则 $f\\in C(X,Y)$ 且 $f_n\\to f$ 一致收敛。"
+    },
+    {
+      "id": "fa-all-03-07",
+      "difficulty": 2,
+      "question": "设 $(X,d)$，定义 $\\operatorname{diam}(A)=\\sup_{x,y\\in A}d(x,y)$。证明其基本性质：单调性、与有界性的等价、$\\operatorname{diam}(\\overline A)=\\operatorname{diam}(A)$；并证明若 $X$ 完备且 $(F_n)$ 为递降非空闭集列且 $\\operatorname{diam}(F_n)\\to0$，则 $\\bigcap_{n\\ge1}F_n$ 为单点；再给出直径条件不成立时的反例。"
+    },
+    {
+      "id": "fa-all-03-08",
+      "difficulty": 2,
+      "question": "证明完备性的等价刻画：$(X,d)$ 完备当且仅当任意递降非空闭集列 $(F_n)$ 满足 $\\operatorname{diam}(F_n)\\to0$ 时，$\\bigcap_nF_n$ 非空且为单点。并证明：任意序列 $(x_n)$ 的聚点集等于 $\\bigcap_{k\\ge1}\\overline{\\{x_n:n\\ge k\\}}$，由此推出 Cauchy 列收敛。"
+    },
+    {
+      "id": "fa-all-04-01",
+      "difficulty": 3,
+      "question": "设 $E$ 是赋范空间，$A,B\\subset E$，定义 $A+B=\\{x+y:x\\in A,y\\in B\\}$。证明：若 $A$ 开则 $A+B$ 开；若 $A,B$ 紧则 $A+B$ 紧；若 $A$ 紧且 $B$ 闭则 $A+B$ 闭；并给出 $A,B$ 均闭但 $A+B$ 非闭的例子。"
+    },
+    {
+      "id": "fa-all-04-02",
+      "difficulty": 3,
+      "question": "在 $C([0,1],\\mathbb{R})$ 上定义 $\\|f\\|_\\infty=\\sup_{t\\in[0,1]}|f(t)|$，$\\|f\\|_1=\\int_0^1|f(t)|\\,dt$。证明两者都是范数；证明 $(C([0,1]),\\|\\cdot\\|_\\infty)$ 完备；证明 $(C([0,1]),\\|\\cdot\\|_1)$ 不完备。"
+    },
+    {
+      "id": "fa-all-04-03",
+      "difficulty": 3,
+      "question": "设 $c_0=\\{(x_n):x_n\\to0\\}$，定义 $\\|x\\|_\\infty=\\sup_n|x_n|$。证明 $\\|\\cdot\\|_\\infty$ 是 $c_0$ 上范数，且 $(c_0,\\|\\cdot\\|_\\infty)$ 是 Banach 空间。"
+    },
+    {
+      "id": "fa-all-04-04",
+      "difficulty": 3,
+      "question": "令 $E=C([0,1],\\mathbb{R})$，定义 $N_1(f)=\\int_0^1 x^4|f(x)|\\,dx$，$N_2(f)=\\left(\\int_0^1 x^2 f(x)^2\\,dx\\right)^{1/2}$。证明 $N_1,N_2$ 都是范数；证明 $N_1(f)\\le\\frac1{\\sqrt7}N_2(f)$；并利用题中函数列证明二者不等价。"
+    },
+    {
+      "id": "fa-all-04-05",
+      "difficulty": 3,
+      "question": "设 $E$ 是 Banach 空间，$A\\in\\mathcal{B}(E)$。证明级数 $\\sum_{k\\ge0}\\frac{A^k}{k!}$ 在 $\\mathcal{B}(E)$ 中收敛并记作 $\\mathrm e^A$；证明 $\\|\\mathrm e^A\\|\\le \\mathrm e^{\\|A\\|}$；说明一般 $\\mathrm e^A\\mathrm e^B\\ne \\mathrm e^{A+B}$，但当 $AB=BA$ 时成立，并推出 $(\\mathrm e^A)^{-1}=\\mathrm e^{-A}$。"
+    },
+    {
+      "id": "fa-all-04-06",
+      "difficulty": 3,
+      "question": "设 $(E,d)$ 是紧度量空间，$f:E\\to E$ 满足对任意 $x,y\\in E$ 有 $d(f(x),f(y))\\ge d(x,y)$。证明 $f$ 是等距映射。"
+    },
+    {
+      "id": "fa-all-05-01",
+      "difficulty": 3,
+      "question": "设 $E$ 是实系数多项式空间，$E_0=\\{P\\in E:P(0)=0\\}$，$\\|P\\|_\\infty=\\max_{x\\in[0,1]}|P(x)|$。证明 $N(P)=\\|P'\\|_\\infty$ 定义 $E_0$ 上范数且 $\\|P\\|_\\infty\\le N(P)$；证明 $L(P)=\\int_0^1\\frac{P(x)}{x}\\,dx$ 在 $(E_0,N)$ 上连续并求范数；判断 $L$ 关于 $\\|\\cdot\\|_\\infty$ 的连续性以及 $N$ 与 $\\|\\cdot\\|_\\infty$ 的等价性。"
+    },
+    {
+      "id": "fa-all-05-02",
+      "difficulty": 3,
+      "question": "设有限维向量空间 $E$（$\\dim E=n$）及一组基 $(e_1,\\dots,e_n)$。证明 $u\\mapsto [u]$ 给出 $\\mathcal L(E)$ 与 $M_n(\\mathbb K)$ 的同构；在 $E=\\mathbb K^n$ 赋欧氏范数下，若 $u$ 可正交对角化，证明 $\\|u\\|=\\max_i|\\lambda_i|$；并给出 $p=1,\\infty$ 时算子范数的矩阵表达。"
+    },
+    {
+      "id": "fa-all-05-03",
+      "difficulty": 3,
+      "question": "对 $x=(x_1,x_2)^T\\in\\mathbb R^2$ 定义 $\\|x\\|_*=|x_1|+3|x_2|$，设 $A=\\begin{pmatrix}2&-6\\\\0&1\\end{pmatrix}$，$\\varphi(x)=Ax$。证明 $\\|\\cdot\\|_*$ 是范数，并计算 $\\|\\varphi\\|_{\\mathcal B((\\mathbb R^2,\\|\\cdot\\|_*))}=3$。"
+    },
+    {
+      "id": "fa-all-05-04",
+      "difficulty": 3,
+      "question": "令 $E=C([0,1],\\mathbb R)$，赋一致范数。定义 $T$：$(Tf)(x)=\\int_0^x t f(t)\\,dt + x\\int_x^1 f(t)\\,dt$。证明 $T$ 线性；证明 $|Tf(x)|\\le\\left(x-\\frac{x^2}{2}\\right)\\|f\\|_\\infty$；证明 $T\\in\\mathcal B(E)$ 并计算 $\\|T\\|$；讨论方程 $Tf=f$ 是否有非平凡解。"
+    },
+    {
+      "id": "fa-all-05-05",
+      "difficulty": 3,
+      "question": "设赋范空间 $E,F$，$\\varphi:E\\to\\mathbb K$ 是不连续线性泛函。证明 $\\ker\\varphi$ 非闭，且存在 $u\\in\\overline{\\ker\\varphi}\\setminus\\ker\\varphi$ 使 $\\varphi(u)=1$；并证明任意 $x\\in E$ 都属于 $\\overline{\\ker\\varphi}$，从而 $\\ker\\varphi$ 在 $E$ 中稠密。"
+    },
+    {
+      "id": "fa-all-05-06",
+      "difficulty": 3,
+      "question": "设 $E$ 为实系数多项式空间，定义 $\\varphi(P)=xP'(x)$。证明 $\\varphi:E\\to E$ 线性；证明不论在 $E$ 上赋何范数，$\\varphi$ 都不连续；计算 $\\ker\\varphi$ 并证明其闭性，解释为何不与 $\\varphi$ 不连续矛盾。"
+    },
+    {
+      "id": "fa-all-06-01",
+      "difficulty": 4,
+      "question": "设 $E$ 是 Banach 空间。证明：若 $u\\in\\mathcal B(E)$ 且 $\\|u\\|<1$，则 $I_E-u$ 可逆；$GL(E)$ 在复合下成群且是 $\\mathcal B(E)$ 的开集；映射 $u\\mapsto u^{-1}$ 是 $GL(E)$ 上同胚。"
+    },
+    {
+      "id": "fa-all-06-02",
+      "difficulty": 4,
+      "question": "设无穷矩阵 $A=(a_{ij})_{i,j\\ge1}$。证明：$A$ 可延拓为 $c_0\\to\\ell^\\infty$ 的有界线性算子当且仅当 $\\sup_i\\sum_j|a_{ij}|<\\infty$，且算子范数等于该上确界；$A$ 可延拓为 $\\ell^1$ 上有界线性算子当且仅当 $\\sup_j\\sum_i|a_{ij}|<\\infty$，且范数等于该上确界。"
+    },
+    {
+      "id": "fa-all-06-03",
+      "difficulty": 4,
+      "question": "在 $M_n(\\mathbb C)$ 上定义 Schur/Frobenius 范数 $\\|A\\|_s=\\sqrt{\\operatorname{tr}(A^*A)}$。证明：$\\|\\cdot\\|_s$ 是范数；$(M_n(\\mathbb C),\\|\\cdot\\|_s)$ 是 Banach 空间；并且 $\\|AB\\|_s\\le\\|A\\|_s\\|B\\|_s$。"
+    },
+    {
+      "id": "fa-all-07-01",
+      "difficulty": 4,
+      "question": "设 $f\\in L^2(\\mathbb R)$，$g(x)=\\frac1x\\mathbf1_{[1,\\infty)}(x)$。证明 $fg\\in L^1(\\mathbb R)$；并给出 $f_1,f_2\\in L^1(\\mathbb R)$ 但 $f_1f_2\\notin L^1(\\mathbb R)$ 的例子。"
+    },
+    {
+      "id": "fa-all-07-02",
+      "difficulty": 4,
+      "question": "设 $(\\Omega,\\mathcal A,\\mu)$。证明：若 $\\mu(\\Omega)<\\infty$ 且 $0<p<q\\le\\infty$，则 $L^q(\\Omega)\\subset L^p(\\Omega)$（并给出 $\\mu(\\Omega)=\\infty$ 的反例）；若 $f\\in L^\\infty(\\Omega)$，则 $f\\in\\bigcap_{p<\\infty}L^p(\\Omega)$ 且 $\\|f\\|_\\infty=\\lim_{p\\to\\infty}\\|f\\|_p$；若 $f\\in\\bigcap_{p<\\infty}L^p(\\Omega)$ 且 $\\limsup_{p\\to\\infty}\\|f\\|_p<\\infty$，则 $f\\in L^\\infty(\\Omega)$。"
+    },
+    {
+      "id": "fa-all-07-03",
+      "difficulty": 4,
+      "question": "设 $f,g\\in L^1(\\mathbb R)$。证明卷积积分恒等式并说明卷积几乎处处有定义；证明 $f*g\\in L^1(\\mathbb R)$ 且 $\\|f*g\\|_1\\le\\|f\\|_1\\|g\\|_1$；计算 $\\mathbf1_{[0,1]}*\\mathbf1_{[0,1]}$。"
+    },
+    {
+      "id": "fa-all-08-01",
+      "difficulty": 4,
+      "question": "设 $H$ 是内积空间，$x_n,x\\in H$ 且 $\\|x_n\\|\\to\\|x\\|$，并对任意 $y\\in H$ 有 $\\langle y,x_n\\rangle\\to\\langle y,x\\rangle$。证明 $\\|x_n-x\\|\\to0$。"
+    },
+    {
+      "id": "fa-all-08-02",
+      "difficulty": 4,
+      "question": "证明：在 Hilbert 空间中有 Rademacher 平均平方恒等式；若 Banach 空间范数与某内积范数等价，则存在常数给出对应双边估计；据此证明当 $p\\ne2$ 时，$c_0,\\ell^p,L^p(0,1)$ 不存在等价内积范数。"
+    },
+    {
+      "id": "fa-all-08-03",
+      "difficulty": 4,
+      "question": "设内积空间 $(E,\\langle\\cdot,\\cdot\\rangle)$ 与子集 $A,B\\subset E$。证明正交补的基本关系：$(A\\cup B)^\\perp=A^\\perp\\cap B^\\perp$、$A^\\perp+B^\\perp\\subset(A\\cap B)^\\perp$、$A^\\perp\\cap B^\\perp\\subset(A+B)^\\perp$（并讨论何时取等）；证明 $A\\subset A^{\\perp\\perp}$ 与 $A^\\perp=A^{\\perp\\perp\\perp}$；若 $E$ 为 Hilbert 且闭子空间 $F\\perp G$，证明 $F+G$ 闭。"
+    },
+    {
+      "id": "fa-all-08-04",
+      "difficulty": 4,
+      "question": "设赋范空间 $E$ 上投影算子 $p\\in\\mathcal B(E)$（$p^2=p$）。证明 $\\operatorname{Im}(p)$ 闭；若 $E$ 为内积空间且 $p$ 为正交投影，证明 $\\|p\\|\\le1$ 且 $p\\ne0$ 时 $\\|p\\|=1$；反之若投影满足 $\\|p\\|\\le1$，证明其必为正交投影。"
+    },
+    {
+      "id": "fa-all-09-01",
+      "difficulty": 5,
+      "question": "令 $E=c_{00}(\\mathbb N)$，内积 $\\langle u,v\\rangle=\\sum_{n\\ge0}u_nv_n$。定义 $f(u)=\\sum_{n\\ge0}\\frac{u_n}{n+1}$，$F=\\ker f$。证明 $f\\in E^*$、$F$ 闭并计算 $\\|f\\|$；证明 $F^\\perp=\\{0\\}$，从而 $F^{\\perp\\perp}\\ne\\overline F$，并解释其意义。"
+    },
+    {
+      "id": "fa-all-09-02",
+      "difficulty": 5,
+      "question": "设 $E=C([0,1])$，$\\langle f,g\\rangle=\\int_0^1 f(t)\\overline{g(t)}\\,dt$，$E_0=\\{f:\\int_0^1f=0\\}$，$H=\\{f:f(1)=0\\}$，$H_0=E_0\\cap H$。证明 $H_0$ 是 $H$ 的闭真子空间；设 $h(t)=t-\\frac12$，证明 $E=\\operatorname{span}(H,h)$、$E_0=\\operatorname{span}(H_0,h)$ 且 $h\\in\\overline{H_0}$；并证明在 $E_0$ 中 $H_0^\\perp=\\{0\\}$。"
+    },
+    {
+      "id": "fa-all-09-03",
+      "difficulty": 5,
+      "question": "设 Hilbert 空间上 $T\\in\\mathcal B(H)$ 自伴，证明 $\\|T\\|=\\sup\\{|\\langle Tx,x\\rangle|:\\|x\\|\\le1\\}$。并应用：若 $S\\in\\mathcal B(H)$ 满足 $\\langle Sx,x\\rangle=0$（对任意 $x$），在复 Hilbert 情形证明 $S=0$，并讨论实情形。"
+    },
+    {
+      "id": "fa-all-09-04",
+      "difficulty": 5,
+      "question": "计算若干伴随算子：$\\varphi(x)=\\langle x,u\\rangle v$ 的算子范数与伴随；$T(f)(x)=\\int_0^x f(t)\\,dt$ 在 $L^2(0,1)$ 上的伴随；左移算子 $S_l(u_1,u_2,\\dots)=(u_2,u_3,\\dots)$ 在 $\\ell^2(\\mathbb N^*)$ 上的范数与伴随。"
+    },
+    {
+      "id": "fa-all-09-05",
+      "difficulty": 5,
+      "question": "设 $H$ 是 Hilbert 空间，$T\\in\\mathcal B(H)$。证明 $\\ker(T)=\\ker(T^*T)$；若子空间 $E\\subset H$ 满足 $T(E)\\subset E$，证明 $T^*(E^\\perp)\\subset E^\\perp$。"
+    },
+    {
+      "id": "fa-all-09-06",
+      "difficulty": 5,
+      "question": "在 $\\ell^2(\\mathbb N)$ 中给定两闭子空间 $E,F$（由题设正交基关系定义）。证明 $E\\cap F=\\{0\\}$；讨论有限支向量属于 $E+F$ 的分解；判断 $y=(\\frac1{n+1})_{n\\ge0}$ 是否属于 $E+F$；并证明 $E+F$ 稠密但非闭。"
+    },
+    {
+      "id": "fa-all-10-01",
+      "difficulty": 5,
+      "question": "令 $E=\\mathbb R_2[X]$，定义 $\\langle P,Q\\rangle=\\sum_{i=0}^2 2^iP(i)Q(i)$。证明该式定义内积并说明 $E$ 是 Hilbert 空间；对基 $\\{1,x,x^2\\}$ 施行 Gram-Schmidt 正交化，求一组正交基。"
+    },
+    {
+      "id": "fa-all-10-02",
+      "difficulty": 5,
+      "question": "设 $E=L^2(\\mathbb R_+,e^{-x}dx)$。给出自然内积并证明 $E$ 是 Hilbert 空间；计算 $\\int_0^\\infty x^k e^{-px}\\,dx$（$k\\in\\mathbb N,p>0$）；用正交投影求 $a,b,c\\in\\mathbb R$ 使 $\\int_0^\\infty|e^{-x}-ax^2-bx-c|^2e^{-x}dx$ 最小。"
+    },
+    {
+      "id": "fa-all-10-03",
+      "difficulty": 5,
+      "question": "设 $H$ 为内积空间，定义向量组 $(x_1,\\dots,x_n)$ 的 Gram 行列式 $G(x_1,\\dots,x_n)$。证明 $G\\ge0$ 且 $G>0\\iff\\{x_i\\}$ 线性无关；并在 $\\{x_i\\}$ 线性无关时证明 $d(x,\\operatorname{span}(x_1,\\dots,x_n))^2=\\frac{G(x,x_1,\\dots,x_n)}{G(x_1,\\dots,x_n)}$。"
+    },
+    {
+      "id": "fa-all-10-04",
+      "difficulty": 5,
+      "question": "设连续函数 $f:\\mathbb R_+\\to\\mathbb R$ 满足对任意 $x>0$ 有 $f(nx)\\to0$。利用 Baire 定理证明 $\\lim_{y\\to\\infty}f(y)=0$。"
+    },
+    {
+      "id": "fa-all-10-05",
+      "difficulty": 5,
+      "question": "证明：赋范空间中任意真子空间内部为空；由此证明全体多项式构成的线性空间不能赋予完备范数。"
+    },
+    {
+      "id": "fa-all-10-06",
+      "difficulty": 5,
+      "question": "设 $E,F$ 为 Banach 空间，$(u_n)\\subset\\mathcal B(E,F)$。证明下列命题等价：1) 对每个 $x\\in E$，$(u_n(x))$ 收敛；2) 存在 $A\\subset E$ 使 $\\operatorname{span}(A)$ 在 $E$ 中稠密、$(u_n(a))$ 对每个 $a\\in A$ 收敛，且 $(u_n)$ 有界。"
+    },
+    {
+      "id": "fa-all-10-07",
+      "difficulty": 5,
+      "question": "在 $E=C([0,1])$（一致范数）上定义 $u_n(f)=n\\int_0^1f(t)dt-\\sum_{k=1}^n f(\\frac{k}{n})$。证明：若 $f$ 是 Lipschitz 函数，则 $\\frac{u_n(f)}{n}=O(\\frac1n)$；$\\|u_n\\|=2n$；并推出集合 $\\{f\\in E:\\frac{u_n(f)}{n}\\ne O(\\frac1n)\\}$ 是稠密 $G_\\delta$。"
+    },
+    {
+      "id": "fa-all-10-08",
+      "difficulty": 5,
+      "question": "设 $X=C^1([0,1],\\mathbb R)$ 赋一致范数，$Y=C([0,1],\\mathbb R)$ 赋一致范数，$u:X\\to Y$ 定义为 $u(f)=f'$。证明 $u$ 的图像闭，但 $u$ 不连续，并解释这一现象。"
+    },
+    {
+      "id": "fa-all-11-01",
+      "difficulty": 5,
+      "question": "在 $E=C([0,1],\\mathbb R)$ 上定义算子 $T$：$Tf(0)=\\frac\\pi2 f(0)$，$Tf(x)=\\int_0^x\\frac{f(t)}{\\sqrt{x^2-t^2}}dt$（$x\\in(0,1]$）。证明 $T\\in\\mathcal B(E)$ 且 $\\|T\\|=\\frac\\pi2$；对 $g(x)=x^r$（$r\\ge0$）分析特征值；讨论 $0\\in\\sigma(T)$ 与谱半径 $r(T)$。"
+    },
+    {
+      "id": "fa-all-11-02",
+      "difficulty": 5,
+      "question": "令 $E=\\ell^2(\\mathbb N_+,\\mathbb R)$，$S$ 为左移算子 $S(u_1,u_2,\\dots)=(u_2,u_3,\\dots)$。证明 $v^\\lambda=(\\lambda^n)_{n\\ge1}\\in E\\iff |\\lambda|<1$ 并计算其范数；求点谱 $\\sigma_p(S)$ 及核空间；计算 $\\|S\\|$、预解集、谱及谱半径。"
+    },
+    {
+      "id": "fa-all-11-03",
+      "difficulty": 5,
+      "question": "设 Banach 空间 $E$ 上 $T,S\\in\\mathcal B(E)$。证明：若 $\\|T\\|,\\|S\\|<1$，则 $I-TS$ 与 $I-ST$ 可逆且 $(I-TS)^{-1}=I+T(I-ST)^{-1}S$；进一步证明一般情形下 $(I-TS)$ 可逆当且仅当 $(I-ST)$ 可逆；推出 $\\sigma(TS)\\cup\\{0\\}=\\sigma(ST)\\cup\\{0\\}$，并在左移算子情形比较 $\\sigma(S^*S)$ 与 $\\sigma(SS^*)$。"
+    },
+    {
+      "id": "dg-all-1-1-01",
+      "difficulty": 2,
+      "question": "设向量值函数 $\\mathbf a(t)$。证明 $|\\mathbf a(t)|$ 为常数当且仅当 $\\langle\\mathbf a(t),\\mathbf a'(t)\\rangle=0$。"
+    },
+    {
+      "id": "dg-all-1-1-02",
+      "difficulty": 2,
+      "question": "设 $|\\mathbf a(t)|\\equiv1$，记 $\\mathbf a(t+\\Delta t)$ 与 $\\mathbf a(t)$ 的夹角为 $\\Delta\\varphi$。证明 $\\lim_{\\Delta t\\to0}\\left|\\frac{\\Delta\\varphi}{\\Delta t}\\right|$ 存在且等于 $|\\mathbf a'(t)|$。"
+    },
+    {
+      "id": "dg-all-1-1-03",
+      "difficulty": 2,
+      "question": "设 $\\mathbf a(t)$ 恒不为零。证明：$\\mathbf a(t)$ 平行于固定方向当且仅当 $\\mathbf a(t)\\times\\mathbf a'(t)=\\mathbf0$。"
+    },
+    {
+      "id": "dg-all-1-1-04",
+      "difficulty": 2,
+      "question": "证明：若 $\\mathbf a(t)$ 始终与某固定方向垂直，则三重积 $(\\mathbf a,\\mathbf a',\\mathbf a'')=0$；反之若 $(\\mathbf a,\\mathbf a',\\mathbf a'')=0$ 且处处 $\\mathbf a\\times\\mathbf a'\\ne\\mathbf0$，则 $\\mathbf a(t)$ 始终与某固定方向垂直。"
+    },
+    {
+      "id": "dg-all-1-1-05",
+      "difficulty": 2,
+      "question": "证明 $E^3$ 中全体等距变换构成群，并证明 $E^3$ 中全体单位正交标架与该群元素存在一一对应。"
+    },
+    {
+      "id": "dg-all-1-1-06",
+      "difficulty": 2,
+      "question": "将命题推广到 $E^n$：任意等距变换均可写为 $\\mathcal T(P)=P\\mathbf T+P_0$，其中 $\\mathbf T\\in O(n)$。"
+    },
+    {
+      "id": "dg-all-1-2-01",
+      "difficulty": 2,
+      "question": "画出曲线 $\\gamma(t)=(t^3-4t,t^2-4)$（$t\\in\\mathbb R$）的草图，并证明它不是简单曲线。"
+    },
+    {
+      "id": "dg-all-1-2-02",
+      "difficulty": 2,
+      "question": "画出曲线 $\\gamma(t)=(t^2,t^3)$（$t\\in\\mathbb R$）的草图，并证明它不是正则曲线。"
+    },
+    {
+      "id": "dg-all-1-2-03",
+      "difficulty": 2,
+      "question": "绘制旋轮线（摆线）$\\mathbf r(t)=(t-\\sin t,1-\\cos t)$ 与星形线 $\\mathbf r(t)=(a\\cos^3 t,a\\sin^3 t)$（$a>0$）的草图，并判断其是否正则。"
+    },
+    {
+      "id": "dg-all-1-2-04",
+      "difficulty": 2,
+      "question": "设曲线 $\\mathbf r(t)=\\bigl(e^{-t^{-2}},t,0\\bigr)$（$t<0$），$\\mathbf r(0)=\\mathbf0$，$\\mathbf r(t)=\\bigl(0,t,e^{-t^{-2}}\\bigr)$（$t>0$）。证明它是一条简单光滑正则曲线。"
+    },
+    {
+      "id": "dg-all-1-2-05",
+      "difficulty": 2,
+      "question": "证明：曲线 $\\mathbf r=\\mathbf r(t)$ 的参数 $t$ 是弧长参数的充要条件是 $|\\mathbf r'(t)|\\equiv1$。"
+    },
+    {
+      "id": "dg-all-1-2-06",
+      "difficulty": 2,
+      "question": "求双曲螺线 $\\mathbf r(t)=(a\\cosh t,a\\sinh t,at)$（$a>0$）在 $t\\in[0,\\lambda]$（$\\lambda>0$）上的弧长。"
+    },
+    {
+      "id": "dg-all-1-2-07",
+      "difficulty": 2,
+      "question": "将圆柱螺线 $\\mathbf r(t)=(a\\cos t,a\\sin t,bt)$（$a>0$）改写为弧长参数形式。"
+    },
+    {
+      "id": "dg-all-1-3-01",
+      "difficulty": 3,
+      "question": "证明一般参数下空间曲线 $\\mathbf r=\\mathbf r(t)$ 的 Frenet 标架公式：$\\mathbf e_1=\\frac{\\mathbf r'}{|\\mathbf r'|}$，$\\mathbf e_3=\\frac{\\mathbf r'\\times\\mathbf r''}{|\\mathbf r'\\times\\mathbf r''|}$，以及 $\\mathbf e_2$ 的显式表达。"
+    },
+    {
+      "id": "dg-all-1-3-02",
+      "difficulty": 3,
+      "question": "证明一般参数下空间曲线的曲率与挠率公式：$\\kappa(t)=\\frac{|\\mathbf r'\\times\\mathbf r''|}{|\\mathbf r'|^3}$，$\\tau(t)=\\frac{(\\mathbf r',\\mathbf r'',\\mathbf r''')}{|\\mathbf r'\\times\\mathbf r''|^2}$。"
+    },
+    {
+      "id": "dg-all-1-3-03",
+      "difficulty": 3,
+      "question": "利用一般参数下 Frenet 标架、曲率与挠率公式，计算双曲螺线的 Frenet 标架、曲率与挠率。"
+    },
+    {
+      "id": "dg-all-1-3-04",
+      "difficulty": 3,
+      "question": "对分段曲线 $\\mathbf r(t)=\\bigl(e^{-t^{-2}},t,0\\bigr)$（$t<0$），$\\mathbf r(0)=\\mathbf0$，$\\mathbf r(t)=\\bigl(0,t,e^{-t^{-2}}\\bigr)$（$t>0$），计算 $t\\ne0$ 时 Frenet 标架，并讨论 Frenet 标架、曲率、挠率在 $t=0$ 处的连续性。"
+    },
+    {
+      "id": "dg-all-1-3-05",
+      "difficulty": 3,
+      "question": "设 $\\mathcal T(P)=P\\mathbf T+P_0$ 是 $E^3$ 上等距变换，$\\widetilde{\\mathbf r}=\\mathcal T\\circ\\mathbf r$。讨论 $\\widetilde{\\mathbf r}$ 与 $\\mathbf r$ 的弧长参数、曲率、挠率关系，并区分刚体运动与反向刚体运动。"
+    },
+    {
+      "id": "dg-all-1-4-01",
+      "difficulty": 3,
+      "question": "设曲线 $\\mathbf r$ 的所有切线经过同一固定点，证明 $\\mathbf r$ 是一直线。"
+    },
+    {
+      "id": "dg-all-1-4-02",
+      "difficulty": 3,
+      "question": "设曲线 $\\mathbf r$ 的所有主法线经过同一固定点，证明 $\\mathbf r$ 是一个圆。"
+    },
+    {
+      "id": "dg-all-1-4-03",
+      "difficulty": 3,
+      "question": "证明曲线 $\\mathbf r_1(t)=\\bigl(t+\\sqrt3\\sin t,2\\cos t,\\sqrt3 t-\\sin t\\bigr)$ 与 $\\mathbf r_2(t)=\\left(2\\cos\\frac t2,2\\sin\\frac t2,-t\\right)$ 只相差一个刚体变换。"
     }
   ]
 }

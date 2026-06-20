@@ -157,12 +157,154 @@ def collapse_inline_math_newlines(text: str) -> str:
     return "".join(parts)
 
 
+def split_math_segments(text: str) -> list[tuple[bool, str]]:
+    segments: list[tuple[bool, str]] = []
+    cursor = 0
+    while cursor < len(text):
+        next_pos = -1
+        token: tuple[str, str] | None = None
+        if text.startswith(r"\(", cursor):
+            next_pos = cursor
+            token = (r"\(", r"\)")
+        elif text.startswith(r"\[", cursor):
+            next_pos = cursor
+            token = (r"\[", r"\]")
+        elif text.startswith("$$", cursor):
+            next_pos = cursor
+            token = ("$$", "$$")
+        elif text[cursor] == "$":
+            next_pos = cursor
+            token = ("$", "$")
+
+        if next_pos < 0 or token is None:
+            segments.append((False, text[cursor:]))
+            break
+
+        if next_pos > cursor:
+            segments.append((False, text[cursor:next_pos]))
+
+        open_token, close_token = token
+        end = next_pos + len(open_token)
+        depth = 1
+        while end < len(text) and depth > 0:
+            if text.startswith(open_token, end):
+                depth += 1
+                end += len(open_token)
+                continue
+            if text.startswith(close_token, end):
+                depth -= 1
+                if depth == 0:
+                    end += len(close_token)
+                    break
+                end += len(close_token)
+                continue
+            end += 1
+        segments.append((True, text[next_pos:end]))
+        cursor = end
+    return segments
+
+
+def apply_outside_math(text: str, transform) -> str:
+    return "".join(
+        segment if is_math else transform(segment)
+        for is_math, segment in split_math_segments(text)
+    )
+
+
+def find_display_math_blocks(text: str) -> list[tuple[int, int]]:
+    blocks: list[tuple[int, int]] = []
+    cursor = 0
+    while cursor < len(text):
+        start = text.find(r"\[", cursor)
+        if start < 0:
+            break
+        end = start + 2
+        depth = 1
+        while end < len(text) and depth > 0:
+            if text.startswith(r"\[", end):
+                depth += 1
+                end += 2
+                continue
+            if text.startswith(r"\]", end):
+                depth -= 1
+                if depth == 0:
+                    end += 2
+                    break
+                end += 2
+                continue
+            end += 1
+        if depth == 0:
+            blocks.append((start, end))
+            cursor = end
+        else:
+            break
+    return blocks
+
+
+def apply_outside_display_math(text: str, transform) -> str:
+    blocks = find_display_math_blocks(text)
+    if not blocks:
+        return transform(text)
+    parts: list[str] = []
+    cursor = 0
+    for start, end in blocks:
+        if start > cursor:
+            parts.append(transform(text[cursor:start]))
+        parts.append(text[start:end])
+        cursor = end
+    if cursor < len(text):
+        parts.append(transform(text[cursor:]))
+    return "".join(parts)
+
+
+MATRIX_ENVS = ("pmatrix", "bmatrix", "vmatrix", "matrix", "cases", "aligned", "gathered", "align")
+
+
+def fix_matrix_row_breaks(text: str) -> str:
+    for env in MATRIX_ENVS:
+        pattern = re.compile(
+            rf"\\begin\{{(?P<env>{env})\*?\}}(?P<body>.*?)\\end\{{(?P=env)\*?\}}",
+            re.DOTALL,
+        )
+
+        def repl(match: re.Match[str]) -> str:
+            env_name = match.group("env")
+            body = match.group("body")
+            lines = [line.strip() for line in body.split("\n") if line.strip()]
+            if len(lines) <= 1:
+                return match.group(0)
+            fixed_body = r" \\ ".join(lines)
+            return rf"\begin{{{env_name}}}{fixed_body}\end{{{env_name}}}"
+
+        text = pattern.sub(repl, text)
+    return text
+
+
+def merge_continued_display_math(text: str) -> str:
+    previous = None
+    while previous != text:
+        previous = text
+        text = re.sub(r"\\\]\s*\\\[\s*(?=[=+\-])", " ", text)
+    return text
+
+
+def separate_prose_after_display_math(text: str) -> str:
+    text = re.sub(r"\\\]\s*([\u4e00-\u9fff(（])", r"\\]\n\n\1", text)
+    text = re.sub(r"请通过\s*\\\[", "请通过\n\n\\[", text)
+    return text
+
+
 def normalize_whitespace(text: str) -> str:
     text = text.replace("\r\n", "\n")
-    text = re.sub(r"\\\s*\n", " ", text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    text = re.sub(r"[ \t]+\n", "\n", text)
-    text = re.sub(r"\n{2,}", "\n\n", text)
+
+    def compact(chunk: str) -> str:
+        chunk = re.sub(r"\\\s*\n", " ", chunk)
+        chunk = re.sub(r"\n{3,}", "\n\n", chunk)
+        chunk = re.sub(r"[ \t]+\n", "\n", chunk)
+        chunk = re.sub(r"\n{2,}", "\n\n", chunk)
+        return chunk
+
+    text = apply_outside_math(text, compact)
     return text.strip()
 
 
@@ -327,10 +469,14 @@ def convert_text_markup(text: str) -> str:
     text = re.sub(r"\\operatorname\{([^{}]*)\}", r"\\operatorname{\1}", text)
     text = DING_PATTERN.sub(lambda m: DING_MAP.get(int(m.group(1)), "•"), text)
     text = text.replace("\\noindent", "")
-    text = re.sub(r"\\hfill", " ", text)
-    text = re.sub(r"\\newline\b", "\n", text)
-    text = re.sub(r"\\\\\s*", "\n", text)
-    return text
+
+    def outside_markup(chunk: str) -> str:
+        chunk = re.sub(r"\\hfill", " ", chunk)
+        chunk = re.sub(r"\\newline\b", "\n", chunk)
+        chunk = re.sub(r"\\\\\s*", "\n", chunk)
+        return chunk
+
+    return apply_outside_math(text, outside_markup)
 
 
 def parse_reference_key(raw_key: str) -> tuple[str, str | None]:
@@ -483,6 +629,9 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = cleanup_content(text)
     text = collapse_inline_math_newlines(text)
     text = fix_display_math_nesting(text)
+    text = fix_matrix_row_breaks(text)
+    text = merge_continued_display_math(text)
+    text = separate_prose_after_display_math(text)
     text = normalize_whitespace(text)
     return text
 
@@ -1046,6 +1195,9 @@ def build_questions(macros: dict[str, str]) -> ImportState:
         stem = expand_prose_references(stem, state, block.source_file, question_index)
         stem = expand_references(stem, state)
         stem = demote_display_math_in_prose(stem)
+        stem = merge_continued_display_math(stem)
+        stem = separate_prose_after_display_math(stem)
+        stem = fix_matrix_row_breaks(stem)
         stem = join_orphan_inline_math_lines(stem)
         stem = join_broken_prose_lines(stem)
         if solution != PENDING_SOLUTION:

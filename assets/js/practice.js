@@ -11,6 +11,7 @@
   var statusEl = document.getElementById("practiceStatus");
   var questionSection = document.getElementById("practiceQuestionSection");
   var questionEl = document.getElementById("practiceQuestion");
+  var numberEl = document.getElementById("practiceNumber");
   var solutionPanel = document.getElementById("practiceSolutionPanel");
   var solutionEl = document.getElementById("practiceSolutionBody");
   var currentQuestion = null;
@@ -37,6 +38,70 @@
     return window.MathJax.typesetPromise(targets).catch(function () {});
   }
 
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function inlineMarkdown(text) {
+    return escapeHtml(text)
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*([^*]+)\*/g, "<em>$1</em>");
+  }
+
+  function renderMarkdown(text) {
+    if (!text) return "";
+
+    var lines = text.replace(/\r\n/g, "\n").split("\n");
+    var html = [];
+    var listType = null;
+    var listItems = [];
+
+    function flushList() {
+      if (!listType) return;
+      html.push("<" + listType + ">");
+      listItems.forEach(function (item) {
+        html.push("<li>" + inlineMarkdown(item) + "</li>");
+      });
+      html.push("</" + listType + ">");
+      listType = null;
+      listItems = [];
+    }
+
+    lines.forEach(function (line) {
+      var ordered = line.match(/^\s*(\d+)\.\s+(.*)$/);
+      var bullet = line.match(/^\s*-\s+(.*)$/);
+
+      if (ordered) {
+        if (listType !== "ol") {
+          flushList();
+          listType = "ol";
+        }
+        listItems.push(ordered[2]);
+        return;
+      }
+
+      if (bullet) {
+        if (listType !== "ul") {
+          flushList();
+          listType = "ul";
+        }
+        listItems.push(bullet[1]);
+        return;
+      }
+
+      flushList();
+      if (line.trim()) {
+        html.push("<p>" + inlineMarkdown(line) + "</p>");
+      }
+    });
+
+    flushList();
+    return html.join("");
+  }
+
   function clearSolution() {
     if (solutionPanel) solutionPanel.hidden = true;
     if (solutionEl) solutionEl.innerHTML = "";
@@ -48,7 +113,11 @@
 
     if (!questionEl || !questionSection) return;
 
-    questionEl.innerHTML = question.content || "<p>暂无题目内容。</p>";
+    if (numberEl) {
+      numberEl.textContent = question.number ? "（" + question.number + "）" : "";
+    }
+
+    questionEl.innerHTML = renderMarkdown(question.content || "") || "<p>暂无题目内容。</p>";
     questionSection.hidden = false;
 
     if (solutionButton) {
@@ -130,8 +199,9 @@
     setStatus("");
     clearSolution();
     if (questionSection) questionSection.hidden = true;
+    if (numberEl) numberEl.textContent = "";
 
-    var query = "/api/random?subject=" + encodeURIComponent(subject) + "&difficulty=all";
+    var query = "/api/random?subject=" + encodeURIComponent(subject);
 
     fetchJson(query)
       .then(function (question) {
@@ -158,7 +228,7 @@
       .then(function (payload) {
         setStatus("");
         if (!solutionPanel || !solutionEl) return;
-        solutionEl.innerHTML = payload.solution || "<p>暂无解析。</p>";
+        solutionEl.innerHTML = renderMarkdown(payload.solution || "") || "<p>暂无解析。</p>";
         solutionPanel.hidden = false;
         return typeset([solutionEl]);
       })

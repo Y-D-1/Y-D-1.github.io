@@ -13,45 +13,24 @@ from typing import Any
 
 
 def subject_name(question: dict[str, Any]) -> str:
-    subject = question.get("subject") or {}
+    subject = question.get("subject")
     if isinstance(subject, dict):
         return str(subject.get("name") or "未分类").strip() or "未分类"
-    return str(subject).strip() or "未分类"
-
-
-def chapter_title(question: dict[str, Any]) -> str | None:
-    chapter = question.get("chapter") or {}
-    if isinstance(chapter, dict):
-        title = chapter.get("title")
-        return str(title).strip() if title else None
-    return None
-
-
-def book_title(question: dict[str, Any]) -> str | None:
-    book = question.get("book") or {}
-    if isinstance(book, dict):
-        title = book.get("title")
-        return str(title).strip() if title else None
-    return None
+    return str(subject or "未分类").strip() or "未分类"
 
 
 def public_question(question: dict[str, Any]) -> dict[str, Any]:
     return {
         "id": question["id"],
-        "title": question.get("title") or "",
-        "content": question.get("content") or "",
-        "difficulty": question.get("difficulty"),
+        "number": question.get("number") or "",
         "subject": subject_name(question),
-        "chapter": chapter_title(question),
-        "book": book_title(question),
-        "tags": question.get("tags") or [],
+        "content": question.get("content") or "",
     }
 
 
 def build_entries(questions: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
     indexes: dict[str, list[str]] = defaultdict(list)
-    counts: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
-    difficulties: set[int] = set()
+    counts: dict[str, int] = defaultdict(int)
     subjects: set[str] = set()
     entries: list[dict[str, str]] = []
 
@@ -61,15 +40,9 @@ def build_entries(questions: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
             continue
 
         subject = subject_name(question)
-        difficulty = question.get("difficulty")
         subjects.add(subject)
         indexes[f"idx:{subject}:all"].append(question_id)
-        counts[subject]["all"] += 1
-
-        if isinstance(difficulty, int) and difficulty > 0:
-            difficulties.add(difficulty)
-            indexes[f"idx:{subject}:{difficulty}"].append(question_id)
-            counts[subject][str(difficulty)] += 1
+        counts[subject] += 1
 
         entries.append(
             {
@@ -79,7 +52,7 @@ def build_entries(questions: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
         )
 
         solution = question.get("solution")
-        if solution:
+        if solution is not None:
             entries.append(
                 {
                     "key": f"sol:{question_id}",
@@ -101,9 +74,8 @@ def build_entries(questions: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
 
     meta = {
         "subjects": sorted(subjects),
-        "difficulties": sorted(difficulties),
-        "counts": {subject: dict(sorted(levels.items(), key=lambda item: (item[0] != "all", item[0]))) for subject, levels in sorted(counts.items())},
-        "total": sum(levels["all"] for levels in counts.values()),
+        "counts": dict(sorted(counts.items())),
+        "total": sum(counts.values()),
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
     entries.append({"key": "meta", "value": json.dumps(meta, ensure_ascii=False, separators=(",", ":"))})

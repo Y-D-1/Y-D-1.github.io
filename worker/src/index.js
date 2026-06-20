@@ -66,18 +66,12 @@ async function handleMeta(request, env) {
 async function handleRandom(request, env) {
   const url = new URL(request.url);
   const subject = (url.searchParams.get("subject") || "").trim();
-  const difficulty = (url.searchParams.get("difficulty") || "all").trim() || "all";
 
   if (!subject) {
     return errorResponse(request, env, 400, "请提供 subject 参数。");
   }
 
-  const indexKey = `idx:${subject}:${difficulty}`;
-  let ids = await readJson(env.QUESTIONS, indexKey);
-
-  if (!ids && difficulty !== "all") {
-    ids = await readJson(env.QUESTIONS, `idx:${subject}:all`);
-  }
+  const ids = await readJson(env.QUESTIONS, `idx:${subject}:all`);
 
   const questionId = pickRandomId(ids);
   if (!questionId) {

@@ -50,8 +50,8 @@
     var mouseY = window.innerHeight / 2;
     var ringX = mouseX;
     var ringY = mouseY;
-    var dotX = mouseX;
-    var dotY = mouseY;
+    var dotOffsetX = 0;
+    var dotOffsetY = 0;
     var maxDrift = 5;
 
     document.addEventListener("mousemove", function (e) {
@@ -68,23 +68,48 @@
       return { x: dx, y: dy };
     }
 
+    function applyCursorPosition() {
+      cursor.style.left = ringX + "px";
+      cursor.style.top = ringY + "px";
+
+      var scale = document.body.classList.contains("is-cursor-active") ? 0.5 : 1;
+      dot.style.transform =
+        "translate(calc(-50% + " + dotOffsetX + "px), calc(-50% + " + dotOffsetY + "px)) scale(" + scale + ")";
+    }
+
+    function snapCursorToMouse() {
+      ringX = mouseX;
+      ringY = mouseY;
+      dotOffsetX = 0;
+      dotOffsetY = 0;
+      applyCursorPosition();
+    }
+
     function animateCursor() {
       ringX += (mouseX - ringX) * 0.38;
       ringY += (mouseY - ringY) * 0.38;
-      dotX += (mouseX - dotX) * 0.58;
-      dotY += (mouseY - dotY) * 0.58;
 
-      cursor.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0)";
+      var targetOffsetX = mouseX - ringX;
+      var targetOffsetY = mouseY - ringY;
+      dotOffsetX += (targetOffsetX - dotOffsetX) * 0.58;
+      dotOffsetY += (targetOffsetY - dotOffsetY) * 0.58;
 
-      var offset = clampDotOffset(dotX - ringX, dotY - ringY);
-      var scale = document.body.classList.contains("is-cursor-active") ? 0.5 : 1;
-      dot.style.transform = "translate3d(" + offset.x + "px, " + offset.y + "px, 0) scale(" + scale + ")";
+      var offset = clampDotOffset(dotOffsetX, dotOffsetY);
+      dotOffsetX = offset.x;
+      dotOffsetY = offset.y;
 
+      applyCursorPosition();
       requestAnimationFrame(animateCursor);
     }
 
-    cursor.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0)";
+    snapCursorToMouse();
     animateCursor();
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", snapCursorToMouse);
+      window.visualViewport.addEventListener("scroll", snapCursorToMouse);
+    }
+    window.addEventListener("resize", snapCursorToMouse);
 
     document.querySelectorAll("a, button, .link-card, .note-card, .social-link").forEach(function (el) {
       el.addEventListener("mouseenter", function () {

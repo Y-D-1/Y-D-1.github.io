@@ -7,113 +7,25 @@ author_profile: true
 
 <p class="problems-subtitle">来都来了，做几道题再走吧.</p>
 
-<div id="bankSelector" class="bank-selector" aria-hidden="false"></div>
+<div class="problems-zone">
+  <div id="bankSelector" class="bank-selector cyber-glass-panel" aria-hidden="false"></div>
 
-<div id="problemCard" class="problem-card" aria-live="polite">
-  <p class="problem-empty">正在加载题库...</p>
+  <div id="problemCard" class="problem-card cyber-glass-panel" aria-live="polite">
+    <p class="problem-empty">正在加载题库...</p>
+  </div>
+
+  <div class="problems-actions">
+    <button id="prevProblemBtn" type="button" class="btn" disabled>上一题</button>
+    <button id="nextProblemBtn" type="button" class="btn btn-primary problems-refresh">换一道</button>
+  </div>
 </div>
 
-<button id="nextProblemBtn" type="button" class="btn problems-refresh">换一道</button>
-
 <style>
-.problems-subtitle {
-  margin: 0.25rem 0 0;
-  font-size: 1.18rem;
-  font-weight: 700;
-}
-
-.problem-card {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 14px;
-  padding: 1rem 1rem 0.85rem;
-  margin: 1rem 0;
-  background: var(--global-bg-color);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-}
-
-.problem-header {
-  margin-bottom: 0.55rem;
-}
-
-.problem-difficulty {
-  display: inline-block;
-  font-size: 0.82rem;
-  padding: 0.2rem 0.52rem;
-  border: 1px solid rgba(92, 124, 168, 0.38);
-  border-radius: 999px;
-  background: rgba(47, 125, 225, 0.08);
-}
-
-.problem-question {
-  margin: 0.1rem 0 0.75rem;
-  line-height: 1.6;
-  font-size: 1.02rem;
-}
-
-.problem-question-stem {
-  margin-bottom: 0.2rem;
-}
-
-.problem-subquestions {
-  margin: 0 0 0.8rem 1.35rem;
-  padding-left: 0.2rem;
-}
-
-.bank-selector {
-  margin: 0.45rem 0 0.45rem;
-  font-size: 0.95rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.9rem;
-}
-.bank-selector .bank-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  white-space: nowrap;
-  line-height: 1.2;
-}
-.bank-selector .bank-item input[type="checkbox"] {
-  display: inline-block;
-  flex: 0 0 auto;
-  margin: 0;
-  vertical-align: middle;
-}
-
-.problem-subquestion {
-  margin: 0.3rem 0;
-  line-height: 1.65;
-}
-
-.problem-question-tail {
-  margin-top: 0.35rem;
-}
-
-.problem-empty {
-  margin: 0;
-  color: var(--global-text-color-light);
-}
-
-.problems-refresh {
-  min-width: 132px;
-}
-
-html[data-theme="dark"] .problem-card {
-  border-color: rgba(197, 214, 244, 0.24);
-  background: rgba(24, 35, 52, 0.9);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36);
-}
-
-html[data-theme="dark"] .problem-difficulty {
-  border-color: rgba(146, 182, 237, 0.5);
-  background: rgba(124, 170, 255, 0.2);
-}
-
-@media (max-width: 768px) {
-  .problem-card {
-    padding: 0.9rem 0.86rem 0.82rem;
-  }
-}
+/* Fallback when cyber theme CSS not loaded yet */
+.problems-zone { margin-top: 0.5rem; }
+.problem-card { margin: 1rem 0; padding: 1rem; }
+.problems-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.problem-empty { margin: 0; }
 </style>
 
 <script>
@@ -122,6 +34,7 @@ html[data-theme="dark"] .problem-difficulty {
   var banksIndexUrl = "{{ '/Problem/banks/index.json' | relative_url }}";
   var fallbackBankUrl = "{{ '/Problem/problem-bank.json' | relative_url }}";
   var nextProblemBtn = document.getElementById("nextProblemBtn");
+  var prevProblemBtn = document.getElementById("prevProblemBtn");
   var problemCard = document.getElementById("problemCard");
 
   if (!nextProblemBtn || !problemCard) {
@@ -130,6 +43,8 @@ html[data-theme="dark"] .problem-difficulty {
 
   var allProblems = [];
   var currentProblemId = null;
+  var problemHistory = [];
+  var historyIndex = -1;
   var selectedBankFiles = new Set();
   var bankSelectorEl = document.getElementById('bankSelector');
   var bankNameMap = {
@@ -418,13 +333,56 @@ html[data-theme="dark"] .problem-difficulty {
   function renderProblem(problem) {
     var diff = Number(problem.difficulty);
     var diffLabel = !isNaN(diff) ? String(diff) : "未标注";
+    var pid = problem.id ? String(problem.id) : "";
 
     problemCard.innerHTML = [
-      '<div class="problem-header"><span class="problem-difficulty">难度：' + escapeHtml(diffLabel) + '</span></div>',
+      '<div class="problem-header">',
+      pid ? '<span class="problem-id">' + escapeHtml(pid) + '</span>' : '<span></span>',
+      '<span class="problem-difficulty">难度 ' + escapeHtml(diffLabel) + '</span>',
+      '</div>',
       renderQuestionContent(problem)
     ].join("");
 
     typesetMath(problemCard);
+    updateNavButtons();
+  }
+
+  function updateNavButtons() {
+    if (prevProblemBtn) {
+      prevProblemBtn.disabled = historyIndex <= 0;
+    }
+  }
+
+  function rememberProblem(problem) {
+    if (!problem) {
+      return;
+    }
+
+    if (historyIndex < problemHistory.length - 1) {
+      problemHistory = problemHistory.slice(0, historyIndex + 1);
+    }
+
+    var last = problemHistory[problemHistory.length - 1];
+    if (last && last.id && problem.id && last.id === problem.id) {
+      historyIndex = problemHistory.length - 1;
+      updateNavButtons();
+      return;
+    }
+
+    problemHistory.push(problem);
+    historyIndex = problemHistory.length - 1;
+    updateNavButtons();
+  }
+
+  function showPreviousProblem() {
+    if (historyIndex <= 0) {
+      return;
+    }
+
+    historyIndex -= 1;
+    var previous = problemHistory[historyIndex];
+    currentProblemId = previous.id || null;
+    renderProblem(previous);
   }
 
   function drawProblem() {
@@ -449,6 +407,7 @@ html[data-theme="dark"] .problem-difficulty {
     }
 
     currentProblemId = selected.id || null;
+    rememberProblem(selected);
     renderProblem(selected);
   }
 
@@ -533,6 +492,9 @@ html[data-theme="dark"] .problem-difficulty {
   }
 
   nextProblemBtn.addEventListener("click", drawProblem);
+  if (prevProblemBtn) {
+    prevProblemBtn.addEventListener("click", showPreviousProblem);
+  }
 
   init();
 })();

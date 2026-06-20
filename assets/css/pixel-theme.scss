@@ -28,7 +28,8 @@
   --cyber-text-lg: 18px;
   --cyber-text-xl: 1.65rem;
   --cyber-text-2xl: 2rem;
-  --cyber-radius: 6px;
+  --cyber-radius: 12px;
+  --cyber-radius-lg: 16px;
   --cyber-glow: 0 0 20px rgba(77, 232, 255, 0.15);
   --cyber-glow-strong: 0 0 24px rgba(77, 232, 255, 0.35);
   --masthead-offset: 3.25rem;
@@ -104,13 +105,87 @@ body.cyber-site .cyber-body-content {
 
 .cyber-bg-grid {
   position: absolute;
-  inset: 0;
+  inset: -10%;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 85%);
+}
+
+.cyber-bg-grid-a {
   background-image:
-    linear-gradient(rgba(77, 232, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(77, 232, 255, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(180deg, black 0%, black 70%, transparent 100%);
-  animation: cyberGridDrift 40s linear infinite;
+    linear-gradient(rgba(77, 232, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 232, 255, 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  transform: rotate(-2deg) scale(1.08);
+  animation: cyberGridDriftA 52s linear infinite;
+  opacity: 0.55;
+}
+
+.cyber-bg-grid-b {
+  background-image:
+    linear-gradient(rgba(139, 108, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(72deg, rgba(61, 139, 255, 0.04) 1px, transparent 1px);
+  background-size: 41px 63px;
+  transform: rotate(1.5deg) scale(1.12);
+  animation: cyberGridDriftB 38s linear infinite reverse;
+  opacity: 0.45;
+}
+
+.cyber-bg-orbs {
+  position: absolute;
+  inset: 0;
+}
+
+.cyber-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.45;
+  animation: cyberOrbFloat 14s ease-in-out infinite alternate;
+}
+
+.cyber-orb-1 {
+  width: 280px;
+  height: 280px;
+  top: 8%;
+  left: 12%;
+  background: radial-gradient(circle, rgba(77, 232, 255, 0.35), transparent 70%);
+}
+
+.cyber-orb-2 {
+  width: 360px;
+  height: 360px;
+  top: 55%;
+  right: 8%;
+  background: radial-gradient(circle, rgba(139, 108, 255, 0.28), transparent 70%);
+  animation-delay: -4s;
+}
+
+.cyber-orb-3 {
+  width: 220px;
+  height: 220px;
+  bottom: 10%;
+  left: 38%;
+  background: radial-gradient(circle, rgba(61, 139, 255, 0.25), transparent 70%);
+  animation-delay: -7s;
+}
+
+.cyber-cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 360px;
+  height: 360px;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(77, 232, 255, 0.14) 0%, rgba(61, 139, 255, 0.06) 35%, transparent 68%);
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+body.cyber-site:hover .cyber-cursor-glow {
+  opacity: 1;
 }
 
 .cyber-bg-scan {
@@ -137,14 +212,19 @@ body.cyber-site .cyber-body-content {
   }
 }
 
-@keyframes cyberGridDrift {
-  from {
-    transform: translateY(0);
-  }
+@keyframes cyberGridDriftA {
+  from { transform: rotate(-2deg) scale(1.08) translateY(0); }
+  to { transform: rotate(-2deg) scale(1.08) translateY(72px); }
+}
 
-  to {
-    transform: translateY(48px);
-  }
+@keyframes cyberGridDriftB {
+  from { transform: rotate(1.5deg) scale(1.12) translate(0, 0); }
+  to { transform: rotate(1.5deg) scale(1.12) translate(-24px, 48px); }
+}
+
+@keyframes cyberOrbFloat {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(18px, -24px) scale(1.08); }
 }
 
 @keyframes cyberScan {
@@ -315,13 +395,43 @@ body.cyber-site .archive h1.page__title {
   text-align: left;
 }
 
+body.cyber-site .page__content,
+body.cyber-site .exam-course-item,
+body.cyber-site .author__urls-wrapper,
+body.cyber-site .problem-card {
+  position: relative;
+  background:
+    linear-gradient(145deg, rgba(18, 40, 78, 0.82), rgba(10, 24, 48, 0.65)) !important;
+  border: 1px solid transparent !important;
+  border-radius: var(--cyber-radius-lg) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    var(--cyber-glow) !important;
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.15s ease;
+}
+
+body.cyber-site .page__content::before,
+body.cyber-site .exam-course-item::before,
+body.cyber-site .problem-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(77, 232, 255, 0.45), rgba(139, 108, 255, 0.15) 40%, rgba(61, 139, 255, 0.35));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
 body.cyber-site .page__content {
-  background: var(--cyber-surface);
-  border: 1px solid var(--cyber-border);
-  border-radius: var(--cyber-radius);
-  backdrop-filter: blur(10px);
   padding: 1.5rem 1.75rem;
-  box-shadow: var(--cyber-glow);
   animation: cyberFadeUp 0.5s ease both;
 }
 
@@ -375,21 +485,16 @@ body.cyber-site .page__inner-wrap > header::after {
 
 /* Archive cards */
 body.cyber-site .exam-course-item {
-  background: var(--cyber-surface) !important;
-  border: 1px solid var(--cyber-border) !important;
-  border-radius: var(--cyber-radius) !important;
-  box-shadow: var(--cyber-glow) !important;
   padding: 1.15rem 1.25rem !important;
   margin-bottom: 1rem !important;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease !important;
 }
 
 body.cyber-site .exam-course-item:hover {
-  border-color: var(--cyber-border-strong) !important;
-  box-shadow: var(--cyber-glow-strong) !important;
-  transform: translateY(-2px) !important;
-  background: var(--cyber-surface-hover) !important;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.32),
+    0 0 28px rgba(77, 232, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-3px) !important;
 }
 
 body.cyber-site .archive__item-title a {
@@ -576,9 +681,118 @@ body.cyber-site .is-revealed {
 
 @media (prefers-reduced-motion: reduce) {
   body.cyber-site .cyber-bg-gradient,
-  body.cyber-site .cyber-bg-grid,
+  body.cyber-site .cyber-bg-grid-a,
+  body.cyber-site .cyber-bg-grid-b,
   body.cyber-site .cyber-bg-scan,
+  body.cyber-site .cyber-orb,
+  body.cyber-site .cyber-cursor-glow,
   body.cyber-site .page__content {
     animation: none !important;
   }
+
+  body.cyber-site .cyber-cursor-glow {
+    display: none;
+  }
+}
+
+/* Problems page */
+body.cyber-site .problems-zone {
+  margin-top: 0.5rem;
+}
+
+body.cyber-site .problems-subtitle {
+  font-family: var(--cyber-font-display);
+  font-size: var(--cyber-text-lg);
+  color: var(--cyber-text-dim);
+  margin-bottom: 0.75rem;
+}
+
+body.cyber-site .bank-selector {
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  gap: 0.65rem 1rem;
+}
+
+body.cyber-site .bank-selector .bank-item {
+  font-size: var(--cyber-text-sm);
+  color: var(--cyber-text-dim);
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--cyber-border);
+  background: rgba(77, 232, 255, 0.04);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+body.cyber-site .bank-selector .bank-item:has(input:checked) {
+  border-color: var(--cyber-border-strong);
+  background: rgba(77, 232, 255, 0.12);
+  color: var(--cyber-cyan);
+}
+
+body.cyber-site .problem-card {
+  padding: 1.35rem 1.5rem 1.2rem !important;
+  margin: 1rem 0 1.25rem !important;
+  min-height: 120px;
+}
+
+body.cyber-site .problem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(77, 232, 255, 0.12);
+}
+
+body.cyber-site .problem-id {
+  font-family: var(--cyber-font-mono);
+  font-size: 12px;
+  color: var(--cyber-text-muted);
+  letter-spacing: 0.06em;
+}
+
+body.cyber-site .problem-difficulty {
+  font-family: var(--cyber-font-mono);
+  font-size: 12px;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(77, 232, 255, 0.35);
+  background: rgba(77, 232, 255, 0.08);
+  color: var(--cyber-cyan);
+}
+
+body.cyber-site .problem-question,
+body.cyber-site .problem-subquestion {
+  font-size: var(--cyber-text-base) !important;
+  line-height: 1.8;
+  color: var(--cyber-text);
+}
+
+body.cyber-site .problem-subquestions {
+  margin: 0.75rem 0 0 1.25rem;
+  padding-left: 0.5rem;
+}
+
+body.cyber-site .problems-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+body.cyber-site .problems-actions .btn {
+  min-width: 120px;
+  padding: 0.55rem 1.1rem !important;
+  font-size: var(--cyber-text-sm) !important;
+}
+
+body.cyber-site .problems-actions .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
+
+body.cyber-site .problems-actions .btn-primary {
+  background: linear-gradient(135deg, rgba(77, 232, 255, 0.18), rgba(61, 139, 255, 0.12)) !important;
+  box-shadow: 0 0 20px rgba(77, 232, 255, 0.15);
 }

@@ -1,498 +1,543 @@
 {
   "problems": [
     {
-      "id": "fa-all-01-01",
-      "difficulty": 1,
-      "question": "设 $(X,d)$ 是度量空间，$A\\subset X$，记 $A^\\circ$ 为内部，$A^c=X\\setminus A$. 证明：",
-      "subquestions": [
-        "$A^\\circ$ 是包含于 $A$ 的所有开集之并（即包含于 $A$ 的最大开集）",
-        "$A$ 开当且仅当 $A=A^\\circ$",
-        "$(A^\\circ)^c=\\overline{A^c}$ 与 $(\\overline{A})^c=(A^c)^\\circ$",
-        "以及 $(\\bigcup_{n\\ge1}A_n)^c=\\bigcap_{n\\ge1}A_n^c$."
-      ]
-    },
-    {
-      "id": "fa-all-01-02",
-      "difficulty": 1,
-      "question": "在欧氏空间 $\\mathbb{R}$ 中",
-      "subquestions": [
-        "判断并说明 $\\mathbb{R}\\setminus\\mathbb{Q}$ 与 $\\mathbb{Z}$ 是否为开集或闭集",
-        "在子空间 $E=(-5,3]$ 中，判断 $A=(-5,1]$ 与 $B=(0,3]$ 是否开、是否闭."
-      ]
-    },
-    {
-      "id": "fa-all-01-03",
-      "difficulty": 1,
-      "question": "设 $(E,d)$ 是度量空间.",
-      "subquestions": [
-        "证明 $d_1=\\sqrt{d}$ 与 $d_2=\\ln(1+d)$ 都是 $E$ 上的度量",
-        "若 $f:E\\to E$ 单射，定义 $\\delta(x,y)=d(f(x),f(y))$，证明 $(E,\\delta)$ 是度量空间",
-        "当 $E=\\mathbb{R}, f(x)=\\arctan x$ 时，证明 $x_n\\xrightarrow[\\delta]{}x\\iff |x_n-x|\\to0$，并由此说明两者诱导拓扑相同."
-      ]
-    },
-    {
-      "id": "fa-all-01-04",
-      "difficulty": 1,
-      "question": "设 $(E,d)$ 是度量空间，$A\\subset E$ 非空，定义 $d_A(x)=\\inf_{y\\in A}d(x,y)$. 证明：",
-      "subquestions": [
-        "$\\overline{A\\cup B}=\\overline A\\cup\\overline B$",
-        "$d_A(x)=0\\iff x\\in\\overline A$",
-        "$d_A$ 是 $1$-Lipschitz 因而连续",
-        "若 $F_1,F_2$ 为不交闭集，则 $f=\\frac{d_{F_1}}{d_{F_1}+d_{F_2}}$ 连续，并据此构造不交开集 $O_1,O_2$ 使 $F_i\\subset O_i$."
-      ]
-    },
-    {
-      "id": "fa-all-01-05",
-      "difficulty": 1,
-      "question": "在 $\\mathbb{R}^2$ 上定义 $d(x,y)=\\max\\{|x_1-y_1|,2|x_2-y_2|\\}$.",
-      "subquestions": [
-        "证明 $(\\mathbb{R}^2,d)$ 是度量空间",
-        "画出开球 $B(O,2)$",
-        "并在同一图中画出闭球 $\\overline B((3,2),1)$."
-      ]
-    },
-    {
-      "id": "fa-all-01-06",
-      "difficulty": 1,
-      "question": "设 $f:(E,d_1)\\to(F,d_2)$.",
-      "subquestions": [
-        "证明：$f$ 连续当且仅当任意开集 $O\\subset F$ 的原像 $f^{-1}(O)$ 在 $E$ 中开",
-        "当且仅当任意闭集 $A\\subset F$ 的原像在 $E$ 中闭",
-        "当且仅当对任意 $A\\subset E$，$f(\\overline A)\\subset\\overline{f(A)}$."
-      ]
-    },
-    {
-      "id": "fa-all-02-01",
-      "difficulty": 2,
-      "question": "令 $E=\\mathbb{R}$，$f(x)=\\arctan x$，$\\delta(x,y)=|f(x)-f(y)|$. 已知 $(E,\\delta)$ 是度量空间且其拓扑与欧氏拓扑一致，证明 $(\\mathbb{R},\\delta)$ 不完备. "
-    },
-    {
-      "id": "fa-all-02-02",
-      "difficulty": 2,
-      "question": "在 $C[0,1]$ 上定义 $d_\\infty(f,g)=\\max_{x\\in[0,1]}|f(x)-g(x)|$ 与 $d_1(f,g)=\\int_0^1|f(x)-g(x)|\\,\\mathrm{d}x$. 证明二者不拓扑等价，并说明诱导拓扑 $\\tau_\\infty$ 与 $\\tau_1$ 的细粗关系. "
-    },
-    {
-      "id": "fa-all-02-03",
-      "difficulty": 2,
-      "question": "记 $c_{00}=\\{x=(x_n):x_n\\in\\mathbb{R},\\text{仅有限项非零}\\}$，定义 $d(x,y)=\\sup_n|x_n-y_n|$. 证明度量空间 $(c_{00},d)$ 不完备. "
-    },
-    {
-      "id": "fa-all-02-04",
-      "difficulty": 2,
-      "question": "设 $(X,d)$ 是度量空间，$(x_n)$ 是发散的 Cauchy 列. 证明：",
-      "subquestions": [
-        "对任意 $x\\in X$，数列 $d(x,x_n)$ 收敛",
-        "记其极限为 $g(x)$，证明 $g$ 是 $1$-Lipschitz",
-        "并证明函数 $x\\mapsto\\frac{1}{g(x)}$ 连续且无界."
-      ]
-    },
-    {
-      "id": "fa-all-02-05",
-      "difficulty": 2,
-      "question": "设 $(X,d)$ 完备，$f:X\\to X$ 满足存在 $C>1$ 使得 $d(f(x),f(y))\\ge C d(x,y)$.",
-      "subquestions": [
-        "若 $f$ 满射，证明 $f^{-1}$ 存在且是 Lipschitz 映射",
-        "并结合 Banach 压缩映射原理证明 $f$ 有唯一不动点."
-      ]
-    },
-    {
-      "id": "fa-all-02-06",
-      "difficulty": 2,
-      "question": "设完备度量空间 $(X,d)$ 上映射 $g$ 满足 $x\\neq y\\Rightarrow d(g(x),g(y))<d(x,y)$. 证明：",
-      "subquestions": [
-        "在 $\\mathbb{R}$ 上 $h(x)=\\sqrt{x^2+1}$ 减少距离但无不动点",
-        "在 $E=\\mathbb{N}^*$ 配以 $d_1(p,q)=0$（$p=q$），$d_1(p,q)=2024+\\frac1p+\\frac1q$（$p\\neq q$）时，该空间完备，且 $f(1)=1,f(p)=p+1$（$p\\ge2$）减少距离、唯一不动点为 $1$，但 $f^n(p)$（$p\\ge2$）不收敛到 $1$."
-      ]
-    },
-    {
-      "id": "fa-all-03-01",
-      "difficulty": 2,
-      "question": "证明：",
-      "subquestions": [
-        "度量空间中的紧子集必有界且闭",
-        "紧空间中的闭子集必紧."
-      ]
-    },
-    {
-      "id": "fa-all-03-02",
-      "difficulty": 2,
-      "question": "设 $K$ 是度量空间 $(X,d)$ 的紧子集，$f\\in C(K,\\mathbb{R})$. 证明 $f$ 一致连续. "
-    },
-    {
-      "id": "fa-all-03-03",
-      "difficulty": 2,
-      "question": "设 $K$ 是度量空间 $(X,d)$ 的紧子集，$f\\in C(K,\\mathbb{R})$. 证明 $f$ 有界并可取到最大值和最小值. "
-    },
-    {
-      "id": "fa-all-03-04",
-      "difficulty": 2,
-      "question": "设 $(X,d)$ 完备，$A\\subset X$. 证明：$A$ 相对紧（即 $\\overline A$ 紧）当且仅当 $A$ 全有界（预紧）. "
-    },
-    {
-      "id": "fa-all-03-05",
-      "difficulty": 2,
-      "question": "设 $(E,d)$ 是紧度量空间，映射 $f:E\\to E$ 满足 $x\\neq y\\Rightarrow d(f(x),f(y))<d(x,y)$. 证明 $f$ 有唯一不动点（可令 $h(x)=d(x,f(x))$ 并利用紧集上连续函数取极值）. "
-    },
-    {
-      "id": "fa-all-03-06",
-      "difficulty": 2,
-      "question": "设 $(X,d_1)$ 紧，$(Y,d_2)$ 为度量空间，$F\\subset C(X,Y)$. 证明：",
-      "subquestions": [
-        "$F$ 在 $X$ 上等度连续当且仅当一致等度连续",
-        "若 $(f_n)\\subset C(X,Y)$ 等度连续且逐点收敛到 $f$，则 $f\\in C(X,Y)$ 且 $f_n\\to f$ 一致收敛."
-      ]
-    },
-    {
-      "id": "fa-all-03-07",
-      "difficulty": 2,
-      "question": "设 $(X,d)$，定义 $\\operatorname{diam}(A)=\\sup_{x,y\\in A}d(x,y)$. 证明其基本性质：",
-      "subquestions": [
-        "单调性、与有界性的等价、$\\operatorname{diam}(\\overline A)=\\operatorname{diam}(A)$",
-        "并证明若 $X$ 完备且 $(F_n)$ 为递降非空闭集列且 $\\operatorname{diam}(F_n)\\to0$，则 $\\bigcap_{n\\ge1}F_n$ 为单点",
-        "再给出直径条件不成立时的反例."
-      ]
-    },
-    {
-      "id": "fa-all-03-08",
-      "difficulty": 2,
-      "question": "证明完备性的等价刻画：$(X,d)$ 完备当且仅当任意递降非空闭集列 $(F_n)$ 满足 $\\operatorname{diam}(F_n)\\to0$ 时，$\\bigcap_nF_n$ 非空且为单点. 并证明：任意序列 $(x_n)$ 的聚点集等于 $\\bigcap_{k\\ge1}\\overline{\\{x_n:n\\ge k\\}}$，由此推出 Cauchy 列收敛. "
-    },
-    {
-      "id": "fa-all-04-01",
-      "difficulty": 3,
-      "question": "设 $E$ 是赋范空间，$A,B\\subset E$，定义 $A+B=\\{x+y:x\\in A,y\\in B\\}$.",
-      "subquestions": [
-        "证明：若 $A$ 开则 $A+B$ 开",
-        "若 $A,B$ 紧则 $A+B$ 紧",
-        "若 $A$ 紧且 $B$ 闭则 $A+B$ 闭",
-        "并给出 $A,B$ 均闭但 $A+B$ 非闭的例子."
-      ]
-    },
-    {
-      "id": "fa-all-04-02",
-      "difficulty": 3,
-      "question": "在 $C([0,1],\\mathbb{R})$ 上定义 $\\|f\\|_\\infty=\\sup_{t\\in[0,1]}|f(t)|$，$\\|f\\|_1=\\int_0^1|f(t)|\\,dt$.",
-      "subquestions": [
-        "证明两者都是范数",
-        "证明 $(C([0,1]),\\|\\cdot\\|_\\infty)$ 完备",
-        "证明 $(C([0,1]),\\|\\cdot\\|_1)$ 不完备."
-      ]
-    },
-    {
-      "id": "fa-all-04-03",
-      "difficulty": 3,
-      "question": "设 $c_0=\\{(x_n):x_n\\to0\\}$，定义 $\\|x\\|_\\infty=\\sup_n|x_n|$. 证明 $\\|\\cdot\\|_\\infty$ 是 $c_0$ 上范数，且 $(c_0,\\|\\cdot\\|_\\infty)$ 是 Banach 空间. "
-    },
-    {
-      "id": "fa-all-04-04",
-      "difficulty": 3,
-      "question": "令 $E=C([0,1],\\mathbb{R})$，定义 $N_1(f)=\\int_0^1 x^4|f(x)|\\,\\mathrm{d}x$，$N_2(f)=\\left(\\int_0^1 x^2 f(x)^2\\,\\mathrm{d}x\\right)^{1/2}$.",
-      "subquestions": [
-        "证明 $N_1,N_2$ 都是范数",
-        "证明 $N_1(f)\\le\\frac1{\\sqrt7}N_2(f)$",
-        "并利用题中函数列证明二者不等价."
-      ]
-    },
-    {
-      "id": "fa-all-04-05",
-      "difficulty": 3,
-      "question": "设 $E$ 是 Banach 空间，$A\\in\\mathcal{B}(E)$.",
-      "subquestions": [
-        "证明级数 $\\sum_{k\\ge0}\\frac{A^k}{k!}$ 在 $\\mathcal{B}(E)$ 中收敛并记作 $\\mathrm \\mathrm{e}^A$",
-        "证明 $\\|\\mathrm \\mathrm{e}^A\\|\\le \\mathrm \\mathrm{e}^{\\|A\\|}$",
-        "说明一般 $\\mathrm \\mathrm{e}^A\\mathrm \\mathrm{e}^B\\neq \\mathrm \\mathrm{e}^{A+B}$，但当 $AB=BA$ 时成立，并推出 $(\\mathrm \\mathrm{e}^A)^{-1}=\\mathrm \\mathrm{e}^{-A}$."
-      ]
-    },
-    {
-      "id": "fa-all-04-06",
-      "difficulty": 3,
-      "question": "设 $(E,d)$ 是紧度量空间，$f:E\\to E$ 满足对任意 $x,y\\in E$ 有 $d(f(x),f(y))\\ge d(x,y)$. 证明 $f$ 是等距映射. "
-    },
-    {
-      "id": "fa-all-05-01",
-      "difficulty": 3,
-      "question": "设 $E$ 是实系数多项式空间，$E_0=\\{P\\in E:P(0)=0\\}$，$\\|P\\|_\\infty=\\max_{x\\in[0,1]}|P(x)|$.",
-      "subquestions": [
-        "证明 $N(P)=\\|P'\\|_\\infty$ 定义 $E_0$ 上范数且 $\\|P\\|_\\infty\\le N(P)$",
-        "证明 $L(P)=\\int_0^1\\frac{P(x)}{x}\\,\\mathrm{d}x$ 在 $(E_0,N)$ 上连续并求范数",
-        "判断 $L$ 关于 $\\|\\cdot\\|_\\infty$ 的连续性以及 $N$ 与 $\\|\\cdot\\|_\\infty$ 的等价性."
-      ]
-    },
-    {
-      "id": "fa-all-05-02",
-      "difficulty": 3,
-      "question": "设有限维向量空间 $E$（$\\dim E=n$）及一组基 $(e_1,\\dots,e_n)$.",
-      "subquestions": [
-        "证明 $u\\mapsto [u]$ 给出 $\\mathcal L(E)$ 与 $M_n(\\mathbb K)$ 的同构",
-        "在 $E=\\mathbb K^n$ 赋欧氏范数下，若 $u$ 可正交对角化，证明 $\\|u\\|=\\max_i|\\lambda_i|$",
-        "并给出 $p=1,\\infty$ 时算子范数的矩阵表达."
-      ]
-    },
-    {
-      "id": "fa-all-05-03",
-      "difficulty": 3,
-      "question": "对 $x=(x_1,x_2)^T\\in\\mathbb R^2$ 定义 $\\|x\\|_*=|x_1|+3|x_2|$，设 $A=\\begin{pmatrix}2&-6\\\\0&1\\end{pmatrix}$，$\\varphi(x)=Ax$. 证明 $\\|\\cdot\\|_*$ 是范数，并计算 $\\|\\varphi\\|_{\\mathcal B((\\mathbb R^2,\\|\\cdot\\|_*))}=3$. "
-    },
-    {
-      "id": "fa-all-05-04",
-      "difficulty": 3,
-      "question": "令 $E=C([0,1],\\mathbb R)$，赋一致范数. 定义 $T$：$(Tf)(x)=\\int_0^x t f(t)\\,dt + x\\int_x^1 f(t)\\,dt$.",
-      "subquestions": [
-        "证明 $T$ 线性",
-        "证明 $|Tf(x)|\\le\\left(x-\\frac{x^2}{2}\\right)\\|f\\|_\\infty$",
-        "证明 $T\\in\\mathcal B(E)$ 并计算 $\\|T\\|$",
-        "讨论方程 $Tf=f$ 是否有非平凡解."
-      ]
-    },
-    {
-      "id": "fa-all-05-05",
-      "difficulty": 3,
-      "question": "设赋范空间 $E,F$，$\\varphi:E\\to\\mathbb K$ 是不连续线性泛函.",
-      "subquestions": [
-        "证明 $\\ker\\varphi$ 非闭，且存在 $u\\in\\overline{\\ker\\varphi}\\setminus\\ker\\varphi$ 使 $\\varphi(u)=1$",
-        "并证明任意 $x\\in E$ 都属于 $\\overline{\\ker\\varphi}$，从而 $\\ker\\varphi$ 在 $E$ 中稠密."
-      ]
-    },
-    {
-      "id": "fa-all-05-06",
-      "difficulty": 3,
-      "question": "设 $E$ 为实系数多项式空间，定义 $\\varphi(P)=xP'(x)$. 证明 $\\varphi:",
-      "subquestions": [
-        "E\\to E$ 线性",
-        "证明不论在 $E$ 上赋何范数，$\\varphi$ 都不连续",
-        "计算 $\\ker\\varphi$ 并证明其闭性，解释为何不与 $\\varphi$ 不连续矛盾."
-      ]
-    },
-    {
-      "id": "fa-all-06-01",
-      "difficulty": 4,
-      "question": "设 $E$ 是 Banach 空间. 证明：",
-      "subquestions": [
-        "若 $u\\in\\mathcal B(E)$ 且 $\\|u\\|<1$，则 $I_E-u$ 可逆",
-        "$GL(E)$ 在复合下成群且是 $\\mathcal B(E)$ 的开集",
-        "映射 $u\\mapsto u^{-1}$ 是 $GL(E)$ 上同胚."
-      ]
-    },
-    {
-      "id": "fa-all-06-02",
-      "difficulty": 4,
-      "question": "设无穷矩阵 $A=(a_{ij})_{i,j\\ge1}$. 证明：",
-      "subquestions": [
-        "$A$ 可延拓为 $c_0\\to\\ell^\\infty$ 的有界线性算子当且仅当 $\\sup_i\\sum_j|a_{ij}|<\\infty$，且算子范数等于该上确界",
-        "$A$ 可延拓为 $\\ell^1$ 上有界线性算子当且仅当 $\\sup_j\\sum_i|a_{ij}|<\\infty$，且范数等于该上确界."
-      ]
-    },
-    {
-      "id": "fa-all-06-03",
-      "difficulty": 4,
-      "question": "在 $M_n(\\mathbb C)$ 上定义 Schur/Frobenius 范数 $\\|A\\|_s=\\sqrt{\\operatorname{tr}(A^*A)}$. 证明：",
-      "subquestions": [
-        "$\\|\\cdot\\|_s$ 是范数",
-        "$(M_n(\\mathbb C),\\|\\cdot\\|_s)$ 是 Banach 空间",
-        "并且 $\\|AB\\|_s\\le\\|A\\|_s\\|B\\|_s$."
-      ]
-    },
-    {
-      "id": "fa-all-07-01",
-      "difficulty": 4,
-      "question": "设 $f\\in L^2(\\mathbb R)$，$g(x)=\\frac1x\\mathbf1_{[1,\\infty)}(x)$.",
-      "subquestions": [
-        "证明 $fg\\in L^1(\\mathbb R)$",
-        "并给出 $f_1,f_2\\in L^1(\\mathbb R)$ 但 $f_1f_2\\notin L^1(\\mathbb R)$ 的例子."
-      ]
-    },
-    {
-      "id": "fa-all-07-02",
-      "difficulty": 4,
-      "question": "设 $(\\Omega,\\mathcal A,\\mu)$. 证明：",
-      "subquestions": [
-        "若 $\\mu(\\Omega)<\\infty$ 且 $0<p<q\\le\\infty$，则 $L^q(\\Omega)\\subset L^p(\\Omega)$（并给出 $\\mu(\\Omega)=\\infty$ 的反例）",
-        "若 $f\\in L^\\infty(\\Omega)$，则 $f\\in\\bigcap_{p<\\infty}L^p(\\Omega)$ 且 $\\|f\\|_\\infty=\\lim_{p\\to\\infty}\\|f\\|_p$",
-        "若 $f\\in\\bigcap_{p<\\infty}L^p(\\Omega)$ 且 $\\limsup_{p\\to\\infty}\\|f\\|_p<\\infty$，则 $f\\in L^\\infty(\\Omega)$."
-      ]
-    },
-    {
-      "id": "fa-all-07-03",
-      "difficulty": 4,
-      "question": "设 $f,g\\in L^1(\\mathbb R)$.",
-      "subquestions": [
-        "证明卷积积分恒等式并说明卷积几乎处处有定义",
-        "证明 $f*g\\in L^1(\\mathbb R)$ 且 $\\|f*g\\|_1\\le\\|f\\|_1\\|g\\|_1$",
-        "计算 $\\mathbf1_{[0,1]}*\\mathbf1_{[0,1]}$."
-      ]
-    },
-    {
-      "id": "fa-all-08-01",
-      "difficulty": 4,
-      "question": "设 $H$ 是内积空间，$x_n,x\\in H$ 且 $\\|x_n\\|\\to\\|x\\|$，并对任意 $y\\in H$ 有 $\\langle y,x_n\\rangle\\to\\langle y,x\\rangle$. 证明 $\\|x_n-x\\|\\to0$. "
-    },
-    {
-      "id": "fa-all-08-02",
-      "difficulty": 4,
-      "question": "证明：",
-      "subquestions": [
-        "在 Hilbert 空间中有 Rademacher 平均平方恒等式",
-        "若 Banach 空间范数与某内积范数等价，则存在常数给出对应双边估计",
-        "据此证明当 $p\\neq2$ 时，$c_0,\\ell^p,L^p(0,1)$ 不存在等价内积范数."
-      ]
-    },
-    {
-      "id": "fa-all-08-03",
-      "difficulty": 4,
-      "question": "设内积空间 $(E,\\langle\\cdot,\\cdot\\rangle)$ 与子集 $A,B\\subset E$. 证明正交补的基本关系：",
-      "subquestions": [
-        "$(A\\cup B)^\\perp=A^\\perp\\cap B^\\perp$、$A^\\perp+B^\\perp\\subset(A\\cap B)^\\perp$、$A^\\perp\\cap B^\\perp\\subset(A+B)^\\perp$（并讨论何时取等）",
-        "证明 $A\\subset A^{\\perp\\perp}$ 与 $A^\\perp=A^{\\perp\\perp\\perp}$",
-        "若 $E$ 为 Hilbert 且闭子空间 $F\\perp G$，证明 $F+G$ 闭."
-      ]
-    },
-    {
-      "id": "fa-all-08-04",
-      "difficulty": 4,
-      "question": "设赋范空间 $E$ 上投影算子 $p\\in\\mathcal B(E)$（$p^2=p$）.",
-      "subquestions": [
-        "证明 $\\operatorname{Im}(p)$ 闭",
-        "若 $E$ 为内积空间且 $p$ 为正交投影，证明 $\\|p\\|\\le1$ 且 $p\\neq0$ 时 $\\|p\\|=1$",
-        "反之若投影满足 $\\|p\\|\\le1$，证明其必为正交投影."
-      ]
-    },
-    {
-      "id": "fa-all-09-01",
-      "difficulty": 5,
-      "question": "令 $E=c_{00}(\\mathbb N)$，内积 $\\langle u,v\\rangle=\\sum_{n\\ge0}u_nv_n$. 定义 $f(u)=\\sum_{n\\ge0}\\frac{u_n}{n+1}$，$F=\\ker f$.",
-      "subquestions": [
-        "证明 $f\\in \\mathrm{e}^*$、$F$ 闭并计算 $\\|f\\|$",
-        "证明 $F^\\perp=\\{0\\}$，从而 $F^{\\perp\\perp}\\neq\\overline F$，并解释其意义."
-      ]
-    },
-    {
-      "id": "fa-all-09-02",
-      "difficulty": 5,
-      "question": "设 $E=C([0,1])$，$\\langle f,g\\rangle=\\int_0^1 f(t)\\overline{g(t)}\\,dt$，$E_0=\\{f:\\int_0^1f=0\\}$，$H=\\{f:f(1)=0\\}$，$H_0=E_0\\cap H$.",
-      "subquestions": [
-        "证明 $H_0$ 是 $H$ 的闭真子空间",
-        "设 $h(t)=t-\\frac12$，证明 $E=\\operatorname{span}(H,h)$、$E_0=\\operatorname{span}(H_0,h)$ 且 $h\\in\\overline{H_0}$",
-        "并证明在 $E_0$ 中 $H_0^\\perp=\\{0\\}$."
-      ]
-    },
-    {
-      "id": "fa-all-09-03",
-      "difficulty": 5,
-      "question": "设 Hilbert 空间上 $T\\in\\mathcal B(H)$ 自伴，证明 $\\|T\\|=\\sup\\{|\\langle Tx,x\\rangle|:\\|x\\|\\le1\\}$. 并应用：若 $S\\in\\mathcal B(H)$ 满足 $\\langle Sx,x\\rangle=0$（对任意 $x$），在复 Hilbert 情形证明 $S=0$，并讨论实情形. "
-    },
-    {
-      "id": "fa-all-09-04",
-      "difficulty": 5,
-      "question": "计算若干伴随算子：",
-      "subquestions": [
-        "$\\varphi(x)=\\langle x,u\\rangle v$ 的算子范数与伴随",
-        "$T(f)(x)=\\int_0^x f(t)\\,dt$ 在 $L^2(0,1)$ 上的伴随",
-        "左移算子 $S_l(u_1,u_2,\\dots)=(u_2,u_3,\\dots)$ 在 $\\ell^2(\\mathbb N^*)$ 上的范数与伴随."
-      ]
-    },
-    {
-      "id": "fa-all-09-05",
-      "difficulty": 5,
-      "question": "设 $H$ 是 Hilbert 空间，$T\\in\\mathcal B(H)$.",
-      "subquestions": [
-        "证明 $\\ker(T)=\\ker(T^*T)$",
-        "若子空间 $E\\subset H$ 满足 $T(E)\\subset E$，证明 $T^*(\\mathrm{e}^\\perp)\\subset \\mathrm{e}^\\perp$."
-      ]
-    },
-    {
       "id": "fa-all-10-01",
-      "difficulty": 5,
-      "question": "令 $E=\\mathbb R_2[X]$，定义 $\\langle P,Q\\rangle=\\sum_{i=0}^2 2^iP(i)Q(i)$.",
+      "difficulty": 3,
+      "question": "令 $ E = \\mathbb{R}_2[X] $ 是所有阶数小于等于2的多项式的全体. 对任意 $ P, Q \\in E $，设 $$ \\langle P, Q \\rangle = \\sum_{0 \\leq i \\leq 2} 2^i P(i) Q(i) .$$",
       "subquestions": [
-        "证明该式定义内积并说明 $E$ 是 Hilbert 空间",
-        "对基 $\\{1,x,x^2\\}$ 施行 Gram-Schmidt 正交化，求一组正交基."
+        "证明 $ \\langle \\cdot, \\cdot \\rangle $ 定义了 $ E $ 上的一个内积，快速说明 $ (E, \\langle \\cdot, \\cdot \\rangle) $ 是一个Hilbert空间",
+        "针对 $ \\{1, x, x^2\\} $，利用Gram-Schmi\\mathrm{d} t正交化法，找到 $ E $ 的一组正交基"
       ]
     },
     {
       "id": "fa-all-10-02",
-      "difficulty": 5,
-      "question": "设 $E=L^2(\\mathbb R_+,\\mathrm{e}^{-x}\\mathrm{d}x)$.",
+      "difficulty": 3,
+      "question": "令 $ E = L^2(\\mathbb{R}_+, \\mathrm{e}^{-x} \\mathrm{d} x) $",
       "subquestions": [
-        "给出自然内积并证明 $E$ 是 Hilbert 空间",
-        "计算 $\\int_0^\\infty x^k \\mathrm{e}^{-px}\\,\\mathrm{d}x$（$k\\in\\mathbb N,p>0$）",
-        "用正交投影求 $a,b,c\\in\\mathbb R$ 使 $\\int_0^\\infty|\\mathrm{e}^{-x}-ax^2-bx-c|^2e^{-x}\\mathrm{d}x$ 最小."
+        "在 $ E $ 上给定自然的内积，证明 $ E $ 是一个 Hilbert 空间. 计算 $$ \\int_0^\\infty x^k \\mathrm{e}^{-px} \\mathrm{d} x, \\quad \\forall k \\in \\mathbb{N}, \\quad p > 0. $$",
+        "利用正交投影确定 $ a, b, c \\in \\mathbb{R} $ 使其最小化 $$ J = \\int_0^\\infty |\\mathrm{e}^{-x} - ax^2 - bx - c|^2 \\mathrm{e}^{-x} \\mathrm{d} x. $$"
       ]
     },
     {
       "id": "fa-all-10-03",
-      "difficulty": 5,
-      "question": "设 $H$ 为内积空间，定义向量组 $(x_1,\\dots,x_n)$ 的 Gram 行列式 $G(x_1,\\dots,x_n)$.",
+      "difficulty": 3,
+      "question": "设 $H$ 是内积空间. $(x_{1}, \\cdots, x_{n})$ 是 $H$ 中的任一向量组, 称矩阵 $(\\langle \\1, \\2 \\rangle)_{1\\leq i,j\\leq n}$ 的行列式为向量组 $\\left(x_{1},\\cdots, x_{n}\\right)$ 的 Gram 行列式, 记作 $G(x_{1},\\cdots,x_{n})$",
       "subquestions": [
-        "证明 $G\\ge0$ 且 $G>0\\iff\\{x_i\\}$ 线性无关",
-        "并在 $\\{x_i\\}$ 线性无关时证明 $d(x,\\operatorname{span}(x_1,\\dots,x_n))^2=\\frac{G(x,x_1,\\dots,x_n)}{G(x_1,\\dots,x_n)}$."
+        "证明 $G(x_{1},\\cdots,x_{n})\\geq 0$； 且 $G\\left(x_{1},\\cdots,x_{n}\\right)>0$ 当且仅当向量组 $\\left(x_{1}, \\cdots, x_{n}\\right)$ 线性独立",
+        "假设向量组 $\\left(x_{1},\\cdots,x_{n}\\right)$ 线性独立. 令 $E=\\operatorname{span}\\left(x_{1},\\cdots, x_{n}\\right)$. 证明 $$ d(x, E)^{2}=\\frac{G\\left(x, x_{1}, x_{2}, \\cdots, x_{n}\\right)}{G\\left(x_{1}, x_{2}, \\cdots, x_{n}\\right)}, \\quad \\forall x\\in H. $$"
       ]
     },
     {
       "id": "fa-all-10-04",
-      "difficulty": 5,
-      "question": "设连续函数 $f:\\mathbb R_+\\to\\mathbb R$ 满足对任意 $x>0$ 有 $f(nx)\\to0$. 利用 Baire 定理证明 $\\lim_{y\\to\\infty}f(y)=0$. "
+      "difficulty": 3,
+      "question": "设 $ f $ 是一个从 $ \\bbR_+ $ 到 $ \\mathbb{R} $ 的连续函数，且满足对任意 $ x > 0 $，$\\lim_{n \\to \\infty} f(nx) = 0$. 我们将证明 $\\lim_{y \\to \\infty} f(y) = 0$. 令 $\\varepsilon > 0$，记 $ F_k = \\{ y \\geq 0 : |f(ny)| \\leq \\varepsilon, \\forall n \\geq k \\}. $",
+      "subquestions": [
+        "证明：对任意 $ k \\in \\mathbb{N} $，$ F_k $ 是闭集. 证明 $(0,\\infty) \\subset \\bigcup_{k \\in \\mathbb{N}} F_k$",
+        "利用 Baire 定理推出：存在 $ y_0 > 0 $ 使得对所有的 $ x \\geq y_0 $，都有 $ |f(x)| \\leq \\varepsilon $. 由此得出我们要证明的结论. （提示：我们什么时候可以说两个区间的并集仍是一个区间？）"
+      ]
     },
     {
       "id": "fa-all-10-05",
-      "difficulty": 5,
-      "question": "证明：",
+      "difficulty": 3,
+      "question": "\\vspace{-.2cm}",
       "subquestions": [
-        "赋范空间中任意真子空间内部为空",
-        "由此证明全体多项式构成的线性空间不能赋予完备范数."
+        "设 $E$ 是赋范空间，$F$是$E$的向量子空间. 证明：若$F\\neq E$，则$F$在$E$中的内部是空集",
+        "由此证明所有的多项式构成的空间不能赋予完备范数"
       ]
     },
     {
       "id": "fa-all-10-06",
-      "difficulty": 5,
-      "question": "设 $E,F$ 为 Banach 空间，$(u_n)\\subset\\mathcal B(E,F)$. 证明下列命题等价：",
+      "difficulty": 3,
+      "question": "设 $E$ 和 $F$ 都是 Banach 空间，$(u_n)$ 是 $\\mathcal{B}(E, F)$的序列. 证明下列命题等价：",
       "subquestions": [
-        "1) 对每个 $x\\in E$，$(u_n(x))$ 收敛",
-        "2) 存在 $A\\subset E$ 使 $\\operatorname{span}(A)$ 在 $E$ 中稠密、$(u_n(a))$ 对每个 $a\\in A$ 收敛，且 $(u_n)$ 有界."
+        "$(u_n(x))$ 在每个 $x \\in E$ 处收敛",
+        "$A \\subset E$ 且 $\\mathrm{span}(A)$ 在 $E$ 中稠密，$(u_n(a))$ 在每个 $a \\in A$ 处收敛，且 $(u_n)$ 有界"
       ]
     },
     {
       "id": "fa-all-10-07",
-      "difficulty": 5,
-      "question": "在 $E=C([0,1])$（一致范数）上定义 $u_n(f)=n\\int_0^1f(t)dt-\\sum_{k=1}^n f(\\frac{k}{n})$. 证明：",
+      "difficulty": 3,
+      "question": "考虑空间 $E = (C([0,1]), \\mathbb{R})$，其上赋予一致范数 $\\| \\cdot \\|_{\\infty}$. 定义 $(C([0,1]))^*$ 中的连续泛函序列 $(u_n)$ 如下 $$ u_n(f) = n \\int_0^1 f(t) \\, \\mathrm{d} t - \\sum_{k=1}^n f \\left( \\frac{k}{n} \\right). $$",
       "subquestions": [
-        "若 $f$ 是 Lipschitz 函数，则 $\\frac{u_n(f)}{n}=O(\\frac1n)$",
-        "$\\|u_n\\|=2n$",
-        "并推出集合 $\\{f\\in E:\\frac{u_n(f)}{n}\\neq O(\\frac1n)\\}$ 是稠密 $G_\\delta$."
+        "证明：如果 $f$ 是 Lipschitz 函数，则 $$ \\frac{u_n(f)}{n} = O \\left( \\frac{1}{n} \\right), \\quad \\text{当 } n \\to \\infty. $$",
+        "证明：$\\| u_n \\| = 2n$",
+        "由此导出集合 $$ \\left\\{ f \\in E : \\frac{u_n(f)}{n} \\neq O \\left( \\frac{1}{n} \\right) \\right\\} $$ 是 $C([0,1])$ 中稠密的 $G_\\delta$ 集"
       ]
     },
     {
       "id": "fa-all-10-08",
-      "difficulty": 5,
-      "question": "设 $X=C^1([0,1],\\mathbb R)$ 赋一致范数，$Y=C([0,1],\\mathbb R)$ 赋一致范数，$u:X\\to Y$ 定义为 $u(f)=f'$. 证明 $u$ 的图像闭，但 $u$ 不连续，并解释这一现象. "
+      "difficulty": 3,
+      "question": "设 $X = C^1([0,1], \\mathbb{R})$，即由 $[0,1]$ 上有连续导数的函数构成的集合，其上赋予连续一致范数 $\\|\\cdot\\|_\\infty$，并设 $Y = C([0,1], \\mathbb{R})$，其上也赋予一致范数. 考虑映射 $u: X \\to Y$，$u(f) = f'$. \\\\ 证明：$u$ 的图像是闭的，但 $u$ 不连续. 解释该结论的意义"
     },
     {
       "id": "fa-all-11-01",
-      "difficulty": 5,
-      "question": "在 $E=C([0,1],\\mathbb R)$ 上定义算子 $T$：$Tf(0)=\\frac\\pi2 f(0)$，$Tf(x)=\\int_0^x\\frac{f(t)}{\\sqrt{x^2-t^2}}dt$（$x\\in(0,1]$）.",
+      "difficulty": 3,
+      "question": "在 $ E = C([0,1], \\mathbb{R}) $ 上赋予范数 $\\|f\\|_\\infty = \\max\\limits_{x \\in [0,1]} |f(x)| $. 考虑算子 $ T $ 定义如下：$ Tf(0) = \\frac{\\pi}{2}f(0) $ 并且 $$ Tf(x) = \\int_0^x \\frac{f(t)}{\\sqrt{x^2 - t^2}} \\mathrm{d} t, \\quad \\forall x \\in (0,1]. $$",
       "subquestions": [
-        "证明 $T\\in\\mathcal B(E)$ 且 $\\|T\\|=\\frac\\pi2$",
-        "对 $g(x)=x^r$（$r\\ge0$）分析特征值",
-        "讨论 $0\\in\\sigma(T)$ 与谱半径 $r(T)$."
+        "利用变量替换 $ t = x \\sin \\theta $，证明对任意 $ f \\in E $，$ Tf \\in E $",
+        "证明 $ T \\in \\mathcal{B}(E) $ 且 $\\|T\\| = \\frac{\\pi}{2}$",
+        "考虑 $ g(x) = x^r $，其中 $ r \\geq 0 $. 证明任意 $ \\lambda \\in (0, \\frac{\\pi}{2}] $ 都是 $ T $ 的特征值",
+        "是否成立 $ 0 \\in \\sigma(T) $？$ T $ 的谱半径 $ r(T) $ 是多少？"
       ]
     },
     {
       "id": "fa-all-11-02",
-      "difficulty": 5,
-      "question": "令 $E=\\ell^2(\\mathbb N_+,\\mathbb R)$，$S$ 为左移算子 $S(u_1,u_2,\\dots)=(u_2,u_3,\\dots)$.",
+      "difficulty": 3,
+      "question": "令 $ E = \\ell^2(\\mathbb{N}_+, \\mathbb{R}) $，$ S $ 为左移算子，即 $ S(u) = (u_2, u_3, \\cdots) $，其中 $ u = (u_n)_{n \\geq 1} \\in E $",
       "subquestions": [
-        "证明 $v^\\lambda=(\\lambda^n)_{n\\ge1}\\in E\\iff |\\lambda|<1$ 并计算其范数",
-        "求点谱 $\\sigma_p(S)$ 及核空间",
-        "计算 $\\|S\\|$、预解集、谱及谱半径."
+        "对任意 $ \\lambda \\in \\mathbb{R} $，记 $ v^\\lambda = (\\lambda^n)_{n \\geq 1} $. 证明 $ v^\\lambda \\in E $ 当且仅当 $ |\\lambda| < 1 $. 计算 $\\|v^\\lambda\\|$",
+        "证明 $ \\sigma_p(S) = (-1,1) $. 证明对任意 $ 0<|\\lambda|<1 $，$ \\ker(S - \\lambda I) = \\operatorname{span}\\{v^\\lambda\\} $. 这里 $ I $ 是 $ E $ 到 $ E $ 的恒等映射",
+        "计算 $\\|S\\|, \\rho(S), \\sigma(S)$ 以及 $ S $ 的谱半径 $ r(S) $"
       ]
     },
     {
       "id": "fa-all-11-03",
-      "difficulty": 5,
-      "question": "设 Banach 空间 $E$ 上 $T,S\\in\\mathcal B(E)$. 证明：",
+      "difficulty": 3,
+      "question": "设 $ E $ 是一个 Banach 空间. 设 $ T, S \\in \\mathcal{B}(E) $",
       "subquestions": [
-        "若 $\\|T\\|,\\|S\\|<1$，则 $I-TS$ 与 $I-ST$ 可逆且 $(I-TS)^{-1}=I+T(I-ST)^{-1}S$",
-        "进一步证明一般情形下 $(I-TS)$ 可逆当且仅当 $(I-ST)$ 可逆",
-        "推出 $\\sigma(TS)\\cup\\{0\\}=\\sigma(ST)\\cup\\{0\\}$，并在左移算子情形比较 $\\sigma(S^*S)$ 与 $\\sigma(SS^*)$."
+        "假设 $\\|T\\|, \\|S\\| < 1$. 证明算子 $ I - TS, I - ST $ 都是可逆的并且 $$ (I - TS)^{-1} = I + T(I - ST)^{-1}S. $$",
+        "对任意 $ T, S \\in \\mathcal{B}(E) $，证明 $(I - TS)$ 可逆当且仅当 $(I - ST)$ 是可逆的",
+        "推出对任意 $ T, S \\in \\mathcal{B}(E) $，$ \\sigma(TS) \\cup \\{0\\} = \\sigma(ST) \\cup \\{0\\} $",
+        "假设 $ E = \\ell^2(\\mathbb{N}_+), S $ 为左移算子. 是否成立 $ \\sigma(S^*S) = \\sigma(SS^*) $？"
+      ]
+    },
+    {
+      "id": "fa-all-1-01",
+      "difficulty": 3,
+      "question": "设 $(X,d)$ 是一个度量空间，$A \\subset X$. 记 $\\mathring{A}$ 或 $A^\\circ$ 为 $A$ 的内部，$A^c = X \\setminus A$. 证明以下结论：",
+      "subquestions": [
+        "$\\mathring{A}$ 是包含于 $A$ 的所有开集的并，等价地说，$\\mathring{A}$ 是包含于 $A$ 的最大开集",
+        "$A$ 是开集当且仅当 $A = \\mathring{A}$",
+        "${(\\mathring{A})}^c = \\overline{A^c}$, ${(\\overline{A})}^c = {(A^c)}^{\\circ}$",
+        "$\\displaystyle \\left( \\bigcup_{n=0}^{\\infty} A_n \\right)^c = \\bigcap_{n=0}^{\\infty} A_n^c $，其中 $A_n \\subset X, n = 1, 2, \\cdots$"
+      ]
+    },
+    {
+      "id": "fa-all-1-02",
+      "difficulty": 3,
+      "question": "设 $\\mathbb{R}$ 是欧式距离空间",
+      "subquestions": [
+        "$\\mathbb{R} \\setminus \\mathbb{Q}$ 是 $\\mathbb{R}$ 的开集还是闭集？$\\mathbb{Z}$ 呢？为什么？",
+        "令 $E = (-5, 3]$ 并赋予 $\\mathbb{R}$ 的度量. 请问 $A = (-5, 1]$ 在 $E$ 中是开集吗？是闭集吗？$B = (0, 3]$ 在 $E$ 中是开集吗？是闭集吗？"
+      ]
+    },
+    {
+      "id": "fa-all-1-03",
+      "difficulty": 3,
+      "question": "设 $(E,d)$ 是一个度量空间",
+      "subquestions": [
+        "证明 $d_1 = \\sqrt{d}$ 和 $d_2 = \\ln(d+1)$ 也是 $E$ 上的度量",
+        "设 $f : E \\to E$ 是一个单射，对任意 $x, y \\in E$，定义 $\\delta(x,y) = d(f(x),f(y))$. 证明 $(E,\\delta)$ 也是一个度量空间",
+        "令 (2) 中的 $E = \\mathbb{R}$ 以及 $f(x) = \\arctan x$. 证明 $x_n \\xrightarrow{\\delta} x$ 当且仅当 $|x_n - x| \\to 0$. 由此说明由 $\\delta$ 诱导的 $\\mathbb{R}$ 上的拓扑与欧式距离诱导的拓扑是一样的"
+      ]
+    },
+    {
+      "id": "fa-all-1-04",
+      "difficulty": 3,
+      "question": "设 $(E,d)$ 是一个度量空间，$A \\subset E$ 为一个非空集合",
+      "subquestions": [
+        "证明：对任意 $A, B \\subset E$，$\\overline{A \\cup B} = \\overline{A} \\cup \\overline{B}$",
+        "定义 $d_A(x) = \\inf_{y \\in A} d(x,y)$. 证明 $d_A(x) = 0$ 当且仅当 $x \\in \\overline{A}$",
+        "证明 $d_A$ 是 1-Lipschitz 的，因此 $d_A$ 是从 $E$ 到 $\\mathbb{R}_+ := [0, \\infty)$ 的连续映射",
+        "令 $F_1$ 和 $F_2$ 是 $E$ 中不相交的闭集. 证明 $f = \\dfrac{d_{F_1}}{d_{F_1}+d_{F_2}}$ 是 $E$ 上的连续函数. 由此推出结论：存在不相交的开集 $O_1, O_2$ (即 $O_1 \\cap O_2 = \\varnothing$) 使得 $F_i \\subset O_i, i = 1, 2$"
+      ]
+    },
+    {
+      "id": "fa-all-1-05",
+      "difficulty": 3,
+      "question": "设 $x = (x_1, x_2), y = (y_1, y_2) \\in \\mathbb{R}^2$，定义 $d(x,y) = \\max\\{|x_1 - y_1|, 2|x_2 - y_2|\\}$",
+      "subquestions": [
+        "证明 $(\\mathbb{R}^2,d)$ 是一个度量空间",
+        "准确的画出开球 $B(O,2)$，其中 $O$ 是 $\\mathbb{R}^2$ 中的原点",
+        "在同一副图中画出闭球 $\\overline{B}((3,2),1)$"
+      ]
+    },
+    {
+      "id": "fa-all-1-06",
+      "difficulty": 3,
+      "question": "设 $f$ 是一个从 $(E,d_1)$ 到 $(F,d_2)$ 的映射. 证明 $f$ 是连续的与以下结论中任意一个都等价：",
+      "subquestions": [
+        "对任意 $F$ 中的开集 $O$, $f^{-1}(O)$ 是 $E$ 中的开集",
+        "对任意 $F$ 中的闭集 $A$, $f^{-1}(A)$ 是 $E$ 中的闭集",
+        "对任意 $A \\subset E$, $f(\\overline{A}) \\subset \\overline{f(A)}$"
+      ]
+    },
+    {
+      "id": "fa-all-2-01",
+      "difficulty": 3,
+      "question": "令 $ E = \\mathbb{R} $ 以及 $ f(x) = \\arctan x $. 对任意 $ x, y \\in E $，定义 $ \\delta(x, y) = |f(x) - f(y)| $. 我们在第一次作业中习题 \\refeq{qs:7.1.3} 证明了 $(E, \\delta)$ 也是一个度量空间，并且由 $\\delta$ 诱导的 $\\mathbb{R}$ 上的拓扑与欧式距离诱导的拓扑是一样的. 请证明 $(\\mathbb{R}, \\delta)$ 不完备"
+    },
+    {
+      "id": "fa-all-2-02",
+      "difficulty": 3,
+      "question": "在 $ C[0, 1] $ 上定义如下两个度量：$$ d_{\\infty}(f, g) = \\max_{x \\in [0, 1]} |f(x) - g(x)| ,\\quad d_1(f, g) = \\int_0^1 |f(x) - g(x)| dx. $$请利用课堂所讲的拓扑等价的定义，说明 $ d_1 $ 和 $ d_{\\infty} $ 不是拓扑等价的，并进一步说明两者分别诱导的拓扑 $\\tau_{\\infty}$ 和 $\\tau_1$ 的强弱（细粗）关系. （提示：考虑 $(C[0, 1], d_{\\infty}) \\rightarrow (C[0, 1], d_1)$ 上的恒同映射及其逆映射，并利用连续映射的等价刻画：开集的原像仍是开集. ）"
+    },
+    {
+      "id": "fa-all-2-03",
+      "difficulty": 3,
+      "question": "记 $ c_{00} := \\{ x = (x_1, x_2, \\cdots, x_n, \\cdots) \\mid x_n \\in \\mathbb{R}\\ \\text{且}\\ x_n \\text{中只有有限项不为0}\\} $. 对任意 $ x, y \\in c_{00} $，定义 $ d(x, y) = \\max_n |x_n - y_n| $. 证明度量空间 $(c_{00}, d)$ 不完备"
+    },
+    {
+      "id": "fa-all-2-04",
+      "difficulty": 3,
+      "question": "设 $(X, d)$ 是一个度量空间. 设 $\\{x_n\\}$ 是 $ X $ 中的一个发散的 Cauchy 列",
+      "subquestions": [
+        "证明对任意 $ x \\in X $，数列 $\\{d(x, x_n)\\}$ 收敛，我们记其极限为 $ g(x) $",
+        "证明函数 $ x \\mapsto g(x) $ 是 1-Lipschitz 的",
+        "证明函数 $ x \\mapsto \\frac{1}{g(x)} $ 是一个无界连续函数"
+      ]
+    },
+    {
+      "id": "fa-all-2-05",
+      "difficulty": 3,
+      "question": "设 $(X, d)$ 是一个完备的度量空间. 设 $ f : X \\rightarrow X $ 是一个映射且满足如下性质：存在常数 $ C > 1 $ 使得对任意 $ x, y \\in X $，$ d(f(x), f(y)) \\geq Cd(x, y) $",
+      "subquestions": [
+        "假设 $ f $ 是一个满射. 证明 $ f^{-1} $ 存在并且是 Lipschitz 的",
+        "复述 Banach 压缩映射原理. 证明：如果 $ f $ 是满射，则 $ f $ 有唯一的不动点"
+      ]
+    },
+    {
+      "id": "fa-all-2-06",
+      "difficulty": 3,
+      "question": "设 $(X, d)$ 是一个完备的度量空间. 我们称映射 $ g : X \\rightarrow X $ 在 $ X $ 上减少距离，如果对任意 $ x, y \\in X $ 且 $ x \\neq y $，$ d(g(x), g(y)) < d(x, y) $",
+      "subquestions": [
+        "在 $\\mathbb{R}$ 赋予欧式距离空间并定义函数 $ h(x) = \\sqrt{x^2 + 1} $. 证明 $ h $ 在 $\\mathbb{R}$ 上减少距离. 证明 $ h $ 没有不动点",
+        "令 $ E = \\mathbb{N}^* = \\{1, 2, 3, \\cdots\\} $. 令 $$d_1(p, q) = \\begin{cases} 0 & \\text{if } p = q, \\\\ 2024 + \\frac{1}{p} + \\frac{1}{q} & \\text{if } p \\neq q. \\end{cases}$$ \\begin{itemize}",
+        "证明 $(E, d_1)$ 是一个完备的度量空间",
+        "定义映射 $ f : E \\rightarrow E $ 满足 $ f(1) = 1 $，当 $ p \\geq 2 $ 时 $ f(p) = p + 1 $. 证明 $ f $ 在 $ E $ 上减少了距离，1 是 $ f $ 唯一的不动点. 证明对任意 $ p \\geq 2 $，$\\{f^n(p)\\}$ 不可能收敛到 1. \\end{itemize}"
+      ]
+    },
+    {
+      "id": "fa-all-3-01",
+      "difficulty": 3,
+      "question": "证明：度量空间的紧子集是有界闭集，紧空间的闭子集是紧集"
+    },
+    {
+      "id": "fa-all-3-02",
+      "difficulty": 3,
+      "question": "设 $ K $ 是度量空间 $(X,d)$ 中的紧子集. $ f \\in C(K,\\mathbb{R}) $. 证明：$ f $ 一致连续"
+    },
+    {
+      "id": "fa-all-3-03",
+      "difficulty": 3,
+      "question": "设 $ K $ 是度量空间 $(X,d)$ 中的紧子集. $ f \\in C(K,\\mathbb{R}) $. 证明：$ f $ 有界并且可以取到最大值和最小值"
+    },
+    {
+      "id": "fa-all-3-04",
+      "difficulty": 3,
+      "question": "设 $(X,d)$ 为度量空间，$ A \\subset X $. 我们称 $ A $ 相对紧，如果 $ \\overline{A} $ 是紧集. 证明：设 $(X,d)$ 是完备的度量空间，则 $ A $ 相对紧当且仅当 $ A $ 是预紧集/全有界集"
+    },
+    {
+      "id": "fa-all-3-05",
+      "difficulty": 3,
+      "question": "设 $(E,d)$ 是一个紧的度量空间，映射 $ f: E \\to E $ 满足如下性质：对任意的 $ x \\neq y $，$ d(f(x),f(y)) < d(x,y) $. 请按照如下的步骤证明 $ f $ 有唯一的不动点",
+      "subquestions": [
+        "证明 $ f $ 是 $ E $ 上的连续映射",
+        "叙述压缩映射原理. 解释为什么我们无法直接运用该定理证明 $ f $ 存在唯一不动点",
+        "记 $ h(x) = d(x,f(x)) $，$\\forall x \\in E $. 证明 $ h $ 是 $ E $ 上的连续函数",
+        "说明 $ h $ 为什么在 $ E $ 上可以达到极小值和极大值. 证明 $\\min_{x \\in E} h = 0$. [提示：反证法]",
+        "证明 $ f $ 在 $ E $ 上有不动点. 证明 $ f $ 有唯一的不动点. [提示：如何通过函数 $ h $ 刻画 $ f $ 的不动点?]"
+      ]
+    },
+    {
+      "id": "fa-all-3-06",
+      "difficulty": 3,
+      "question": "设 $(X,d_1)$ 和 $(Y,d_2)$ 是度量空间，$ C(X,Y) $ 表示 $ X $ 到 $ Y $ 的所有连续映射全体. $ F \\subset C(X,Y) $. 若对任意 $ x \\in X $ 以及 $ \\varepsilon > 0 $，都存在 $ \\delta = \\delta(x, \\varepsilon) > 0 $ 使得当 $ y \\in X $ 且 $ d_1(x,y) < \\delta $ 时，都有 $$d_2(f(x),f(y)) < \\varepsilon \\quad \\forall f \\in F,$$ 则称 $ F $ 在 $ X $ 上\\textbf{等度连续}. 若对任意 $ \\varepsilon > 0 $，都存在 $ \\delta > 0 $ 使得当 $ y \\in X $ 且 $ d_1(x,y) < \\delta $ 时，都有 $$d_2(f(x),f(y)) < \\varepsilon \\quad \\forall f \\in F,$$ 则称 $ F $ 在 $ X $ 上\\textbf{一致等度连续}",
+      "subquestions": [
+        "设 $(X,d_1)$ 是紧度量空间. 证明：$ F $ 在 $ X $ 上等度连续的充分必要条件是 $ F $ 在 $ X $ 上一致等度连续",
+        "设 $(X,d_1)$ 是紧度量空间，$\\{f_n\\}$ 是 $ C(X,Y) $ 中的等度连续的序列. 若 $\\{f_n\\}$ 逐点收敛到 $ f $，证明 $ f \\in C(X,Y) $ 且 $\\{f_n\\}$ 一致收敛到 $ f $"
+      ]
+    },
+    {
+      "id": "fa-all-3-07",
+      "difficulty": 3,
+      "question": "设 $(X,d)$ 是一个度量空间，$ A \\subset X $. 我们定义 $\\diam(A) = \\sup_{x,y \\in A} d(x,y)$ 为集合 $ A $ 的直径",
+      "subquestions": [
+        "假设 $ A \\subset B $，试比较 $\\diam(A)$ 和 $\\diam(B)$. 如果 $\\diam(A) = 0$，这说明 $ A $ 有什么性质？",
+        "证明 $ A $ 有界且仅当 $\\diam(A) < \\infty$",
+        "对任意 $ A \\subset X $，证明 $\\diam(\\overline{A}) = \\diam(A)$",
+        "设 $ X $ 是完备的. $\\{F_n\\}$ 是 $ X $ 中非空单调下降的闭子集列，即对所有的 $ n \\geq 1 $，$ F_n $ 是闭集，$ F_n \\neq \\varnothing $ 以及 $ F_{n+1} \\subset F_n $. 假设 $\\{F_n\\}$ 满足 $\\lim_{n \\to \\infty} \\diam(F_n) = 0$，证明存在 $ x \\in X $ 使得 $\\bigcap_{n \\geq 1} F_n = \\{x\\}$. (提示：考虑序列 $\\{x_n\\}$ 满足 $ x_n \\in F_n$)",
+        "如果条件 $\\lim\\limits_{n \\to \\infty} \\diam(F_n) = 0$ 不成立，试在 $ \\mathbb{R} $ 上给出上述结论的反例"
+      ]
+    },
+    {
+      "id": "fa-all-3-08",
+      "difficulty": 3,
+      "question": "度量空间 $(X,d)$ 是完备的当且仅当如下结论成立：\\$$1.5ex] （$\\dagger$） 如果 $\\{F_n\\}$ 是 $X$ 中非空单调下降的闭子集列，且满足 $\\lim_{n \\to \\infty} \\diam(F_n) = 0$，则 $\\bigcap_n F_n \\neq \\varnothing$ 且为单点集",
+      "subquestions": [
+        "由习题 \\ref{ex:7.3.7} 的结论，说明 $X$ 完备时，结论（$\\dagger$） 成立",
+        "对任意序列 $\\{x_n\\}$，证明 $\\{x_n\\}$ 的聚点集是 $\\bigcap_{k \\geq 1} \\overline{\\{x_n, n \\geq k\\}}$",
+        "假设结论($\\dagger$)成立，证明 $X$ 中的任意 Cauchy 列 $\\{x_n\\}$ 都有唯一的一个聚点. 由此说明 $\\{x_n\\}$ 在 $X$ 中收敛",
+        "说明等价刻画确实成立"
+      ]
+    },
+    {
+      "id": "fa-all-4-01",
+      "difficulty": 3,
+      "question": "设 $ E $ 是一个赋范线性空间，$ A, B \\subseteq E $. 定义 $ A + B = \\{ z = x + y \\mid x \\in A, y \\in B \\} $",
+      "subquestions": [
+        "假设 $ A $ 是开集，证明 $ A + B $ 也是开集",
+        "假设 $ A $ 和 $ B $ 都是紧集，证明 $ A + B $ 也是紧集",
+        "假设 $ A $ 是紧集，$ B $ 是闭集，证明 $ A + B $ 是闭集",
+        "给出如下的例子：$ A, B $ 都是闭集，但 $ A + B $ 不是闭集"
+      ]
+    },
+    {
+      "id": "fa-all-4-02",
+      "difficulty": 3,
+      "question": "设 $ C([0, 1], \\mathbb{R}) $ 表示 $[0, 1]$ 上所有的连续实函数构成的空间. 定义 $$ \\|f\\|_{\\infty} = \\sup_{0 \\leq t \\leq 1} |f(t)| \\quad \\text{且} \\quad \\|f\\|_1 = \\int_0^1 |f(t)| dt. $$",
+      "subquestions": [
+        "证明 $\\|\\cdot\\|_{\\infty}$ 和 $\\|\\cdot\\|_1$ 都是 $C([0, 1], \\mathbb{R})$ 上的范数",
+        "证明 $C([0, 1], \\mathbb{R})$ 关于范数 $\\|\\cdot\\|_{\\infty}$ 是完备的（即成为一个 Banach 空间）",
+        "证明 $C([0, 1], \\mathbb{R})$ 关于范数 $\\|\\cdot\\|_1$ 不完备"
+      ]
+    },
+    {
+      "id": "fa-all-4-03",
+      "difficulty": 3,
+      "question": "设 $ c_0 $ 是实数域中满足 $\\lim_{n \\to \\infty} x_n = 0$ 的序列 $(x_n)_{n \\in \\mathbb{N}}$ 的全体. 对于 $ X = (x_n) \\in c_0 $，定义 $\\|X\\|_{\\infty} = \\max_{n \\in \\mathbb{N}} |x_n|$. 证明 $\\|\\cdot\\|_{\\infty}$ 是 $ c_0 $ 上的一个范数. 证明 $(c_0, \\|\\cdot\\|_{\\infty})$ 是一个 Banach 空间"
+    },
+    {
+      "id": "fa-all-4-04",
+      "difficulty": 3,
+      "question": "令 $ E = C([0, 1], \\mathbb{R}) $. $\\forall f \\in E $, $$ N_1(f) = \\int_0^1 x^4 |f(x)| \\mathrm{d} x, \\quad N_2(f) = \\left( \\int_0^1 x^2 f^2(x) \\mathrm{d} x \\right)^{\\frac{1}{2}} $$",
+      "subquestions": [
+        "证明 $ N_1 $ 和 $ N_2 $ 定义了 $ E $ 上的两个范数",
+        "证明对任意的 $ f \\in E $，$ N_1(f) \\leq \\frac{1}{\\sqrt{7}} N_2(f) $",
+        "考虑函数 $ f_n(x) $：当 $ x \\in [0, n^{-1}] $ 时，$ f_n(x) = (1 - nx) $. 当 $ x \\in [n^{-1}, 1] $ 时，$ f_n(x) = 0 $. 证明 $ N_1 $ 和 $ N_2 $ 是不等价的"
+      ]
+    },
+    {
+      "id": "fa-all-4-05",
+      "difficulty": 3,
+      "question": "在赋范空间 $(E, \\|\\cdot\\|)$ 中，回顾一个级数 $\\sum_{n \\geq 1} x_n$ 是绝对收敛的，如果 $\\sum_{n \\geq 1} \\|x_n\\| < \\infty$，即实数里的级数 $\\sum_{n \\geq 1} \\|x_n\\|$ 收敛. 此外我们知道赋范空间 $ E $ 是完备的当且仅当 $ E $ 中的绝对收敛级数必收敛",
+      "subquestions": [
+        "令 $ E $ 是一个 Banach 空间. 证明对任意 $ A \\in \\mathcal{B}(E) $，级数 $\\sum_{k \\geq 0} \\frac{A^k}{k!}$ 在 $ \\mathcal{B}(E) $ 中收敛. 这里，对任意 $ A \\in \\mathcal{B}(E) $，$ A^0 = I_E $. 我们记这个级数的和为 $ \\mathrm{e}^A $，即 $$ \\mathrm{e}^A = \\sum_{k \\geq 0} \\frac{A^k}{k!} .$$",
+        "证明对任意 $ A \\in \\mathcal{B}(E) $，$\\|\\mathrm{e}^A\\|_{\\mathcal{B}(E)} \\leq \\mathrm{e}^{\\|A\\|_{\\mathcal{B}(E)}} $",
+        "说明通常情况下，对于 $ A, B \\in \\mathcal{B}(E) $，$ \\mathrm{e}^A \\mathrm{e}^B = \\mathrm{e}^{A+B} $ 不再成立；但是当 $ AB = BA $ 时，等式是成立的. [提示：证明可以在网上找到]. 推出对任意 $ A \\in \\mathcal{B}(E) $，$ \\mathrm{e}^A $ 是一个同构映射并且 $(\\mathrm{e}^A)^{-1} = \\mathrm{e}^{-A}$"
+      ]
+    },
+    {
+      "id": "fa-all-4-06",
+      "difficulty": 3,
+      "question": "设 $(E, d)$ 是一个紧的度量空间，$ f : E \\to E $ 满足对任意 $ x, y \\in E $，都有 $$ d(f(x), f(y)) \\geq d(x, y) $$ 我们将证明 $ f $ 确实是一个等距映射",
+      "subquestions": [
+        "给定 $ x \\in E $，考虑序列 $ x_n = f^n(x) $，证明存在一个子序列 $(x_{n_p})_{p \\in \\mathbb{N}}$ 使得 $(x_{n_p})$ 收敛到 $ x $",
+        "用同样的方法证明：对任意 $ x, y \\in E $，存在一个序列 $(n_p)_{p \\in \\mathbb{N}}$ 使得 $(x_{n_p})$ 收敛到 $ x $，且 $(y_{n_p})$ 收敛到 $ y $. （提示：关键点是找到一个共同的序列$(n_p)$，使得$(x_{n_p})$和$(y_{n_p})$同时收敛.）",
+        "证明 $ f $ 是 $ E $ 到自身的一个等距映射"
+      ]
+    },
+    {
+      "id": "fa-all-5-01",
+      "difficulty": 3,
+      "question": "设 $ E $ 是 $\\mathbb{R}$ 上所有的实系数多项式构成的向量空间，对任意 $ P \\in E $，定义 $$ \\|P\\|_\\infty = \\max_{x \\in [0,1]} |P(x)|. $$ 设 $(E, \\|\\cdot\\|_\\infty)$ 是定义的赋范空间，并设 $ E_0 $ 是 $ E $ 中没有常数项的多项式构成的向量子空间（即多项式 $ P \\in E_0 $ 等价于 $ P(0) = 0 $）",
+      "subquestions": [
+        "证明 $ N(P) = \\|P'\\|_\\infty $ 定义 $ E_0 $ 上的一个范数，并且对任意 $ P \\in E_0 $，有 $$ \\|P\\|_\\infty \\leq N(P). $$",
+        "证明 $ L(P) = \\displaystyle\\int_0^1 \\frac{P(x)}{x} \\mathrm{d} x $ 定义了 $ E_0 $ 关于 $ N $ 的连续线性泛函，并求它的范数",
+        "上面定义的 $ L $ 是否关于范数 $\\|\\cdot\\|_\\infty$ 连续？",
+        "范数 $\\|\\cdot\\|_\\infty$ 和 $ N $ 在 $ E_0 $ 上是否等价？"
+      ]
+    },
+    {
+      "id": "fa-all-5-02",
+      "difficulty": 3,
+      "question": "设 $ E $ 为数域 $ \\mathbb{K} $ 上有限维向量空间，其维数 $ \\dim E = n $，$\\{e_1, \\cdots, e_n\\} $ 表示 $ E $ 上的一组基，任取 $ u \\in \\mathcal{L}(E) $，令 $[u]$ 表示 $ u $ 在这组基下对应的矩阵",
+      "subquestions": [
+        "证明映射 $ u \\mapsto [u] $ 建立了从 $ \\mathcal{L}(E) $ 到 $ n \\times n $ 矩阵构成的向量空间 $ M_n(\\mathbb{K}) $ 之间的同构映射",
+        "假设 $ E = \\mathbb{K}^n $ 且 $\\{e_1, \\cdots, e_n\\}$ 是经典基（即 $ e_k = (0, \\cdots, 0, 1, 0, \\cdots, 0) $），对应于第 $ k $ 个向量，它仅在第 $ k $ 个位置取 1，其他位置取 0）. 并约定 $ E = \\mathbb{K}^n $ 赋予欧氏范数. 证明若 $ u $（或等价地 $[u]$）可正交对角化，则 $\\|u\\| = \\max\\{|\\lambda_1|, \\cdots, |\\lambda_n|\\}$，这里 $\\lambda_1, \\cdots, \\lambda_n$ 是 $ u $ 的特征值",
+        "$\\{e_1, \\cdots, e_n\\}$ ，试由 $[u]$ 中的元素分别确定在 $ p = 1 $ 和 $ p = \\infty $ 时的范数 $\\|u: (\\mathbb{K}^n, \\|\\cdot\\|_p) \\to (\\mathbb{K}^n, \\|\\cdot\\|_p)\\|$"
+      ]
+    },
+    {
+      "id": "fa-all-5-03",
+      "difficulty": 3,
+      "question": "对任意 $ x = \\begin{pmatrix} x_1 \\\\ x_2 \\end{pmatrix} \\in \\mathbb{R}^2 $，令 $\\| x \\|_* = |x_1| + 3|x_2|$. 假设 $ A = \\begin{pmatrix} 2 & -6 \\\\ 0 & 1 \\end{pmatrix} $. 证明 $\\| \\cdot \\|_*$ 是 $ \\mathbb{R}^2 $ 上的一个范数. 记 $ E = (\\mathbb{R}^2, \\| \\cdot \\|_*) $，$\\varphi(x) = Ax, \\forall x \\in \\mathbb{R}^2$. 证明 $\\|\\varphi\\|_{\\mathcal{B}(E)} = 3$"
+    },
+    {
+      "id": "fa-all-5-04",
+      "difficulty": 3,
+      "question": "令 $ E = C([0,1], \\mathbb{R}) $ 且被赋予 $\\| \\cdot \\|_\\infty$ 范数. 定义映射 $ T $： $$ (Tf)(x) = \\int_0^x tf(t)\\mathrm{d} t + x \\int_x^1 f(t)\\mathrm{d} t, \\quad \\forall f \\in E, \\, x \\in [0,1]. $$",
+      "subquestions": [
+        "证明 $ T $ 是 $ E $ 到自身的一个线性映射",
+        "证明对任意 $ f \\in E $ 和 $ x \\in [0,1] $，$ |Tf(x)| \\leq \\left( x - \\dfrac{x^2}{2} \\right) \\| f \\|_\\infty $",
+        "证明 $ T \\in \\mathcal{B}(E) $ 并计算 $\\| T \\|_{\\mathcal{B}(E)}$",
+        "请问方程 $ Tf = f $ 有非平凡解吗？"
+      ]
+    },
+    {
+      "id": "fa-all-5-05",
+      "difficulty": 3,
+      "question": "设 $ E $ 和 $ F $ 是数域 $ \\mathbb{K} $ 上的两个赋范空间，对任意 $ f \\in \\mathcal{L}(E,F) $，定义 $ \\ker(f) := \\{ x \\in E \\mid f(x) = 0_F \\} = f^{-1}(\\{ 0_F \\}) $，它是 $ E $ 的一个子向量空间. 令 $\\varphi : E \\to \\mathbb{K} $ 是一个\\textit{不连续的}线性泛函",
+      "subquestions": [
+        "说明 $ \\ker(\\varphi) $ 不是闭集[提示：反证法]. 推出 $\\exists\\ u \\in \\overline{\\ker(\\varphi)} \\backslash \\ker(\\varphi) $ 使得 $\\varphi(u) = 1$",
+        "给定 $ x \\in E $. 利用表达式 $ x_1 = x - \\varphi(x)u $ 和 $ x_2 = \\varphi(x)u $，证明 $ x \\in \\overline{\\ker(\\varphi)} $",
+        "由此推出 $ \\ker(\\varphi) $ 在 $ E $ 中稠密"
+      ]
+    },
+    {
+      "id": "fa-all-5-06",
+      "difficulty": 3,
+      "question": "令 $ E $ 是 $ \\mathbb{R} $ 上所有实系数多项式构成的向量空间",
+      "subquestions": [
+        "考虑映射 $\\varphi(P) = xP'(x)$，证明 $\\varphi$ 是 $ E $ 到自身的线性映射",
+        "考虑 $\\varphi(x^n)$，证明无论在 $ E $ 上赋予什么样的范数，$\\varphi$ 都不可能连续",
+        "计算 $ \\ker(\\varphi) $ ，证明 $ \\ker(\\varphi) $ 是一个闭集. 该结论是否与 $\\varphi$ 的不连续性矛盾？"
+      ]
+    },
+    {
+      "id": "fa-all-6-01",
+      "difficulty": 3,
+      "question": "设 $E$ 是 Banach 空间",
+      "subquestions": [
+        "设 $u\\in\\mathcal{B}(E)$ 且 $\\|u\\|<1$. 证明 $\\mathrm{I}_E-u$ 在 $\\mathcal{B}(E)$ 中可逆",
+        "设 $GL(E)$ 表示 $\\mathcal{B}(E)$ 中可逆元构成的集合. 证明 $GL(E)$ 关于复合运算构成一个群且是 $\\mathcal{B}(E)$ 中的开集",
+        "证明 $u\\mapsto u^{-1}$ 是 $GL(E)$ 上的同胚映射"
+      ]
+    },
+    {
+      "id": "fa-all-6-02",
+      "difficulty": 3,
+      "question": "设 $A = (a_{ij})_{i,j\\geq 1}$ 是元素在 $\\mathbb{K}$ 中的无穷矩阵, 定义对任意有穷序列 $x = (x_j)_{j\\geq 1}\\subset \\mathbb{K}$, 即 $x_j$ 仅有有限多个非零, $$ A(x) = \\biggl(\\sum_{j\\geq 1} a_{ij} x_j\\biggr)_{i\\geq 1}. $$",
+      "subquestions": [
+        "证明 $A$ 可以拓展成 $c_0$ 到$\\ell^\\infty$ 上的有界线性映射当且仅当 $$ \\|A\\|_\\infty = \\sup_{i\\geq 1} \\sum_{j\\geq 1} |a_{ij}| < \\infty. $$ 在此情形下, 我们有 $$ \\|A\\|_{\\mathcal{B}(c_0,\\ell^\\infty)} = \\|A\\|_{\\infty}. $$ 并且, 当 $\\|A\\|_{\\infty} < \\infty$ 时, $A$ 也定义了在 $\\ell^{\\infty}$ 上的线性映射",
+        "证明 $A$ 可以拓展成 $\\ell^1$上的有界线性映射当且仅当 $$ \\|A\\|_1 = \\sup_{j\\geq 1} \\sum_{i\\geq 1} |a_{ij}| < \\infty. $$ 在此情形下, 我们有 $$ \\|A\\|_{\\mathcal{B}(\\ell^1)} = \\|A\\|_1. $$"
+      ]
+    },
+    {
+      "id": "fa-all-6-03",
+      "difficulty": 3,
+      "question": "令$E=M_n(\\mathbb{C})$是$\\mathbb{C}$上$n\\times n$矩阵构成的向量空间，定义$\\|A\\|_s=\\sqrt{\\tr(A^*A)}$，此处$M^*=\\overline{M}^t$",
+      "subquestions": [
+        "证明$\\|\\cdot\\|_s$定义了$M_n(\\mathbb{C})$上的一个范数",
+        "证明$(M_n(\\mathbb{C}),\\|\\cdot\\|_s)$是一个Banach空间",
+        "证明对任意$A,B\\in E$，成立$\\|AB\\|_s\\leq\\|A\\|_s\\|B\\|_s$"
+      ]
+    },
+    {
+      "id": "fa-all-7-01",
+      "difficulty": 3,
+      "question": "设 $f\\in L^2(\\mathbb{R} )$, $g(x)=\\frac{1}{x}\\mathbbm{1}_{[1,\\infty)}(x)$",
+      "subquestions": [
+        "证明 $fg\\in L^1(\\mathbb{R} )$",
+        "给出例子说明 $f_1,f_2\\in L^1(\\mathbb{R} )$, 但是 $f_1f_2\\notin L^1(\\mathbb{R} )$"
+      ]
+    },
+    {
+      "id": "fa-all-7-02",
+      "difficulty": 3,
+      "question": "设 $(\\Omega,\\mathcal{A},\\mu)$ 为有限测度空间, 即有 $\\mu(\\Omega)<\\infty$",
+      "subquestions": [
+        "证明若 $0<p<q\\leq\\infty$, 则 $L^q(\\Omega)\\subset L^p(\\Omega)$. 用反例说明当 $\\mu(\\Omega)=\\infty$ 时, 结论不成立",
+        "证明若 $f\\in L^{\\infty}(\\Omega)$, 则 $f\\in\\bigcap\\limits_{p<\\infty}L^p(\\Omega)$ 且 $\\|f\\|_{\\infty}=\\lim\\limits_{p\\to\\infty}\\|f\\|_{p}$",
+        "设 $f\\in\\bigcap\\limits_{p<\\infty}L^p(\\Omega)$ 且满足 $\\limsup\\limits_{p\\to\\infty}\\|f\\|_p<\\infty$, 证明 $f\\in L^{\\infty}(\\Omega)$"
+      ]
+    },
+    {
+      "id": "fa-all-7-03",
+      "difficulty": 3,
+      "question": "在实数集 $\\mathbb{R} $ 上取 Lebesgue $\\sigma$-代数及 Lebesgue 测度, 并设 $f,g\\in L^{1}(\\mathbb{R} )$",
+      "subquestions": [
+        "证明 \\begin{align*} \\int_{\\mathbb{R} \\times\\mathbb{R} } f(u)g(v)\\mathrm{d} u\\mathrm{d} v & =\\left[\\int_{\\mathbb{R} } f(u) \\mathrm{d} u\\right]\\left[\\int_{\\mathbb{R} } g(v) \\mathrm{d} v\\right] =\\int_{\\mathbb{R} }\\left[\\int_{\\mathbb{R} } f(x-y)g(y) \\mathrm{d} y\\right] \\mathrm{d} x. \\end{align*} 由此导出函数 $x\\mapsto\\displaystyle\\int_{\\mathbb{R} } f(x-y)g(y)\\mathrm{d} y$ 在 $\\mathbb{R} $ 上几乎处处有定义",
+        "我们定义 $f$ 和 $g$ 的卷积 $f*g$ 为 $$ f*g(x)= \\begin{cases} \\displaystyle\\int_{\\mathbb{R} } f(x-y)g(y) \\mathrm{d} y, & \\text{当积分存在, } \\\\ 0, & \\text{其他.}\\end{cases} $$ 证明 $f*g\\in L^{1}(\\mathbb{R} )$ 且 $\\|f*g\\|_1\\leq\\|f\\|_1\\|g\\|_1$",
+        "取 $f=\\mathbbm{1}_{[0,1]}$, 计算 $f*f$"
+      ]
+    },
+    {
+      "id": "fa-all-8-01",
+      "difficulty": 3,
+      "question": "设 $H$ 是内积空间, $x_n,x\\in H$. 并假设 $$\\lim_{n\\to\\infty}\\|x_n\\|=\\|x\\|\\quad\\text{且}\\quad \\lim_{n\\to\\infty}\\langle{y},{x_n}\\rangle = \\langle{y},{x}\\rangle,\\ \\forall y\\in H.$$ 证明 $\\lim_{n\\to\\infty} \\|x_n-x\\| = 0$"
+    },
+    {
+      "id": "fa-all-8-02",
+      "difficulty": 3,
+      "question": "\\vspace{-.2cm}",
+      "subquestions": [
+        "设 $H$ 是 Hilbert 空间, $D_{n}=\\{-1,1\\}^{n}$. 证明 $$ \\frac{1}{2^{n}} \\sum_{(\\varepsilon_{k}) \\in D_{n}}\\left\\|\\varepsilon_{1} x_{1}+\\cdots+\\varepsilon_{n} x_{n}\\right\\|^{2}=\\left\\|x_{1}\\right\\|^{2}+\\cdots+\\left\\|x_{n}\\right\\|^{2}, \\quad \\forall x_1,\\cdots,x_n \\in H. $$",
+        "设 $(X,\\|\\cdot\\|)$ 是 Banach 空间, 并假设有一个 $X$ 上的内积范数 $|\\cdot|$ 等价于 $\\|\\cdot\\|$. 证明存在正常数 $a$ 和 $b$, 使得 $$a\\sum_{k=1}^{n}\\left\\|x_{k}\\right\\|^{2} \\leq\\frac{1}{2^{n}} \\sum_{\\left(\\varepsilon_{k}\\right) \\in D_{n}} \\left\\|\\sum_{k=1}^{n} \\varepsilon_{k} x_{k}\\right\\|^{2} \\leq b \\sum_{k=1}^{n}\\left\\|x_{k}\\right\\|^{2}, \\quad \\forall x_{1}, \\cdots, x_{n} \\in X.$$",
+        "设 $1 \\leq p \\neq 2 \\leq \\infty$, 证明空间 $c_{0}$, $\\ell^{p}$ 和 $L^{p}(0,1)$ 没有等价的内积范数"
+      ]
+    },
+    {
+      "id": "fa-all-8-03",
+      "difficulty": 3,
+      "question": "设 $(E, \\langle \\cdot,\\cdot \\rangle )$ 是一个内积空间",
+      "subquestions": [
+        "设 $A, B \\subset E$，回顾如果 $A \\subset B$，则 $B^\\perp \\subset A^\\perp$. 证明 $$ (1)\\ (A \\cup B)^\\perp = A^\\perp \\cap B^\\perp; \\quad (2)\\ A^\\perp + B^\\perp \\subset (A \\cap B)^\\perp; \\quad (3)\\ A^\\perp \\cap B^\\perp \\subset (A + B)^\\perp $$ \\begin{itemize}",
+        "如果 $0 \\in A \\cap B$，证明 (3) 中的包含是等于",
+        "证明 $A \\subset A^{\\perp\\perp}$ 和 $A^\\perp = A^{\\perp\\perp\\perp}$. \\end{itemize}",
+        "假设 $E$ 是一个 Hilbert 空间. 如果 $F, G$ 是 $E$ 的两个闭子空间且满足 $F \\perp G$，证明 $F + G$ 是闭的. （提示：对于 $x \\in F, y \\in G$，我们对 $x + y$ 的范数可以如何刻画？）"
+      ]
+    },
+    {
+      "id": "fa-all-8-04",
+      "difficulty": 3,
+      "question": "令 $E$ 是一个赋范空间. 设 $p \\in \\mathcal{B}(E)$ 是一个投影算子，即 $p \\circ p = p$. 回顾 $E = \\ker(p) \\oplus \\Img(p)$ ($\\oplus$ 表代数直和)",
+      "subquestions": [
+        "证明 $\\Img(p)$ 是闭的. （提示：找到集合 $\\Img(p)$ 的一个等价刻画） 进一步假设 $E$ 是一个内积空间，我们称 $p$ 是一个\\textit{正交投影算子}，若对任意 $x \\in E$，有 $x - p(x) \\perp \\Img(p)$",
+        "证明如果 $p$ 是一个正交投影算子，则 $\\|p\\| \\leq 1$，并且当 $p \\neq 0$ 时，$\\|p\\| = 1$",
+        "证明如果 $p$ 是一个满足 $\\|p\\| \\leq 1$ 的投影算子，则 $p$ 是正交的. （提示：考虑 $h(\\lambda) = \\|p(x+\\lambda y)\\|^2 - \\|x+\\lambda y\\|^2$，其中 $x \\in E, y \\in \\Img(p), \\lambda \\in\\mathbb{K} $; 证明 $x - p(x) \\perp y$）"
+      ]
+    },
+    {
+      "id": "fa-all-9-01",
+      "difficulty": 3,
+      "question": "令 $ E = c_{00}(\\mathbb{N}) $ 是仅有有限个分量非零的实序列组成的空间. 在 $ E $ 上定义内积 $\\langle u,v \\rangle = \\sum_{n\\geq 0} u_n v_n$，其中 $ u = (u_n), v = (v_n) $. 并考虑 $ E $ 上由此内积诱导的范数",
+      "subquestions": [
+        "定义 $ f(u) =\\displaystyle \\sum_{n=0}^{\\infty} \\dfrac{u_n}{n+1} $，证明 $ f \\in E^* $ 并且 $ F = \\ker(f) $ 是闭的. 计算 $\\|f\\|_{E^*}$",
+        "证明 $ F^\\perp = \\{0\\} $，推出 $ F^{\\perp\\perp} \\neq \\overline{F} $. 这和我们课堂讲的内容矛盾吗？"
+      ]
+    },
+    {
+      "id": "fa-all-9-02",
+      "difficulty": 3,
+      "question": "设 $E=C([0,1])$ 上装备有如下的内积 $$\\langle \\1, \\2 \\rangle=\\int_{0}^{1} f(t) \\overline{g(t)}\\mathrm{d} t.$$ 并设 $E_{0}$ 表示在 $[0,1]$ 上积分为 $0$ 的函数组成的 $E$ 的向量子空间. 考虑 $E$ 的 向量子空间: $$H=\\{f \\in E: f(1)=0\\} \\text {\\ 且\\ } H_{0}=E_{0} \\cap H.$$",
+      "subquestions": [
+        "验证 $H_{0}$ 是 $H$ 的闭的真向量子空间",
+        "设 $h(t)=t-\\frac{1}{2}, t \\in[0,1]$. 证明 \\begin{enumerate}[label=（\\roman*）]",
+        "$E=\\operatorname{span} (H, h)$ 且有 $E_{0}=\\operatorname{span}\\left(H_{0}, h\\right)$",
+        "$h$ 属于 $H_{0}$ 在 $E$ 中的闭包 \\item 证明在$E_0$中$H_{0}^{\\perp}=\\{0\\}$. 解释所得结果蕴含的意义. \\end{enumerate}"
+      ]
+    },
+    {
+      "id": "fa-all-9-03",
+      "difficulty": 3,
+      "question": "设 $ H $ 为一个 Hilbert 空间，$ T \\in \\mathcal{B}(H) $ 是自伴算子（即 $ T^* = T $）. \\\\我们将证明 $\\|T\\| = \\sup\\{|\\langle Tx,x\\rangle|, \\|x\\| \\leq 1\\}$. 记 $ M = \\sup\\{|\\langle Tx,x\\rangle|, \\|x\\| \\leq 1\\} $. 证明：",
+      "subquestions": [
+        "$ M \\leq \\|T\\| $，并且 $ |\\langle Tx,x\\rangle| \\leq M \\|x\\|^2, \\forall x \\in H $",
+        "对任意 $ x,y \\in H $，有 $ \\langle T(x+y), x+y \\rangle - \\langle T(x-y), x-y \\rangle = 4\\text{Re}\\langle Tx,y \\rangle. $",
+        "推出 $ \\text{Re}\\langle Tx,y \\rangle \\leq M \\|x\\| \\|y\\| $，并进一步证明 $ |\\langle Tx,y\\rangle| \\leq M \\|x\\| \\|y\\| $",
+        "证明 $\\|T\\| \\leq M $，从而得证",
+        "一个应用：令 $ S \\in \\mathcal{B}(H) $ 且满足 $\\langle Sx,x\\rangle = 0, \\forall x \\in H $. 通过计算 $\\langle S(x+iy), x+iy \\rangle $，证明 $ S $ 是自伴算子. 由此推出 $ S = 0 $. 如果 $ \\mathbb{K} = \\mathbb{R} $，该结论是否依旧成立？"
+      ]
+    },
+    {
+      "id": "fa-all-9-04",
+      "difficulty": 3,
+      "question": "我们来计算几个算子的共轭算子",
+      "subquestions": [
+        "设 $ H $ 是一个 Hilbert 空间，给定 $ u,v \\in H $. 定义映射 $\\varphi(x) = \\langle x,u \\rangle v $，其中 $ x \\in H $. 计算 $\\|\\varphi\\|_{\\mathcal{B}(H)} $ 和 $\\varphi^*$",
+        "定义 $ T $ 为： $$ T(f)(x) = \\int_{0}^{x} f(t) \\mathrm{d} t,\\quad \\text{对所有的\\ } f \\in E = L^2(0,1;\\mathbb{R}). $$ 证明 $ T \\in \\mathcal{B}(E) $. 利用富比尼定理，计算 $ T^* $",
+        "考虑左移算子 $ S_l : \\ell^2(\\mathbb{N}^*) \\to \\ell^2(\\mathbb{N}^*)$，定义为 $ S_l(u) = (u_{n+1}) = (u_2,u_3,\\cdots) $，其中 $ u = (u_n)_{n\\geq 1} $. 证明 $ S_l \\in \\mathcal{B}(\\ell^2(\\mathbb{N}^*)) $. 计算 $\\|S_l\\|$ 和 $ S_l^* $"
+      ]
+    },
+    {
+      "id": "fa-all-9-05",
+      "difficulty": 3,
+      "question": "设 $ H $ 为 Hilbert 空间. 设 $ T \\in \\mathcal{B}(H) $，记它的伴随算子（或称共轭算子）为 $ T^* $",
+      "subquestions": [
+        "证明 $ \\ker(T) = \\ker(T^*T) $",
+        "设 $ E $ 是$H$的子向量空间，满足 $ T(E) \\subset E $. 证明 $ T^*(E^\\perp) \\subset E^\\perp $"
+      ]
+    },
+    {
+      "id": "fa-all-9-06",
+      "difficulty": 3,
+      "question": "令 $\\{e_n \\mid n \\in \\mathbb{N}\\}$ 表示 $\\ell^2(\\mathbb{N})$ 中的标准正交基. 令 $$ E = \\operatorname{span}\\{e_{2n+1} \\mid n \\geq 0\\}^\\perp \\quad \\text{和} \\quad F = \\operatorname{span}\\{e_{2n} - (2n + 2)e_{2n+1} \\mid n \\geq 0\\}^\\perp. $$",
+      "subquestions": [
+        "快速说明 $ E, F $ 是 $\\ell^2(\\mathbb{N})$ 的两个闭子向量空间",
+        "证明 $ E = \\overline{\\operatorname{span}\\{e_{2n} \\mid n \\geq 0\\}} $. 你能将 $ F $ 也表示出来吗？证明 $ E \\cap F = \\{0\\} $",
+        "设 $ x \\in \\operatorname{span}\\{e_k \\mid k \\geq 0\\} $，证明 $ x \\in E + F $. [提示：令 $ x = u + v $，其中 $ u \\in E, v \\in F $，先确定 $ v_{2n+1} $，即 $ v $ 的奇分量. ]",
+        "设 $ y = \\left(\\dfrac{1}{n+1}\\right)_{n\\geq 0} $，请问 $ y \\in E + F $ 是否成立？证明 $ E + F $ 在 $\\ell^2(\\mathbb{N})$ 中稠密但不是闭集"
       ]
     }
   ]

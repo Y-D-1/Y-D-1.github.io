@@ -333,7 +333,18 @@ def convert_text_markup(text: str) -> str:
     return text
 
 
+def parse_reference_key(raw_key: str) -> tuple[str, str | None]:
+    key = normalize_reference_key(raw_key.strip())
+    match = re.match(r"^(ex|prop|thm|eq):([\d.]+)(?:\(([^)]*)\))?$", key)
+    if match:
+        base_key = f"{match.group(1)}:{match.group(2)}"
+        part = (match.group(3) or "").strip() or None
+        return base_key, part
+    return key.rstrip("()"), None
+
+
 def cleanup_content(text: str) -> str:
+    text = re.sub(r"\\label\{[^}]*\}", "", text)
     text = re.sub(r"\\begin\{myproof\}", "", text)
     text = re.sub(r"\\end\{myproof\}", "", text)
     text = re.sub(r"\\begin\{proof\}", "", text)
@@ -356,6 +367,105 @@ def convert_footnotes(text: str) -> str:
     return text
 
 
+def join_broken_prose_lines(text: str) -> str:
+    lines = text.split("\n")
+    merged: list[str] = []
+    for line in lines:
+        stripped = line.strip()
+        if (
+            merged
+            and stripped
+            and re.match(r"[\u4e00-\u9fff(]", stripped)
+            and merged[-1].rstrip().endswith(r"\)")
+        ):
+            merged[-1] = merged[-1].rstrip() + " " + stripped
+            continue
+        merged.append(line)
+    return "\n".join(merged)
+
+
+def join_orphan_inline_math_lines(text: str) -> str:
+    previous = None
+    while previous != text:
+        previous = text
+        text = re.sub(
+            r"([^\n])\n(\s*\\\((?:\\.|[^\\])*\\\))\s*\n(?=[\u4e00-\u9fffA-Za-z(])",
+            r"\1 \2\n",
+            text,
+        )
+    return text
+
+
+def demote_display_math_in_prose(text: str) -> str:
+    """Turn sentence-embedded \\[...\\] into \\(...\\) in stems."""
+
+    def should_demote(before: str, body: str, after: str) -> bool:
+        body_stripped = body.strip()
+        if not body_stripped or r"\begin{" in body:
+            return False
+        lines = [line.strip() for line in body_stripped.split("\n") if line.strip()]
+        if len(lines) > 1:
+            return False
+        if before.endswith("\n\n"):
+            return False
+        if re.match(r"^\s*\n\s*\(\d+\)", after):
+            return False
+        if re.match(r"^\s*\n\s*\d+\.\s", after):
+            return False
+        if re.match(r"^\s*\n\s*\\\[", after):
+            return False
+        if re.match(r"^\s*[\u4e00-\u9fffA-Za-z0-9(\\]", after):
+            return True
+        if re.match(r"^\s*\n(?!\n)", after):
+            return True
+        return False
+
+    def repl(match: re.Match[str]) -> str:
+        before = text[: match.start()]
+        after = text[match.end() :]
+        body = match.group(1)
+        if should_demote(before, body, after):
+            return rf"\({body.strip()}\)"
+        return match.group(0)
+
+    return re.sub(r"\\\[([\s\S]*?)\\\]", repl, text)
+
+
+def normalize_dollar_math(text: str) -> str:
+    parts: list[str] = []
+    cursor = 0
+    while cursor < len(text):
+        if text.startswith(r"\$", cursor):
+            parts.append("$")
+            cursor += 2
+            continue
+        if text[cursor] != "$":
+            parts.append(text[cursor])
+            cursor += 1
+            continue
+        if cursor + 1 < len(text) and text[cursor + 1] == "$":
+            parts.append("$$")
+            cursor += 2
+            continue
+        end = cursor + 1
+        while end < len(text):
+            if text.startswith(r"\$", end):
+                end += 2
+                continue
+            if text[end] == "$":
+                if end + 1 < len(text) and text[end + 1] == "$":
+                    break
+                inner = text[cursor + 1 : end]
+                parts.append(rf"\({inner}\)")
+                cursor = end + 1
+                break
+            end += 1
+        else:
+            parts.append("$")
+            cursor += 1
+    return "".join(parts)
+
+
 def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = strip_comments(text)
     text = remove_environments(text)
@@ -367,6 +477,7 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = convert_math_environments(text)
     text = convert_lists(text)
     text = apply_macros(text, macros)
+    text = normalize_dollar_math(text)
     text = convert_text_markup(text)
     text = strip_stray_markup(text)
     text = cleanup_content(text)
@@ -501,6 +612,9 @@ def cleanup_reference_citations(text: str) -> str:
     text = re.sub(r"\bProp\s+", "", text)
     text = re.sub(r"\bThm\s+", "", text)
     text = re.sub(r"（\s*（([^）]+)）\s*）", r"（\1）", text)
+    text = re.sub(r"习题\s+习题", "习题", text)
+    text = re.sub(r"定理\s+定理", "定理", text)
+    text = re.sub(r"命题\s+命题", "命题", text)
     return text
 
 
@@ -509,10 +623,9 @@ def expand_references(text: str, state: ImportState, depth: int = 0) -> str:
         return text
 
     def repl(match: re.Match[str]) -> str:
-        key = normalize_reference_key(match.group(1).strip().rstrip("()"))
-        part_match = re.match(r"^(ex|prop|thm|eq):([\d.]+)\(([^)]*)\)$", key)
-        part = part_match.group(3) if part_match else None
-        base_key = key.split("(")[0] if part else key
+        base_key, part = parse_reference_key(match.group(1))
+        if base_key.startswith(("ex:", "prop:", "thm:")) and not part:
+            return format_missing_reference(base_key)
         content = lookup_reference(base_key, state)
         if not content:
             return format_missing_reference(base_key, part)
@@ -520,7 +633,7 @@ def expand_references(text: str, state: ImportState, depth: int = 0) -> str:
             if part:
                 extracted = extract_numbered_part(content, part)
                 return extracted or content
-            return content
+            return format_missing_reference(base_key)
         expanded = latex_to_content(content, state.macros)
         if part:
             extracted = extract_numbered_part(expanded, part)
@@ -932,6 +1045,9 @@ def build_questions(macros: dict[str, str]) -> ImportState:
     for subject, block, stem, solution, question_index in prepared:
         stem = expand_prose_references(stem, state, block.source_file, question_index)
         stem = expand_references(stem, state)
+        stem = demote_display_math_in_prose(stem)
+        stem = join_orphan_inline_math_lines(stem)
+        stem = join_broken_prose_lines(stem)
         if solution != PENDING_SOLUTION:
             solution = expand_prose_references(solution, state, block.source_file, question_index)
             solution = expand_references(solution, state)

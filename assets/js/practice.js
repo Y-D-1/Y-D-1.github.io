@@ -46,63 +46,6 @@
       .replace(/>/g, "&gt;");
   }
 
-  function inlineMarkdown(text) {
-    return escapeHtml(text)
-      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*([^*]+)\*/g, "<em>$1</em>");
-  }
-
-  function renderTextMarkdown(text) {
-    if (!text) return "";
-
-    var lines = text.replace(/\r\n/g, "\n").split("\n");
-    var html = [];
-    var listType = null;
-    var listItems = [];
-
-    function flushList() {
-      if (!listType) return;
-      html.push("<" + listType + ">");
-      listItems.forEach(function (item) {
-        html.push("<li>" + inlineMarkdown(item) + "</li>");
-      });
-      html.push("</" + listType + ">");
-      listType = null;
-      listItems = [];
-    }
-
-    lines.forEach(function (line) {
-      var ordered = line.match(/^\s*(\d+)\.\s+(.*)$/);
-      var bullet = line.match(/^\s*-\s+(.*)$/);
-
-      if (ordered) {
-        if (listType !== "ol") {
-          flushList();
-          listType = "ol";
-        }
-        listItems.push(ordered[2]);
-        return;
-      }
-
-      if (bullet) {
-        if (listType !== "ul") {
-          flushList();
-          listType = "ul";
-        }
-        listItems.push(bullet[1]);
-        return;
-      }
-
-      flushList();
-      if (line.trim()) {
-        html.push("<p>" + inlineMarkdown(line) + "</p>");
-      }
-    });
-
-    flushList();
-    return html.join("");
-  }
-
   function findLatexDelimiterEnd(text, start, openToken, closeToken) {
     var pos = start + openToken.length;
     var depth = 1;
@@ -123,6 +66,134 @@
       pos += 1;
     }
     return -1;
+  }
+
+  function splitMathSegments(text) {
+    var segments = [];
+    var cursor = 0;
+
+    while (cursor < text.length) {
+      var next = -1;
+      var token = null;
+
+      if (text.startsWith("\\(", cursor)) {
+        next = cursor;
+        token = ["\\(", "\\)"];
+      } else if (text.startsWith("\\[", cursor)) {
+        next = cursor;
+        token = ["\\[", "\\]"];
+      } else if (text[cursor] === "$") {
+        if (text[cursor + 1] === "$") {
+          next = cursor;
+          token = ["$$", "$$"];
+        } else {
+          next = cursor;
+          token = ["$", "$"];
+        }
+      }
+
+      if (next < 0) {
+        segments.push({ type: "text", value: text.slice(cursor) });
+        break;
+      }
+
+      if (next > cursor) {
+        segments.push({ type: "text", value: text.slice(cursor, next) });
+      }
+
+      var end = findLatexDelimiterEnd(text, next, token[0], token[1]);
+      if (end < 0) {
+        segments.push({ type: "text", value: text.slice(next) });
+        break;
+      }
+
+      segments.push({ type: "math", value: text.slice(next, end) });
+      cursor = end;
+    }
+
+    return segments;
+  }
+
+  function formatTextSegment(text) {
+    return splitMathSegments(text)
+      .map(function (segment) {
+        if (segment.type === "math") {
+          return segment.value;
+        }
+        return escapeHtml(segment.value)
+          .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*([^*]+)\*/g, "<em>$1</em>");
+      })
+      .join("");
+  }
+
+  function renderTextMarkdown(text) {
+    if (!text) return "";
+
+    var paragraphs = text.replace(/\r\n/g, "\n").split(/\n{2,}/);
+    var html = [];
+
+    paragraphs.forEach(function (paragraph) {
+      var lines = paragraph.split("\n");
+      var listType = null;
+      var listItems = [];
+
+      function flushList() {
+        if (!listType) return;
+        html.push("<" + listType + ">");
+        listItems.forEach(function (item) {
+          html.push("<li>" + formatTextSegment(item) + "</li>");
+        });
+        html.push("</" + listType + ">");
+        listType = null;
+        listItems = [];
+      }
+
+      lines.forEach(function (line) {
+        var ordered = line.match(/^\s*(\d+)\.\s+(.*)$/);
+        var bullet = line.match(/^\s*-\s+(.*)$/);
+        var numbered = line.match(/^\s*\((\d+)\)\s+(.*)$/);
+
+        if (ordered) {
+          if (listType !== "ol") {
+            flushList();
+            listType = "ol";
+          }
+          listItems.push(ordered[2]);
+          return;
+        }
+
+        if (bullet) {
+          if (listType !== "ul") {
+            flushList();
+            listType = "ul";
+          }
+          listItems.push(bullet[1]);
+          return;
+        }
+
+        if (numbered) {
+          flushList();
+          html.push(
+            '<p class="practice-subpart"><span class="practice-subpart__label">(' +
+              numbered[1] +
+              ")</span> " +
+              formatTextSegment(numbered[2]) +
+              "</p>"
+          );
+          return;
+        }
+
+        flushList();
+        if (line.trim()) {
+          html.push("<p>" + formatTextSegment(line) + "</p>");
+        }
+      });
+
+      flushList();
+    });
+
+    return html.join("");
   }
 
   function renderMarkdown(text) {
@@ -148,7 +219,7 @@
         break;
       }
 
-      html.push(text.slice(displayStart, displayEnd));
+      html.push('<div class="practice-display-math">' + text.slice(displayStart, displayEnd) + "</div>");
       cursor = displayEnd;
     }
 

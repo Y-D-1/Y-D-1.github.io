@@ -4,8 +4,7 @@ layout: modern
 
 {% include base_path %}
 {% assign home = site.data.home %}
-{% assign sorted_notes = site.notes | sort: "date" | reverse %}
-{% assign avatar = site.author.avatar | default: "favicon.svg" %}
+{% assign avatar = site.author.avatar | default: "image.jpg" %}
 
 <header class="hero">
   <div class="hero-content">
@@ -55,36 +54,6 @@ layout: modern
           <p>{{ card.desc }}</p>
         </div>
       {% endfor %}
-    </div>
-    <div class="quote-box">
-      <i class="ri-double-quotes-l" aria-hidden="true"></i>
-      <p id="hitokoto">加载中…</p>
-    </div>
-  </section>
-
-  <section id="notes" class="section">
-    <div class="section-header">
-      <i class="ri-book-open-line" aria-hidden="true"></i>
-      <h2>课程笔记</h2>
-      <span class="section-line"></span>
-    </div>
-    <p class="section-lead">以下为部分课程笔记，完整列表见 <a href="{{ base_path }}/notes/">Notes 页面</a>。</p>
-    <div class="notes-grid">
-      {% for post in sorted_notes limit: 6 %}
-        <a class="note-card" href="{{ base_path }}{{ post.url }}">
-          <div class="note-card-head">
-            <i class="ri-file-text-line" aria-hidden="true"></i>
-            <h3>{{ post.title }}</h3>
-          </div>
-          <div class="note-card-meta">
-            {% if post.venue %}<span>{{ post.venue }}</span>{% endif %}
-            {% if post.date %}<span>{{ post.date | date: "%Y" }}</span>{% endif %}
-          </div>
-        </a>
-      {% endfor %}
-    </div>
-    <div class="section-action">
-      <a class="btn-primary" href="{{ base_path }}/notes/">查看全部笔记</a>
     </div>
   </section>
 

@@ -179,19 +179,6 @@
     });
   }
 
-  function loadHitokoto() {
-    var el = document.getElementById("hitokoto");
-    if (!el) return;
-    fetch("https://v1.hitokoto.cn")
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        el.textContent = d.hitokoto + (d.from ? " —— " + d.from : "");
-      })
-      .catch(function () {
-        el.textContent = "数学如诗，笔记如歌。";
-      });
-  }
-
   function loadPoetry() {
     var el = document.getElementById("poetry");
     if (!el) return;
@@ -225,7 +212,6 @@
     initTypeWriter();
     initParticles();
     initScrollReveal();
-    loadHitokoto();
     loadPoetry();
     loadBusuanzi();
   });

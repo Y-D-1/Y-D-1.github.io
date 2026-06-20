@@ -1,137 +1,25 @@
 {% include base_path %}
 
-{% if post.header.teaser %}
-  {% capture teaser %}{{ post.header.teaser }}{% endcapture %}
-{% else %}
-  {% assign teaser = site.teaser %}
-{% endif %}
-
 {% if post.id %}
   {% assign title = post.title | markdownify | remove: "<p>" | remove: "</p>" %}
 {% else %}
   {% assign title = post.title %}
 {% endif %}
 
-<div class="{{ include.type | default: "list" }}__item exam-course-item">
+<div class="exam-course-item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    {% if include.type == "grid" and teaser %}
-      <div class="archive__item-teaser">
-        <img src=
-          {% if teaser contains "://" %}
-            "{{ teaser }}"
-          {% else %}
-            "{{ teaser | prepend: "/images/" | prepend: base_path }}"
-          {% endif %}
-          alt="">
-      </div>
-    {% endif %}
-
     <div class="exam-course-header">
       <h2 class="archive__item-title course-title" itemprop="headline">
-        {% if post.link %}
-          <a href="{{ post.link }}">{{ title }}</a> <a href="{{ base_path }}{{ post.url }}" rel="permalink"><i class="fa fa-link" aria-hidden="true" title="permalink"></i><span class="sr-only">Permalink</span></a>
-        {% else %}
-          <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
-        {% endif %}
+        <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
       </h2>
-      
-      <!-- 简化的课程信息 -->
       <div class="course-meta">
-        {% if post.type %}
-          <span class="course-type">{{ post.type }}</span>
-        {% endif %}
-        
-        {% if post.venue %}
-          <span class="course-venue">{{ post.venue }}</span>
-        {% endif %}
-
-        {% if post.a %}
-          <span class="course-a">{{ post.a }}</span>
-        {% endif %}
+        {% if post.type %}<span class="course-type">{{ post.type }}</span>{% endif %}
+        {% if post.venue %}<span class="course-venue">{{ post.venue }}</span>{% endif %}
+        {% if post.date %}<span>{{ post.date | date: "%Y" }}</span>{% endif %}
       </div>
     </div>
-    <!-- 简化的提示信息 -->
     <div class="course-notice">
-      <small>点击课程名称进入详情页</small>
+      <small>点击进入详情页查看 PDF</small>
     </div>
-
   </article>
 </div>
-<style>
-.exam-course-item {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  background: transparent;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.exam-course-item:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  transform: translateY(-2px);
-}
-
-.exam-course-header {
-  margin-bottom: 0rem;
-}
-
-.archive__item-title {
-  margin-bottom: 0.5rem;
-}
-
-.archive__item-title a {
-  color: transparent;
-  text-decoration: none;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.archive__item-title a:hover {
-  color: inherit;
-}
-
-.course-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.course-meta span {
-  background: #f8f9fa;
-  padding: 0.25rem 0.75rem;
-  border-radius: 15px;
-  border: 1px solid #e9ecef;
-}
-
-.course-type {
-  background: #e3f2fd !important;
-  border-color: #bbdefb !important;
-  color: #1976d2;
-}
-
-.course-venue {
-  background: #e8f5e8 !important;
-  border-color: #c8e6c9 !important;
-  color: #388e3c;
-}
-
-.course-a {
-  background: #fff3e0 !important;
-  border-color: #ffe0b2 !important;
-  color: #f57c00;
-}
-
-.course-notice {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f0f0f0;
-  color: #6c757d;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-</style>

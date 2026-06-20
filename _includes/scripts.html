@@ -1,4 +1,5 @@
+{% unless site.modern_theme %}
 <script src="{{ base_path }}/assets/js/main.min.js"></script>
 {% if site.pixel_theme %}<script src="{{ base_path }}/assets/js/pixel.js"></script>{% endif %}
-
+{% endunless %}
 {% include analytics.html %}

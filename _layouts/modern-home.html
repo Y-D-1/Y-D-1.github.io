@@ -1,0 +1,127 @@
+---
+layout: modern
+---
+
+{% include base_path %}
+{% assign home = site.data.home %}
+{% assign sorted_notes = site.notes | sort: "date" | reverse %}
+{% assign avatar = site.author.avatar | default: "favicon.svg" %}
+
+<header class="hero">
+  <div class="hero-content">
+    <div class="avatar-container">
+      <div class="avatar-ring" aria-hidden="true"></div>
+      <img
+        class="avatar"
+        src="{{ base_path }}/images/{{ avatar }}"
+        alt="{{ site.author.name | default: site.title }}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      />
+      <div class="avatar-fallback" aria-hidden="true">{{ site.author.name | default: site.title | slice: 0, 1 }}</div>
+    </div>
+    <div class="glitch-wrap">
+      <p class="glitch-name" data-text="{{ site.author.name | default: site.title }}">{{ site.author.name | default: site.title }}</p>
+    </div>
+    <h1 class="title">
+      <span id="typedText" data-texts="{{ home.profile.typed_texts | join: '||' }}"></span><span class="cursor">|</span>
+    </h1>
+    <p class="subtitle">{{ home.profile.title }}</p>
+    <p class="bio">{{ home.profile.bio }}</p>
+    <div class="social-links">
+      {% for item in home.social %}
+        <a href="{{ item.url }}" class="social-link" title="{{ item.name }}" target="_blank" rel="noopener noreferrer">
+          <i class="{{ item.icon }}" aria-hidden="true"></i>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</header>
+
+<main class="main-content">
+  <section id="about" class="section">
+    <div class="section-header">
+      <i class="ri-user-star-line" aria-hidden="true"></i>
+      <h2>关于我</h2>
+      <span class="section-line"></span>
+    </div>
+    <div class="about-intro">
+      <p>{{ home.about.intro }}</p>
+    </div>
+    <div class="about-grid">
+      {% for card in home.about.cards %}
+        <div class="about-card">
+          <div class="about-icon"><i class="{{ card.icon }}" aria-hidden="true"></i></div>
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="quote-box">
+      <i class="ri-double-quotes-l" aria-hidden="true"></i>
+      <p id="hitokoto">加载中…</p>
+    </div>
+  </section>
+
+  <section id="notes" class="section">
+    <div class="section-header">
+      <i class="ri-book-open-line" aria-hidden="true"></i>
+      <h2>课程笔记</h2>
+      <span class="section-line"></span>
+    </div>
+    <p class="section-lead">以下为部分课程笔记，完整列表见 <a href="{{ base_path }}/notes/">Notes 页面</a>。</p>
+    <div class="notes-grid">
+      {% for post in sorted_notes limit: 6 %}
+        <a class="note-card" href="{{ base_path }}{{ post.url }}">
+          <div class="note-card-head">
+            <i class="ri-file-text-line" aria-hidden="true"></i>
+            <h3>{{ post.title }}</h3>
+          </div>
+          <div class="note-card-meta">
+            {% if post.venue %}<span>{{ post.venue }}</span>{% endif %}
+            {% if post.date %}<span>{{ post.date | date: "%Y" }}</span>{% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+    <div class="section-action">
+      <a class="btn-primary" href="{{ base_path }}/notes/">查看全部笔记</a>
+    </div>
+  </section>
+
+  <section id="stats" class="section section-stats">
+    <div class="stats-grid">
+      {% for stat in home.stats %}
+        <div class="stat-item">
+          <div class="stat-number"{% if stat.id %} id="{{ stat.id }}"{% endif %}>
+            {% if stat.label == "门课程笔记" %}{{ site.notes.size }}{% else %}{{ stat.value }}{% endif %}
+          </div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="poetry" class="section section-poetry">
+    <div class="poetry-box">
+      <i class="ri-quill-pen-line" aria-hidden="true"></i>
+      <p id="poetry">加载中…</p>
+    </div>
+  </section>
+
+  <section id="links" class="section">
+    <div class="section-header">
+      <i class="ri-link" aria-hidden="true"></i>
+      <h2>资源链接</h2>
+      <span class="section-line"></span>
+    </div>
+    <div class="links-grid">
+      {% for link in home.links %}
+        <a class="link-card" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+          <i class="{{ link.icon }}" aria-hidden="true"></i>
+          <span>{{ link.name }}</span>
+          <p>{{ link.desc }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+</main>

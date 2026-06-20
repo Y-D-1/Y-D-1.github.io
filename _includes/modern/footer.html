@@ -1,0 +1,38 @@
+{% include base_path %}
+{% assign home = site.data.home %}
+<footer id="contact" class="footer">
+  <div class="footer-content">
+    <div class="footer-info">
+      <h3>{{ site.name | default: site.title }}</h3>
+      <p>{{ home.slogan }}</p>
+    </div>
+    <div class="footer-contact">
+      <h4>Connect</h4>
+      <div class="contact-items">
+        {% for item in home.social %}
+          <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+            <i class="{{ item.icon }}" aria-hidden="true"></i> {{ item.name }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="copyright-main">&copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}</p>
+    <p class="copyright-sub">
+      <span>Powered by Jekyll</span>
+      <span class="divider">|</span>
+      <span><a href="https://github.com/Y-D-1/Y-D-1.github.io" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+      <span class="divider">|</span>
+      <span>Site updated {{ "now" | date: '%Y-%m-%d' }}</span>
+    </p>
+    <p class="design-credits">
+      界面设计参考
+      <a href="https://github.com/wexuo/home" target="_blank" rel="noopener noreferrer">wexuo/home</a>
+      与
+      <a href="https://github.com/JieYueGo/me" target="_blank" rel="noopener noreferrer">JieYueGo/me</a>
+      （MIT），详见
+      <a href="{{ base_path }}/credits/">设计说明</a>。
+    </p>
+  </div>
+</footer>

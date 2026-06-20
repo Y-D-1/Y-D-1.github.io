@@ -9,7 +9,8 @@
 # Basic Site Settings
 locale                   : "zh-CN"
 site_theme               : "dark"
-pixel_theme              : true
+modern_theme             : true
+pixel_theme              : false
 title                    : "鱼栋一"
 title_separator          : "-"
 name                     : &name "鱼栋一"
@@ -23,7 +24,7 @@ repository               : "academicpages/academicpages.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "image.jpg"
+  avatar           : "favicon.svg"
   name             : "鱼栋一"
   pronouns         : # example: "she/her"  
   bio              : "无聊的主页罢了"
@@ -246,8 +247,8 @@ defaults:
       path: ""
       type: pages
     values:
-      layout: single
-      author_profile: true
+      layout: modern-page
+      author_profile: false
   # _learning
   - scope:
       path: ""
@@ -271,8 +272,8 @@ defaults:
       path: ""
       type: notes
     values:
-      layout: single
-      author_profile: true
+      layout: modern-page
+      author_profile: false
       share: false
       comment: true
   # _talks

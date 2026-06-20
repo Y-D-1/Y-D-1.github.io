@@ -1,0 +1,25 @@
+---
+layout: modern
+---
+
+{% include base_path %}
+
+<main class="main-content page-shell">
+  {% if page.title %}
+    <header class="page-header">
+      <a class="page-back" href="{{ base_path }}/"><i class="ri-arrow-left-line" aria-hidden="true"></i> 返回首页</a>
+      <h1 class="page-title">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>
+      {% if page.venue or page.date %}
+        <div class="page-meta">
+          {% if page.venue %}<span>{{ page.venue }}</span>{% endif %}
+          {% if page.date %}<span>{{ page.date | date: "%Y-%m-%d" }}</span>{% endif %}
+          {% if page.type %}<span>{{ page.type }}</span>{% endif %}
+        </div>
+      {% endif %}
+    </header>
+  {% endif %}
+
+  <div class="page-body markdown-body">
+    {{ content }}
+  </div>
+</main>

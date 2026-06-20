@@ -1,277 +1,29 @@
 ---
-layout: archive
-title: "Notes"
+layout: modern-page
+title: "课程笔记"
 permalink: /notes/
-author_profile: true
+author_profile: false
 ---
-课程笔记仅供交流学习使用，请勿用于商业用途.
 
-<!-- 搜索框 -->
+<p class="notes-page-lead">课程笔记仅供交流学习使用，请勿用于商业用途。</p>
+
 <div class="notes-search">
   <label class="sr-only" for="courseSearch">搜索课程</label>
-  <input type="text" id="courseSearch" placeholder="搜索课程中文名，例如：数学分析、泛函分析" class="search-input">
-  <button id="clearSearch" type="button" class="clear-search-btn">清除</button>
+  <div class="notes-search-row">
+    <input type="text" id="courseSearch" placeholder="搜索课程，例如：数学分析、泛函分析" class="search-input">
+    <button id="clearSearch" type="button" class="clear-search-btn">清除</button>
+  </div>
   <p id="searchResults" class="search-results" aria-live="polite">支持按课程中文名搜索。</p>
 </div>
 
 {% include base_path %}
 
-<div class="exams-list" id="notesList">
-  {% assign sorted_exams = site.notes | sort: "date" | reverse %}
-  {% for post in sorted_exams %}
+<div class="notes-list" id="notesList">
+  {% assign sorted_notes = site.notes | sort: "date" | reverse %}
+  {% for post in sorted_notes %}
     {% include archive-single.html %}
   {% endfor %}
 </div>
-
-<style>
-.exam-course-item {
-  position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 14px;
-  padding: 1.2rem 1.3rem;
-  margin-bottom: 1.1rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.35));
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.exam-course-item::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: linear-gradient(90deg, #2f7de1, #4bb6a5);
-  opacity: 0.75;
-}
-
-.exam-course-item:hover {
-  border-color: rgba(47, 125, 225, 0.35);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-  transform: translateY(-3px);
-}
-
-.exam-course-header {
-  margin-bottom: 0.5rem;
-}
-
-.archive__item-title {
-  margin-bottom: 0.6rem;
-}
-
-.archive__item-title a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 1.28rem;
-  font-weight: 700;
-}
-
-.archive__item-title a:hover {
-  color: #2f7de1;
-}
-
-.course-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  font-size: 0.9rem;
-  color: inherit;
-}
-
-.course-meta span {
-  background: rgba(255, 255, 255, 0.04);
-  padding: 0.26rem 0.72rem;
-  border-radius: 999px;
-  border: 1px solid rgba(128, 128, 128, 0.32);
-  backdrop-filter: blur(3px);
-}
-
-.course-type {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(47, 125, 225, 0.35) !important;
-  color: inherit;
-}
-
-.course-venue {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(75, 182, 165, 0.45) !important;
-  color: inherit;
-}
-
-.course-notice {
-  margin-top: 0.8rem;
-  padding-top: 0.7rem;
-  border-top: 1px dashed rgba(128, 128, 128, 0.3);
-  color: rgba(90, 90, 90, 0.9);
-  font-size: 0.84rem;
-  text-align: center;
-}
-
-/* 搜索相关样式 */
-.notes-search {
-  margin: 1.6rem 0 1.1rem;
-  text-align: center;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 560px;
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(128, 128, 128, 0.35);
-  border-radius: 25px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  background: rgba(255, 255, 255, 0.5);
-  color: inherit;
-}
-
-.search-input:focus {
-  border-color: rgba(47, 125, 225, 0.7);
-  box-shadow: 0 0 0 3px rgba(47, 125, 225, 0.15);
-}
-
-.search-input::placeholder {
-  color: rgba(110, 110, 110, 0.9);
-}
-
-.clear-search-btn {
-  display: none;
-  margin: 0.9rem 0 0;
-  padding: 0.4rem 0.95rem;
-  border: 1px solid rgba(128, 128, 128, 0.45);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.6);
-  color: inherit;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.clear-search-btn:hover {
-  border-color: rgba(47, 125, 225, 0.45);
-  background: rgba(47, 125, 225, 0.08);
-}
-
-.exams-list {
-  margin-top: 1.2rem;
-}
-
-.search-results {
-  text-align: center;
-  margin: 0.6rem auto 0;
-  min-height: 1.3rem;
-  font-size: 0.92rem;
-  max-width: 560px;
-  color: inherit;
-}
-
-.search-results.no-results {
-  color: #b73a3a;
-}
-
-mark.search-mark {
-  background: rgba(255, 210, 72, 0.65);
-  color: inherit;
-  border-radius: 0.2em;
-  padding: 0 0.08em;
-}
-
-html[data-theme="dark"] .exam-course-item {
-  border-color: rgba(255, 255, 255, 0.14);
-  background: linear-gradient(135deg, rgba(26, 32, 44, 0.86), rgba(35, 46, 66, 0.62));
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.34);
-}
-
-html[data-theme="dark"] .exam-course-item::before {
-  background: linear-gradient(90deg, #70a6ff, #73d8bf);
-  opacity: 0.82;
-}
-
-html[data-theme="dark"] .exam-course-item:hover {
-  border-color: rgba(126, 169, 255, 0.5);
-  box-shadow: 0 15px 32px rgba(0, 0, 0, 0.45);
-}
-
-html[data-theme="dark"] .archive__item-title a:hover {
-  color: #8cb8ff;
-}
-
-html[data-theme="dark"] .course-meta span {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(204, 221, 255, 0.28);
-  color: rgba(232, 239, 252, 0.95);
-}
-
-html[data-theme="dark"] .course-type {
-  border-color: rgba(112, 166, 255, 0.48) !important;
-}
-
-html[data-theme="dark"] .course-venue {
-  border-color: rgba(115, 216, 191, 0.52) !important;
-}
-
-html[data-theme="dark"] .course-notice {
-  border-top-color: rgba(255, 255, 255, 0.2);
-  color: rgba(210, 220, 235, 0.88);
-}
-
-html[data-theme="dark"] .search-input {
-  border-color: rgba(190, 208, 240, 0.42);
-  background: rgba(17, 24, 35, 0.6);
-  color: rgba(238, 244, 255, 0.95);
-}
-
-html[data-theme="dark"] .search-input::placeholder {
-  color: rgba(181, 197, 225, 0.85);
-}
-
-html[data-theme="dark"] .search-input:focus {
-  border-color: rgba(133, 176, 255, 0.9);
-  box-shadow: 0 0 0 3px rgba(77, 131, 224, 0.25);
-}
-
-html[data-theme="dark"] .clear-search-btn {
-  border-color: rgba(190, 208, 240, 0.42);
-  background: rgba(17, 24, 35, 0.62);
-}
-
-html[data-theme="dark"] .clear-search-btn:hover {
-  border-color: rgba(133, 176, 255, 0.9);
-  background: rgba(77, 131, 224, 0.23);
-}
-
-html[data-theme="dark"] .search-results.no-results {
-  color: #ff9d9d;
-}
-
-html[data-theme="dark"] mark.search-mark {
-  background: rgba(255, 204, 102, 0.56);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .exam-course-item {
-    padding: 1rem 0.95rem;
-  }
-  
-  .archive__item-title a {
-    font-size: 1.12rem;
-  }
-  
-  .course-meta {
-    gap: 0.45rem;
-  }
-  
-  .course-meta span {
-    font-size: 0.78rem;
-    padding: 0.2rem 0.5rem;
-  }
-
-  .search-results {
-    font-size: 0.88rem;
-  }
-}
-</style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -279,10 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var clearBtn = document.getElementById("clearSearch");
   var searchResults = document.getElementById("searchResults");
   var notesList = document.getElementById("notesList");
-
-  if (!searchInput || !clearBtn || !searchResults || !notesList) {
-    return;
-  }
+  if (!searchInput || !clearBtn || !searchResults || !notesList) return;
 
   var cards = Array.prototype.slice.call(notesList.querySelectorAll(".exam-course-item"));
   var noteIndex = cards.map(function (card) {
@@ -291,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var titleText = (titleLink ? titleLink.textContent : titleNode ? titleNode.textContent : "").trim();
     var typeText = (card.querySelector(".course-type") || {}).textContent || "";
     var venueText = (card.querySelector(".course-venue") || {}).textContent || "";
-
     return {
       card: card,
       titleNode: titleLink || titleNode,
@@ -300,41 +48,24 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function clearHighlight(node) {
-    if (!node) {
-      return;
-    }
-    var marks = node.querySelectorAll("mark.search-mark");
-    Array.prototype.forEach.call(marks, function (mark) {
-      var text = document.createTextNode(mark.textContent);
-      mark.parentNode.replaceChild(text, mark);
+    if (!node) return;
+    node.querySelectorAll("mark.search-mark").forEach(function (mark) {
+      mark.parentNode.replaceChild(document.createTextNode(mark.textContent), mark);
     });
     node.normalize();
   }
 
   function highlightTitle(node, query) {
-    if (!node) {
-      return;
-    }
+    if (!node) return;
     clearHighlight(node);
-    if (!query) {
-      return;
-    }
-
+    if (!query) return;
     var text = node.textContent;
-    var lowerText = text.toLocaleLowerCase();
-    var index = lowerText.indexOf(query);
-    if (index < 0) {
-      return;
-    }
-
+    var index = text.toLocaleLowerCase().indexOf(query);
+    if (index < 0) return;
     var before = text.slice(0, index);
     var hit = text.slice(index, index + query.length);
     var after = text.slice(index + query.length);
-
-    while (node.firstChild) {
-      node.removeChild(node.firstChild);
-    }
-
+    while (node.firstChild) node.removeChild(node.firstChild);
     node.appendChild(document.createTextNode(before));
     var mark = document.createElement("mark");
     mark.className = "search-mark";
@@ -347,44 +78,33 @@ document.addEventListener("DOMContentLoaded", function () {
     var keyword = rawInput.trim();
     var query = keyword.toLocaleLowerCase();
     var visibleCount = 0;
-
     noteIndex.forEach(function (item) {
       var matched = !query || item.haystack.indexOf(query) !== -1;
       item.card.style.display = matched ? "" : "none";
-      if (matched) {
-        visibleCount += 1;
-      }
+      if (matched) visibleCount += 1;
       highlightTitle(item.titleNode, matched ? query : "");
     });
-
     clearBtn.style.display = query ? "inline-flex" : "none";
-
     if (!query) {
       searchResults.textContent = "支持按课程中文名搜索。";
       searchResults.classList.remove("no-results");
       return;
     }
-
     if (visibleCount === 0) {
-      searchResults.textContent = "未找到包含 \"" + keyword + "\" 的课程。";
+      searchResults.textContent = '未找到包含 "' + keyword + '" 的课程。';
       searchResults.classList.add("no-results");
       return;
     }
-
     searchResults.textContent = "找到 " + visibleCount + " 门课程。";
     searchResults.classList.remove("no-results");
   }
 
-  searchInput.addEventListener("input", function (event) {
-    applySearch(event.target.value || "");
-  });
-
+  searchInput.addEventListener("input", function (e) { applySearch(e.target.value || ""); });
   clearBtn.addEventListener("click", function () {
     searchInput.value = "";
     searchInput.focus();
     applySearch("");
   });
-
   applySearch("");
 });
 </script>

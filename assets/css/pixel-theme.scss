@@ -1,0 +1,486 @@
+---
+---
+
+/* Pixel RPG theme overlay for AcademicPages (Route B) */
+
+@font-face {
+  font-family: "Fusion Pixel";
+  src: url("../fonts/fusion-pixel-12px-monospaced-zh_hans.ttf.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+3000-303F, U+FF00-FFEF;
+}
+
+@font-face {
+  font-family: "Fusion Pixel";
+  src: url("../fonts/fusion-pixel-12px-monospaced-latin.ttf.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-024F, U+2000-206F;
+}
+
+:root {
+  --pixel-bg-deep: #0f0e2a;
+  --pixel-bg-dark: #1a1a2e;
+  --pixel-bg-card: #16163a;
+  --pixel-green: #39ff14;
+  --pixel-green-shadow: #0a6b0a;
+  --pixel-yellow: #ffd700;
+  --pixel-blue: #00d4ff;
+  --pixel-blue-accent: #27a7ff;
+  --pixel-red: #ff2d2d;
+  --pixel-text: #ffffff;
+  --pixel-text-dim: #c0c0c0;
+  --pixel-text-muted: #666688;
+  --pixel-border: #3a3a5c;
+  --pixel-font: "Fusion Pixel", "Press Start 2P", monospace;
+  --pixel-font-size: 24px;
+  --pixel-font-size-sm: 12px;
+}
+
+body.pixel-site,
+body.pixel-site[data-theme="dark"],
+body.pixel-site[data-theme="default"] {
+  --global-bg-color: var(--pixel-bg-deep);
+  --global-footer-bg-color: var(--pixel-bg-dark);
+  --global-border-color: var(--pixel-border);
+  --global-dark-gray: var(--pixel-text-dim);
+  --global-gray: var(--pixel-text-muted);
+  --global-light-gray: var(--pixel-text-dim);
+  --global-text-color: var(--pixel-text);
+  --global-text-color-light: var(--pixel-text-dim);
+  --global-thead-color: var(--pixel-bg-card);
+  --global-code-background-color: var(--pixel-bg-card);
+  --global-link-color: var(--pixel-blue);
+  --global-link-color-hover: var(--pixel-green);
+  --global-link-color-visited: var(--pixel-blue-accent);
+  --global-masthead-link-color: var(--pixel-text-dim);
+  --global-masthead-link-color-hover: var(--pixel-green);
+}
+
+body.pixel-site {
+  background: var(--pixel-bg-deep) !important;
+  color: var(--pixel-text) !important;
+  font-family: var(--pixel-font) !important;
+  font-size: var(--pixel-font-size) !important;
+  line-height: 1.75 !important;
+  -webkit-font-smoothing: none !important;
+  -moz-osx-font-smoothing: unset !important;
+  image-rendering: pixelated;
+}
+
+body.pixel-site *,
+body.pixel-site *::before,
+body.pixel-site *::after {
+  border-radius: 0 !important;
+}
+
+body.pixel-site img,
+body.pixel-site .author__avatar img {
+  image-rendering: pixelated;
+}
+
+/* Background overlays */
+.pixel-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+}
+
+.pixel-star-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pixel-bg-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--pixel-text);
+  animation: pixelStarBlink 2s steps(2) infinite;
+}
+
+.pixel-bg-star:nth-child(odd) {
+  background: var(--pixel-yellow);
+  animation-delay: 0.5s;
+}
+
+.pixel-bg-star:nth-child(3n) {
+  background: var(--pixel-blue);
+  animation-delay: 1s;
+}
+
+@keyframes pixelStarBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.pixel-skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  transform: translateY(-200%);
+  border: 3px solid var(--pixel-yellow);
+  background: var(--pixel-bg-deep);
+  color: var(--pixel-yellow);
+  font-family: var(--pixel-font);
+  font-size: var(--pixel-font-size-sm);
+  padding: 8px 10px;
+  text-decoration: none;
+}
+
+.pixel-skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Masthead */
+body.pixel-site .masthead {
+  background: rgba(15, 14, 42, 0.95) !important;
+  border-bottom: 4px solid var(--pixel-green);
+  box-shadow: 0 4px 0 var(--pixel-green-shadow);
+}
+
+body.pixel-site .masthead::after {
+  display: none;
+}
+
+body.pixel-site .masthead__inner-wrap {
+  font-family: var(--pixel-font) !important;
+}
+
+body.pixel-site .masthead__menu-item--lg a {
+  color: var(--pixel-green) !important;
+  font-size: var(--pixel-font-size-sm);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+
+body.pixel-site .masthead__menu-item a {
+  font-size: var(--pixel-font-size-sm);
+  border: 2px solid transparent;
+  padding: 0.35em 0.6em;
+}
+
+body.pixel-site .masthead__menu-item a:hover {
+  color: var(--pixel-green) !important;
+  border-color: var(--pixel-green);
+  background: rgba(57, 255, 20, 0.1);
+}
+
+body.pixel-site #theme-toggle {
+  display: none;
+}
+
+/* Main layout */
+body.pixel-site #main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sidebar / author profile */
+body.pixel-site .sidebar {
+  font-family: var(--pixel-font) !important;
+}
+
+body.pixel-site .author__avatar img {
+  border: 4px solid var(--pixel-green);
+  box-shadow: 4px 4px 0 var(--pixel-green-shadow);
+  background: var(--pixel-bg-dark);
+}
+
+body.pixel-site .author__name {
+  color: var(--pixel-green) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+  text-shadow: 2px 2px 0 var(--pixel-green-shadow);
+}
+
+body.pixel-site .author__bio,
+body.pixel-site .author__desktop {
+  color: var(--pixel-text-dim) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+}
+
+body.pixel-site .author__urls-wrapper {
+  border: 3px solid var(--pixel-border);
+  background: var(--pixel-bg-card);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+body.pixel-site .btn--inverse {
+  border: 2px solid var(--pixel-yellow) !important;
+  background: var(--pixel-bg-dark) !important;
+  color: var(--pixel-yellow) !important;
+  font-family: var(--pixel-font) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+}
+
+body.pixel-site .author__urls a {
+  color: var(--pixel-blue) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+}
+
+body.pixel-site .author__urls a:hover {
+  color: var(--pixel-green) !important;
+}
+
+/* Page content */
+body.pixel-site .page__title,
+body.pixel-site .archive h1.page__title {
+  color: var(--pixel-green) !important;
+  font-size: var(--pixel-font-size) !important;
+  text-shadow: 3px 3px 0 var(--pixel-green-shadow);
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+body.pixel-site .page__content h2 {
+  color: var(--pixel-yellow) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+  border-left: 4px solid var(--pixel-yellow);
+  padding-left: 0.75em;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+}
+
+body.pixel-site .page__content h2::before {
+  content: "◆ ";
+}
+
+body.pixel-site .page__content p,
+body.pixel-site .page__content li {
+  color: var(--pixel-text-dim);
+  font-size: var(--pixel-font-size-sm);
+  line-height: 2;
+}
+
+body.pixel-site .page__content strong {
+  color: var(--pixel-yellow);
+}
+
+body.pixel-site a {
+  color: var(--pixel-blue) !important;
+}
+
+body.pixel-site a:hover {
+  color: var(--pixel-green) !important;
+  text-decoration: none;
+}
+
+/* RPG dialog box on homepage */
+body.pixel-site .page__content {
+  border: 4px solid var(--pixel-green);
+  background: var(--pixel-bg-card);
+  box-shadow: 6px 6px 0 var(--pixel-green-shadow);
+  padding: 1.5em;
+  margin-top: 1em;
+}
+
+body.pixel-site .page__inner-wrap > header {
+  border-bottom: 3px solid var(--pixel-border);
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+}
+
+body.pixel-site .page__inner-wrap > header::after {
+  content: " ■";
+  color: var(--pixel-green);
+  animation: pixelCursorBlink 1s steps(2) infinite;
+}
+
+@keyframes pixelCursorBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Archive / notes cards */
+body.pixel-site .exam-course-item {
+  border: 3px solid var(--pixel-border) !important;
+  background: var(--pixel-bg-card) !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35) !important;
+  padding: 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+  transition: none !important;
+}
+
+body.pixel-site .exam-course-item:hover {
+  border-color: var(--pixel-green) !important;
+  box-shadow: 4px 4px 0 var(--pixel-green-shadow) !important;
+  transform: translate(-2px, -2px) !important;
+}
+
+body.pixel-site .archive__item-title a {
+  color: var(--pixel-green) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+  font-weight: normal !important;
+}
+
+body.pixel-site .archive__item-title a:hover {
+  color: var(--pixel-yellow) !important;
+}
+
+body.pixel-site .course-meta span {
+  background: var(--pixel-bg-dark) !important;
+  border: 2px solid var(--pixel-border) !important;
+  color: var(--pixel-text-dim) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+  padding: 0.15rem 0.5rem !important;
+}
+
+body.pixel-site .course-type {
+  border-color: var(--pixel-blue) !important;
+  color: var(--pixel-blue) !important;
+}
+
+body.pixel-site .course-venue {
+  border-color: var(--pixel-green) !important;
+  color: var(--pixel-green) !important;
+}
+
+body.pixel-site .course-a {
+  border-color: var(--pixel-yellow) !important;
+  color: var(--pixel-yellow) !important;
+}
+
+body.pixel-site .course-notice {
+  border-top: 2px solid var(--pixel-border) !important;
+  color: var(--pixel-text-muted) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+}
+
+/* Search box on notes page */
+body.pixel-site .search-input,
+body.pixel-site input[type="text"],
+body.pixel-site input[type="search"],
+body.pixel-site textarea {
+  background: var(--pixel-bg-dark) !important;
+  border: 3px solid var(--pixel-border) !important;
+  color: var(--pixel-text) !important;
+  font-family: var(--pixel-font) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+  padding: 0.5em 0.75em !important;
+}
+
+body.pixel-site .search-input:focus,
+body.pixel-site input:focus,
+body.pixel-site textarea:focus {
+  border-color: var(--pixel-green) !important;
+  outline: none;
+}
+
+body.pixel-site button,
+body.pixel-site .btn {
+  background: var(--pixel-bg-dark) !important;
+  border: 3px solid var(--pixel-green) !important;
+  color: var(--pixel-green) !important;
+  font-family: var(--pixel-font) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+  box-shadow: 3px 3px 0 var(--pixel-green-shadow);
+}
+
+body.pixel-site button:hover,
+body.pixel-site .btn:hover {
+  background: rgba(57, 255, 20, 0.1) !important;
+  color: var(--pixel-yellow) !important;
+  border-color: var(--pixel-yellow) !important;
+}
+
+/* Footer */
+body.pixel-site .page__footer {
+  background: var(--pixel-bg-dark) !important;
+  border-top: 4px solid var(--pixel-border);
+  position: relative;
+  z-index: 1;
+}
+
+body.pixel-site .page__footer-follow,
+body.pixel-site .page__footer-copyright {
+  font-size: var(--pixel-font-size-sm) !important;
+  color: var(--pixel-text-muted) !important;
+}
+
+body.pixel-site .page__footer a {
+  color: var(--pixel-blue) !important;
+}
+
+/* Code & MathJax */
+body.pixel-site code,
+body.pixel-site pre {
+  background: var(--pixel-bg-card) !important;
+  border: 2px solid var(--pixel-border) !important;
+  font-family: var(--pixel-font) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+}
+
+body.pixel-site .MathJax {
+  color: var(--pixel-text) !important;
+}
+
+/* Tables */
+body.pixel-site table {
+  border: 3px solid var(--pixel-border) !important;
+}
+
+body.pixel-site th,
+body.pixel-site td {
+  border: 2px solid var(--pixel-border) !important;
+  font-size: var(--pixel-font-size-sm) !important;
+}
+
+body.pixel-site thead {
+  background: var(--pixel-bg-card) !important;
+  color: var(--pixel-yellow) !important;
+}
+
+/* Scroll reveal */
+body.pixel-site .is-reveal-pending {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+body.pixel-site .is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s steps(4), transform 0.3s steps(4);
+}
+
+@media (max-width: 768px) {
+  body.pixel-site {
+    font-size: 20px !important;
+  }
+
+  body.pixel-site .masthead__menu-item a,
+  body.pixel-site .author__name {
+    font-size: 10px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.pixel-site .pixel-bg-star,
+  body.pixel-site .page__inner-wrap > header::after {
+    animation: none !important;
+  }
+}

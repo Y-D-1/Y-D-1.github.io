@@ -11,7 +11,13 @@ layout: compress
     {% include head/custom.html %}
   </head>
 
-  <body>
+  <body{% if site.pixel_theme %} class="pixel-site"{% endif %}>
+
+    {% if site.pixel_theme %}
+    <a class="pixel-skip-link" href="#main">跳到内容</a>
+    <div class="pixel-scanlines" aria-hidden="true"></div>
+    <div class="pixel-star-field" id="pixelStarField" aria-hidden="true"></div>
+    {% endif %}
 
     {% include browser-upgrade.html %}
     {% include masthead.html %}

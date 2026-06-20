@@ -7,8 +7,9 @@
 # server process.
 
 # Basic Site Settings
-locale                   : "en-US"
-site_theme               : "default"
+locale                   : "zh-CN"
+site_theme               : "dark"
+pixel_theme              : true
 title                    : "鱼栋一"
 title_separator          : "-"
 name                     : &name "鱼栋一"

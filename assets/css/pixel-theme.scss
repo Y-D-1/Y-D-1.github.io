@@ -38,6 +38,12 @@
 html:has(body.cyber-site) {
   background: var(--cyber-bg-0);
   min-height: 100%;
+  height: auto;
+}
+
+html:has(body.cyber-site),
+html:has(body.cyber-site) body {
+  overflow-x: hidden;
 }
 
 body.cyber-site,
@@ -67,6 +73,7 @@ body.cyber-site {
   min-height: 100vh;
   margin: 0;
   padding: var(--masthead-offset) 0 0 !important;
+  padding-bottom: 0 !important;
   background: transparent !important;
   color: var(--cyber-text) !important;
   font-family: var(--cyber-font-body) !important;
@@ -74,10 +81,11 @@ body.cyber-site {
   line-height: 1.7 !important;
   -webkit-font-smoothing: antialiased;
   position: relative;
+  height: auto !important;
 }
 
 body.cyber-site .cyber-body-content {
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   width: 100%;
   position: relative;
   z-index: 1;
@@ -267,7 +275,7 @@ body.cyber-site #main {
   z-index: 1;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1.5rem 1rem 2.5rem;
+  padding: 1.5rem 1rem 1.5rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -439,7 +447,7 @@ body.cyber-site .btn:hover {
   box-shadow: var(--cyber-glow);
 }
 
-/* Footer — normal flow, always at content bottom */
+/* Footer — normal flow, flush with content */
 body.cyber-site .page__footer {
   position: relative !important;
   bottom: auto !important;
@@ -447,11 +455,16 @@ body.cyber-site .page__footer {
   clear: both !important;
   width: 100% !important;
   flex-shrink: 0;
-  margin-top: 0 !important;
+  margin-top: auto !important;
   z-index: 10 !important;
   background: rgba(7, 19, 34, 0.92) !important;
   border-top: 1px solid var(--cyber-border) !important;
   backdrop-filter: blur(12px);
+}
+
+body.cyber-site .page__footer::before,
+body.cyber-site .page__footer::after {
+  display: none !important;
 }
 
 body.cyber-site .page__footer-follow,

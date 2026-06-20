@@ -17,7 +17,8 @@
     if (!ctx) return;
 
     var points = [];
-    var maxPoints = 28;
+    var maxPoints = 9;
+    var minStep = 14;
     var mouseX = -100;
     var mouseY = -100;
     var lastMove = 0;
@@ -31,6 +32,12 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
+    function dist(a, b) {
+      var dx = a.x - b.x;
+      var dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
     resize();
     window.addEventListener("resize", resize);
 
@@ -38,9 +45,15 @@
       mouseX = event.clientX;
       mouseY = event.clientY;
       lastMove = performance.now();
-      points.push({ x: mouseX, y: mouseY });
-      if (points.length > maxPoints) {
-        points.shift();
+
+      var next = { x: mouseX, y: mouseY };
+      if (!points.length || dist(points[points.length - 1], next) >= minStep) {
+        points.push(next);
+        if (points.length > maxPoints) {
+          points.shift();
+        }
+      } else {
+        points[points.length - 1] = next;
       }
     });
 
@@ -54,44 +67,46 @@
       var h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
 
-      if (performance.now() - lastMove > 80 && points.length > 0) {
+      if (performance.now() - lastMove > 120 && points.length > 0) {
         points.shift();
       }
 
       if (points.length >= 2) {
-        for (var i = 1; i < points.length; i += 1) {
-          var t = i / points.length;
+        var n = points.length;
+        for (var i = 1; i < n; i += 1) {
+          var t = i / (n - 1);
           var p0 = points[i - 1];
           var p1 = points[i];
 
           ctx.beginPath();
           ctx.moveTo(p0.x, p0.y);
           ctx.lineTo(p1.x, p1.y);
-          ctx.strokeStyle = "rgba(77, 232, 255, " + t * 0.55 + ")";
-          ctx.lineWidth = t * 3.5 + 0.5;
+          ctx.strokeStyle = "rgba(77, 232, 255, " + (0.08 + t * 0.62) + ")";
+          ctx.lineWidth = 1 + t * 13;
           ctx.lineCap = "round";
+          ctx.lineJoin = "round";
           ctx.stroke();
-
-          ctx.beginPath();
-          ctx.arc(p1.x, p1.y, t * 2.2 + 0.4, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(139, 200, 255, " + t * 0.35 + ")";
-          ctx.fill();
         }
       }
 
       if (mouseX >= 0 && mouseY >= 0) {
-        var glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 52);
-        glow.addColorStop(0, "rgba(77, 232, 255, 0.42)");
-        glow.addColorStop(0.35, "rgba(61, 139, 255, 0.16)");
-        glow.addColorStop(1, "rgba(61, 139, 255, 0)");
-        ctx.fillStyle = glow;
+        var headGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 36);
+        headGlow.addColorStop(0, "rgba(200, 245, 255, 0.75)");
+        headGlow.addColorStop(0.35, "rgba(77, 232, 255, 0.45)");
+        headGlow.addColorStop(0.7, "rgba(61, 139, 255, 0.12)");
+        headGlow.addColorStop(1, "rgba(61, 139, 255, 0)");
+        ctx.fillStyle = headGlow;
         ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 52, 0, Math.PI * 2);
+        ctx.arc(mouseX, mouseY, 36, 0, Math.PI * 2);
         ctx.fill();
 
+        var headCore = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 10);
+        headCore.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+        headCore.addColorStop(0.5, "rgba(180, 240, 255, 0.7)");
+        headCore.addColorStop(1, "rgba(77, 232, 255, 0)");
+        ctx.fillStyle = headCore;
         ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.arc(mouseX, mouseY, 10, 0, Math.PI * 2);
         ctx.fill();
       }
 

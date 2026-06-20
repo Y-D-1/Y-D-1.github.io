@@ -46,30 +46,62 @@ body.modern-site.has-custom-cursor button {
   cursor: none;
 }
 
-.site-cursor,
-.site-cursor-dot {
+.site-cursor {
   display: none;
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.site-cursor-ring,
+.site-cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 body.modern-site.has-custom-cursor .site-cursor {
   display: block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--accent-green);
+}
+
+body.modern-site.has-custom-cursor .site-cursor-ring {
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border: 1px solid rgba(0, 204, 255, 0.7);
   border-radius: 50%;
-  transition: transform 0.2s ease;
+  background: rgba(0, 204, 255, 0.03);
+  box-shadow: 0 0 14px rgba(0, 204, 255, 0.18);
+  transition: width 0.22s ease, height 0.22s ease, margin 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, opacity 0.2s ease;
+}
+
+body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-color: rgba(163, 113, 247, 0.75);
+  background: rgba(163, 113, 247, 0.05);
+  box-shadow: 0 0 18px rgba(163, 113, 247, 0.22);
 }
 
 body.modern-site.has-custom-cursor .site-cursor-dot {
-  display: block;
-  width: 4px;
-  height: 4px;
-  background: var(--accent);
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  background: rgba(230, 241, 255, 0.95);
   border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 204, 255, 0.85);
+  will-change: transform;
+}
+
+body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
+  box-shadow: 0 0 8px rgba(163, 113, 247, 0.9);
 }
 
 #particles-js {

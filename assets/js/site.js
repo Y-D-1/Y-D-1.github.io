@@ -40,27 +40,67 @@
   function initCustomCursor() {
     if (reducedMotion || !finePointer) return;
 
-    var ring = document.querySelector(".site-cursor");
+    var cursor = document.querySelector(".site-cursor");
     var dot = document.querySelector(".site-cursor-dot");
-    if (!ring || !dot) return;
+    if (!cursor || !dot) return;
 
     document.body.classList.add("has-custom-cursor");
 
+    var mouseX = window.innerWidth / 2;
+    var mouseY = window.innerHeight / 2;
+    var ringX = mouseX;
+    var ringY = mouseY;
+    var dotX = mouseX;
+    var dotY = mouseY;
+    var maxDrift = 5;
+
     document.addEventListener("mousemove", function (e) {
-      ring.style.left = e.clientX + "px";
-      ring.style.top = e.clientY + "px";
-      dot.style.left = e.clientX + "px";
-      dot.style.top = e.clientY + "px";
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function clampDotOffset(dx, dy) {
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > maxDrift) {
+        var ratio = maxDrift / dist;
+        return { x: dx * ratio, y: dy * ratio };
+      }
+      return { x: dx, y: dy };
+    }
+
+    function animateCursor() {
+      ringX += (mouseX - ringX) * 0.38;
+      ringY += (mouseY - ringY) * 0.38;
+      dotX += (mouseX - dotX) * 0.58;
+      dotY += (mouseY - dotY) * 0.58;
+
+      cursor.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0)";
+
+      var offset = clampDotOffset(dotX - ringX, dotY - ringY);
+      var scale = document.body.classList.contains("is-cursor-active") ? 0.5 : 1;
+      dot.style.transform = "translate3d(" + offset.x + "px, " + offset.y + "px, 0) scale(" + scale + ")";
+
+      requestAnimationFrame(animateCursor);
+    }
+
+    cursor.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0)";
+    animateCursor();
+
+    document.querySelectorAll("a, button, .link-card, .note-card, .social-link").forEach(function (el) {
+      el.addEventListener("mouseenter", function () {
+        document.body.classList.add("is-cursor-active");
+      });
+      el.addEventListener("mouseleave", function () {
+        document.body.classList.remove("is-cursor-active");
+      });
     });
 
     document.addEventListener("mouseleave", function () {
-      ring.style.opacity = "0";
-      dot.style.opacity = "0";
+      cursor.style.opacity = "0";
     });
 
     document.addEventListener("mouseenter", function () {
-      ring.style.opacity = "1";
-      dot.style.opacity = "1";
+      cursor.style.opacity = "1";
     });
   }
 

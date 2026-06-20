@@ -6,11 +6,10 @@
 
   var apiBase = (root.getAttribute("data-api-base") || "").replace(/\/$/, "");
   var subjectSelect = document.getElementById("practiceSubject");
-  var difficultySelect = document.getElementById("practiceDifficulty");
   var nextButton = document.getElementById("practiceNext");
   var solutionButton = document.getElementById("practiceSolution");
   var statusEl = document.getElementById("practiceStatus");
-  var metaEl = document.getElementById("practiceMeta");
+  var questionSection = document.getElementById("practiceQuestionSection");
   var questionEl = document.getElementById("practiceQuestion");
   var solutionPanel = document.getElementById("practiceSolutionPanel");
   var solutionEl = document.getElementById("practiceSolutionBody");
@@ -47,27 +46,10 @@
     currentQuestion = question;
     clearSolution();
 
-    if (!questionEl) return;
+    if (!questionEl || !questionSection) return;
 
-    var parts = [];
-    if (question.title) {
-      parts.push("<h2 class=\"practice-question__title\">" + escapeHtml(question.title) + "</h2>");
-    }
-    if (question.content) {
-      parts.push("<div class=\"practice-question__content\">" + question.content + "</div>");
-    }
-
-    questionEl.innerHTML = parts.join("");
-    questionEl.hidden = false;
-
-    if (metaEl) {
-      var metaParts = [];
-      if (question.subject) metaParts.push(question.subject);
-      if (question.difficulty) metaParts.push("难度 " + question.difficulty);
-      if (question.chapter) metaParts.push(question.chapter);
-      metaEl.textContent = metaParts.join(" · ");
-      metaEl.hidden = metaParts.length === 0;
-    }
+    questionEl.innerHTML = question.content || "<p>暂无题目内容。</p>";
+    questionSection.hidden = false;
 
     if (solutionButton) {
       solutionButton.disabled = false;
@@ -75,14 +57,6 @@
     }
 
     return typeset([questionEl]);
-  }
-
-  function escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
   }
 
   function apiUrl(path) {
@@ -105,7 +79,7 @@
     });
   }
 
-  function populateFilters(meta) {
+  function populateSubjects(meta) {
     if (!subjectSelect) return;
 
     subjectSelect.innerHTML = "";
@@ -115,44 +89,24 @@
       option.textContent = subject;
       subjectSelect.appendChild(option);
     });
-
-    if (difficultySelect) {
-      var current = difficultySelect.value || "all";
-      difficultySelect.innerHTML = "";
-      var allOption = document.createElement("option");
-      allOption.value = "all";
-      allOption.textContent = "全部难度";
-      difficultySelect.appendChild(allOption);
-
-      (meta.difficulties || []).forEach(function (level) {
-        var levelOption = document.createElement("option");
-        levelOption.value = String(level);
-        levelOption.textContent = "难度 " + level;
-        difficultySelect.appendChild(levelOption);
-      });
-
-      difficultySelect.value = current;
-    }
   }
 
   function loadMeta() {
     if (!apiBase) {
-      setStatus("练习 API 尚未配置。请在仓库 _data/practice.yml 中填写 api_base，并完成 Cloudflare 部署。", true);
+      setStatus("练习 API 尚未配置。", true);
       setLoading(false);
       return Promise.resolve();
     }
 
     setLoading(true);
-    setStatus("正在加载题库信息…");
+    setStatus("");
 
     return fetchJson("/api/meta")
       .then(function (meta) {
         metaLoaded = true;
-        populateFilters(meta);
+        populateSubjects(meta);
         if (subjectSelect) subjectSelect.disabled = false;
-        if (difficultySelect) difficultySelect.disabled = false;
-        var total = meta.total || 0;
-        setStatus(total ? "题库已就绪，共 " + total + " 题。" : "题库为空。");
+        setStatus("");
       })
       .catch(function (error) {
         metaLoaded = false;
@@ -167,19 +121,17 @@
     if (!apiBase || !subjectSelect) return;
 
     var subject = subjectSelect.value;
-    var difficulty = difficultySelect ? difficultySelect.value : "all";
     if (!subject) {
       setStatus("请先选择科目。", true);
       return;
     }
 
     setLoading(true);
-    setStatus("正在抽题…");
+    setStatus("");
     clearSolution();
-    if (questionEl) questionEl.hidden = true;
-    if (metaEl) metaEl.hidden = true;
+    if (questionSection) questionSection.hidden = true;
 
-    var query = "/api/random?subject=" + encodeURIComponent(subject) + "&difficulty=" + encodeURIComponent(difficulty);
+    var query = "/api/random?subject=" + encodeURIComponent(subject) + "&difficulty=all";
 
     fetchJson(query)
       .then(function (question) {
@@ -200,7 +152,7 @@
     if (!currentQuestion || !currentQuestion.id) return;
 
     setLoading(true);
-    setStatus("正在加载解析…");
+    setStatus("");
 
     fetchJson("/api/solution?id=" + encodeURIComponent(currentQuestion.id))
       .then(function (payload) {

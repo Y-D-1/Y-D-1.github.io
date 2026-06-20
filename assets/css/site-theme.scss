@@ -796,6 +796,14 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 
 .page-header { margin-bottom: 1.5rem; }
 
+.page-header--compact {
+  margin-bottom: 0.65rem;
+}
+
+.page-shell--practice {
+  padding-top: calc(var(--nav-height) + 0.85rem);
+}
+
 .page-back {
   display: inline-flex;
   align-items: center;
@@ -1079,7 +1087,17 @@ mark.search-mark {
 }
 
 .exam-hub__card {
-  min-height: 160px;
+  min-height: 140px;
+}
+
+.exam-hub__card--placeholder {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.exam-hub__card--placeholder:hover {
+  transform: none;
+  border-color: var(--border);
 }
 
 .practice-app {
@@ -1087,51 +1105,50 @@ mark.search-mark {
   margin: 0 auto;
 }
 
-.practice-lead {
-  color: var(--text-secondary);
-  font-size: 0.92rem;
-  line-height: 1.75;
-  margin-bottom: 1.25rem;
-}
-
-.practice-controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.practice-field {
+.practice-toolbar {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
-.practice-field__label {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
+.practice-toolbar__field {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.practice-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
 }
 
 .practice-select {
   width: 100%;
-  padding: 0.55rem 0.7rem;
-  border-radius: var(--radius);
+  padding: 0.65rem 2rem 0.65rem 0.9rem;
   border: 1px solid var(--border);
-  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
   color: var(--text-primary);
   font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238892b0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.practice-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.12);
 }
 
 .practice-select:disabled {
-  opacity: 0.6;
-}
-
-.practice-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .practice-btn {
@@ -1145,7 +1162,7 @@ mark.search-mark {
   color: #d2a8ff;
 }
 
-.practice-btn--secondary:hover {
+.practice-btn--secondary:hover:not(:disabled) {
   background: var(--accent-secondary);
   color: var(--bg-primary);
 }
@@ -1156,55 +1173,32 @@ mark.search-mark {
 }
 
 .practice-status {
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   color: var(--text-muted);
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.5rem;
 }
 
 .practice-status.is-error {
   color: #ff7b72;
 }
 
-.practice-meta {
-  font-size: 0.8rem;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
+.practice-block {
+  margin-top: 0.35rem;
 }
 
-.practice-question {
-  padding: 1.1rem 1.15rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--glass-bg);
+.practice-block--solution {
+  margin-top: 1.25rem;
 }
 
-.practice-question__title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.85rem;
+.practice-block__label {
+  font-size: 0.95rem;
+  font-weight: 700;
   color: var(--text-primary);
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
 }
 
-.practice-question__content {
-  color: var(--text-secondary);
-  line-height: 1.85;
-}
-
-.practice-solution {
-  margin-top: 1rem;
-  padding: 1rem 1.15rem;
-  border: 1px solid rgba(163, 113, 247, 0.28);
-  border-radius: var(--radius);
-  background: rgba(163, 113, 247, 0.06);
-}
-
-.practice-solution__title {
-  font-size: 0.92rem;
-  margin-bottom: 0.75rem;
-  color: #d2a8ff;
-}
-
-.practice-solution__body {
+.practice-block__body {
   color: var(--text-secondary);
   line-height: 1.85;
 }
@@ -1260,7 +1254,8 @@ mark.search-mark {
   }
   .contact-items { justify-content: center; }
   .notes-search-row { flex-direction: column; }
-  .practice-controls { grid-template-columns: 1fr; }
+  .practice-toolbar { flex-direction: column; align-items: stretch; }
+  .practice-toolbar__actions { width: 100%; }
 }
 
 @media (max-width: 480px) {

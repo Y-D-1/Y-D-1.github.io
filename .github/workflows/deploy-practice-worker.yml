@@ -1,0 +1,44 @@
+name: Deploy practice API
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "worker/**"
+      - ".github/workflows/deploy-practice-worker.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install worker dependencies
+        working-directory: worker
+        run: npm install
+
+      - name: Configure KV namespace
+        working-directory: worker
+        env:
+          KV_NAMESPACE_ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
+        run: |
+          if [ -z "$KV_NAMESPACE_ID" ]; then
+            echo "Missing secret CLOUDFLARE_KV_NAMESPACE_ID"
+            exit 1
+          fi
+          sed -i "s/KV_NAMESPACE_ID_PLACEHOLDER/${KV_NAMESPACE_ID}/" wrangler.toml
+
+      - name: Deploy Cloudflare Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          command: deploy

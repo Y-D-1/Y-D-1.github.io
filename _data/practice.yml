@@ -1,0 +1,2 @@
+# Cloudflare Worker base URL, without trailing slash.
+api_base: "https://yd1-practice.jp20103117.workers.dev"

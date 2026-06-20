@@ -1,0 +1,53 @@
+---
+layout: modern-page
+title: "随机练习"
+permalink: /exams/practice/
+author_profile: false
+---
+
+{% include base_path %}
+
+<div
+  id="practiceApp"
+  class="practice-app"
+  data-api-base="{{ site.data.practice.api_base | default: '' | strip }}"
+>
+  <p class="practice-lead">按科目与难度随机抽题。题库通过私密仓库托管，本站仅按需获取单题，不提供完整题库下载。</p>
+
+  <div class="practice-controls">
+    <label class="practice-field">
+      <span class="practice-field__label">科目</span>
+      <select id="practiceSubject" class="practice-select" disabled>
+        <option value="">加载中…</option>
+      </select>
+    </label>
+
+    <label class="practice-field">
+      <span class="practice-field__label">难度</span>
+      <select id="practiceDifficulty" class="practice-select" disabled>
+        <option value="all">全部难度</option>
+      </select>
+    </label>
+
+    <div class="practice-actions">
+      <button id="practiceNext" type="button" class="btn-primary practice-btn" disabled>
+        <i class="ri-shuffle-line" aria-hidden="true"></i> 下一题
+      </button>
+      <button id="practiceSolution" type="button" class="btn-primary practice-btn practice-btn--secondary" disabled hidden>
+        <i class="ri-lightbulb-line" aria-hidden="true"></i> 查看解析
+      </button>
+    </div>
+  </div>
+
+  <p id="practiceStatus" class="practice-status" hidden></p>
+  <p id="practiceMeta" class="practice-meta" hidden></p>
+
+  <article id="practiceQuestion" class="practice-question" hidden aria-live="polite"></article>
+
+  <section id="practiceSolutionPanel" class="practice-solution" hidden>
+    <h2 class="practice-solution__title">解析</h2>
+    <div id="practiceSolutionBody" class="practice-solution__body markdown-body"></div>
+  </section>
+</div>
+
+<script src="{{ base_path }}/assets/js/practice.js" defer></script>

@@ -15,3 +15,9 @@ package-lock.json
 # Ignore local bundler artifacts
 .bundle/
 vendor/
+
+# Practice API artifacts (question bank must stay out of this public repo)
+kv-bulk.json
+practice-data/
+worker/node_modules/
+worker/.wrangler/

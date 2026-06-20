@@ -1,0 +1,10 @@
+name = "yd1-practice"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+[[kv_namespaces]]
+binding = "QUESTIONS"
+id = "f9d284fe7d8e40f8a9756aff68a05aa2"
+
+[vars]
+ALLOWED_ORIGINS = "https://y-d-1.github.io,http://localhost:4000"

@@ -80,9 +80,10 @@ npx wrangler kv namespace create QUESTIONS
 |--------|------|
 | `CLOUDFLARE_API_TOKEN` | 上一步创建的 Token |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 账户 ID（Dashboard 右侧） |
-| `CLOUDFLARE_KV_NAMESPACE_ID` | KV Namespace ID |
 | `DATA_REPO_PAT` | GitHub PAT，`repo` 权限，用于读取私密题库仓库 |
 | `PRACTICE_DATA_REPO` | 私密仓库名，如 `Y-D-1/analysis-algebra` |
+
+KV Namespace ID 已写在 `worker/wrangler.toml` 中，**无需**再配置 `CLOUDFLARE_KV_NAMESPACE_ID`。
 
 创建 PAT：GitHub → Settings → Developer settings → Personal access tokens。
 
@@ -111,8 +112,8 @@ npx wrangler dev
 
 ## API 接口
 
-- `GET /api/meta` — 科目、难度、题量统计
-- `GET /api/random?subject=数学分析&difficulty=3` — 随机一题（不含解析）
+- `GET /api/meta` — 科目、题量统计
+- `GET /api/random?subject=微分几何` — 随机一题（不含解析）
 - `GET /api/solution?id=<题目ID>` — 获取解析
 
 ## 更新题库

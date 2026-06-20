@@ -25,17 +25,6 @@ jobs:
             --input practice-data/questions.json \
             --output kv-bulk.json
 
-      - name: Configure KV namespace
-        working-directory: worker
-        env:
-          KV_NAMESPACE_ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
-        run: |
-          if [ -z "$KV_NAMESPACE_ID" ]; then
-            echo "Missing secret CLOUDFLARE_KV_NAMESPACE_ID"
-            exit 1
-          fi
-          sed -i "s/KV_NAMESPACE_ID_PLACEHOLDER/${KV_NAMESPACE_ID}/" wrangler.toml
-
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -46,4 +35,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: worker
-          command: kv bulk put ../kv-bulk.json --namespace-id=${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
+          command: kv bulk put ../kv-bulk.json --binding=QUESTIONS

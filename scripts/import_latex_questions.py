@@ -44,6 +44,7 @@ SECTION_PATTERN = re.compile(r"\\section\*?\{([^{}]*)\}")
 SUBSECTION_PATTERN = re.compile(r"\\subsection\*?\{([^{}]*)\}")
 LABEL_PATTERN = re.compile(r"\\label\{([^}]+)\}")
 QUESTION_CMD_PATTERN = re.compile(r"\\(?:qs|Qs|ex)\*?\{")
+INTERRUPT_PATTERN = re.compile(r"\\(?:qs|Qs|ex)\*?\{|\\subsection\*?\{|\\section\*?\{")
 PROP_PATTERN = re.compile(r"\\mprop\*?\{")
 THEOREM_PATTERN = re.compile(r"\\thm\*?\{")
 REF_PATTERN = re.compile(r"\\ref(?:eq)?\{([^}]+)\}")
@@ -60,6 +61,9 @@ class ParsedBlock:
     source_file: str = ""
     number: str = ""
     solution: str = ""
+    command: str = ""
+    subsection: str = ""
+    intro: str = ""
 
 
 @dataclass
@@ -89,6 +93,17 @@ def extract_braced(text: str, start: int) -> tuple[str, int]:
     depth = 0
     i = start
     while i < len(text):
+        if text.startswith("\\begin{", i):
+            env_end = text.find("}", i + 7)
+            if env_end < 0:
+                raise ValueError("unbalanced braces")
+            env_name = text[i + 7 : env_end]
+            end_marker = f"\\end{{{env_name}}}"
+            end_pos = text.find(end_marker, env_end + 1)
+            if end_pos < 0:
+                raise ValueError("unbalanced environment")
+            i = end_pos + len(end_marker)
+            continue
         ch = text[i]
         if ch == "{":
             depth += 1
@@ -159,9 +174,19 @@ def convert_lists(text: str) -> str:
         env = match.group("env")
         body = match.group("body")
         ordered = env.startswith("enumerate")
-        items = re.split(r"\\item(?:\[[^\]]*\])?", body)
-        items = [item.strip() for item in items if item.strip()]
+        segments = re.split(r"\\item(?:\[[^\]]*\])?", body)
+        preamble = segments[0].strip() if segments else ""
+        preamble = re.sub(
+            r"^\\begin\{(?:enumerate|itemize)\*?\}(?:\[[^\]]*\])?\s*",
+            "",
+            preamble,
+        )
+        items = [segment.strip() for segment in segments[1:] if segment.strip()]
+        if items:
+            items[-1] = re.sub(r"\\end\{(?:enumerate|itemize)\*?\}\s*$", "", items[-1]).strip()
         lines: list[str] = []
+        if preamble:
+            lines.append(preamble)
         for index, item in enumerate(items, start=1):
             prefix = f"{index}. " if ordered else "- "
             lines.append(prefix + item)
@@ -179,26 +204,66 @@ def convert_lists(text: str) -> str:
     return current
 
 
+def fix_display_math_nesting(text: str) -> str:
+    previous = None
+    while previous != text:
+        previous = text
+        text = re.sub(r"\\\[\s*\\\[", r"\\[", text)
+        text = re.sub(r"\\\]\s*\\\]", r"\\]", text)
+    text = re.sub(
+        r"\\\[\s*\\begin\{(cases|matrix|pmatrix|bmatrix|vmatrix|aligned|gathered)\}",
+        lambda match: f"\\[\\begin{{{match.group(1)}}}",
+        text,
+    )
+    text = re.sub(
+        r"\\end\{(cases|matrix|pmatrix|bmatrix|vmatrix|aligned|gathered)\}\s*\\\]\s*\\\]",
+        r"\\end{\1}\\]",
+        text,
+    )
+    text = re.sub(r"\\\[\s*\\\]", "", text)
+    return text
+
+
 def convert_math_environments(text: str) -> str:
-    replacements = [
-        ("equation*", "equation"),
-        ("align*", "aligned"),
-        ("alignat*", "aligned"),
-        ("gather*", "gathered"),
-        ("cases", "cases"),
-        ("matrix", "matrix"),
-        ("pmatrix", "pmatrix"),
-        ("bmatrix", "bmatrix"),
-        ("vmatrix", "vmatrix"),
-    ]
-    for env, inner in replacements:
+    text = re.sub(
+        r"\\begin\{equation\*?\}(.*?)\\end\{equation\*?\}",
+        lambda match: f"\n\\[{match.group(1).strip()}\\]\n",
+        text,
+        flags=re.DOTALL,
+    )
+    for env in ("align", "alignat", "gather"):
         pattern = re.compile(rf"\\begin\{{{env}\*?\}}(.*?)\\end\{{{env}\*?\}}", re.DOTALL)
-        if env in {"equation", "equation*"}:
-            text = pattern.sub(lambda m: f"\n\\[{m.group(1).strip()}\\]\n", text)
-        elif env.endswith("matrix") or env == "cases":
-            text = pattern.sub(lambda m, inner=inner: f"\n\\[\n\\begin{{{inner}}}{m.group(1).strip()}\\end{{{inner}}}\n\\]\n", text)
-        else:
-            text = pattern.sub(lambda m, inner=inner: f"\n\\[\n\\begin{{{inner}}}{m.group(1).strip()}\\end{{{inner}}}\n\\]\n", text)
+        text = pattern.sub(
+            lambda match: (
+                f"\n\\[\n\\begin{{aligned}}{match.group(1).strip()}\\end{{aligned}}\n\\]\n"
+            ),
+            text,
+        )
+    text = fix_display_math_nesting(text)
+    return text
+
+
+def strip_spacing_commands(text: str) -> str:
+    text = re.sub(r"\\\[[0-9]+(?:\.[0-9]+)?ex\]", "", text)
+    text = re.sub(r"\\vspace\*?\{[^{}]*\}", "", text)
+    text = re.sub(r"\\hspace\*?\{[^{}]*\}", "", text)
+    text = re.sub(r"\\(small|med|big)skip\b", "", text)
+    text = re.sub(r"\\setcounter\{[^}]*\}\{[^}]*\}", "", text)
+    text = re.sub(r"\\quad\b", " ", text)
+    text = re.sub(r"\\qquad\b", "  ", text)
+    return text
+
+
+def strip_stray_markup(text: str) -> str:
+    text = re.sub(r"\[[^\]]*label=[^\]]*\]", "", text)
+    text = re.sub(r"\[leftmargin=[^\]]*\]", "", text)
+    text = re.sub(r"\\begin\{(?:enumerate|itemize)\*?\}(?:\[[^\]]*\])?", "", text)
+    text = re.sub(r"\\end\{(?:enumerate|itemize)\*?\}", "", text)
+    text = re.sub(r"\\(sub)*section\*?\{[^{}]*\}", "", text)
+    text = re.sub(r"\\pagenumbering\{[^{}]*\}", "", text)
+    text = re.sub(r"\\nt\{[^{}]*\}\{", "", text)
+    text = re.sub(r"\\color\{[^{}]*\}", "", text)
+    text = re.sub(r"\\vocab\{([^{}]*)\}", r"**\1**", text)
     return text
 
 
@@ -211,17 +276,9 @@ def convert_text_markup(text: str) -> str:
     text = re.sub(r"\\operatorname\{([^{}]*)\}", r"\\operatorname{\1}", text)
     text = DING_PATTERN.sub(lambda m: DING_MAP.get(int(m.group(1)), "•"), text)
     text = text.replace("\\noindent", "")
-    text = text.replace("\\quad", " ")
-    text = text.replace("\\qquad", "  ")
     text = re.sub(r"\\hfill", " ", text)
     text = re.sub(r"\\newline\b", "\n", text)
     text = re.sub(r"\\\\\s*", "\n", text)
-    text = re.sub(r"\\sectionn?\*?\{[^{}]*\}", "", text)
-    text = re.sub(r"\\subsection\*?\{[^{}]*\}", "", text)
-    text = re.sub(r"\\(sub)*section\*?\{[^{}]*\}", "", text)
-    text = re.sub(r"\\pagenumbering\{[^{}]*\}", "", text)
-    text = re.sub(r"\\(vspace|hspace)\*?\{[^{}]*\}", "", text)
-    text = re.sub(r"\\nt\{[^{}]*\}\{", "", text)
     return text
 
 
@@ -256,13 +313,33 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = re.sub(r"\\begin\{myproof\}[\s\S]*?\\end\{myproof\}", "", text)
     text = re.sub(r"\\begin\{proof\}[\s\S]*?\\end\{proof\}", "", text)
     text = re.sub(r"\\sol\b[\s\S]*?(?=\\(?:qs|Qs|ex|mprop|thm)\*?\{|$)", "", text)
+    text = strip_spacing_commands(text)
     text = convert_math_environments(text)
     text = convert_lists(text)
     text = apply_macros(text, macros)
     text = convert_text_markup(text)
+    text = strip_stray_markup(text)
     text = cleanup_content(text)
+    text = fix_display_math_nesting(text)
     text = normalize_whitespace(text)
     return text
+
+
+def lookup_reference(key: str, label_db: dict[str, str]) -> str | None:
+    key = key.strip().rstrip("()")
+    if key in label_db:
+        return label_db[key]
+    match = re.match(r"^(ex|prop|thm|eq):([\d.]+)(?:\(([^)]*)\))?$", key)
+    if not match:
+        return None
+    base = f"{match.group(1)}:{match.group(2)}"
+    suffix = match.group(3)
+    content = label_db.get(base)
+    if not content:
+        return None
+    if suffix:
+        return f"{content}（第 {suffix} 小问）"
+    return content
 
 
 def expand_references(text: str, label_db: dict[str, str], depth: int = 0) -> str:
@@ -271,9 +348,10 @@ def expand_references(text: str, label_db: dict[str, str], depth: int = 0) -> st
 
     def repl(match: re.Match[str]) -> str:
         key = match.group(1).strip().rstrip("()")
-        content = label_db.get(key)
+        content = lookup_reference(key, label_db)
         if not content:
-            return f"（见 {key}）"
+            readable = key.replace(":", " ").replace("ex", "习题").replace("prop", "命题").replace("thm", "定理")
+            return f"（{readable}）"
         expanded = latex_to_content(content, load_macros())
         return expanded
 
@@ -297,7 +375,7 @@ def enrich_stem_with_solution_context(stem: str, solution: str) -> str:
     return stem
 
 
-def parse_command_at(text: str, pos: int) -> tuple[str, str, str, int] | None:
+def parse_command_at(text: str, pos: int) -> tuple[str, str, str, str, int] | None:
     for command in ("\\qs", "\\Qs", "\\ex", "\\mprop", "\\thm"):
         if text.startswith(command, pos):
             cursor = pos + len(command)
@@ -305,7 +383,7 @@ def parse_command_at(text: str, pos: int) -> tuple[str, str, str, int] | None:
                 cursor += 1
             if command == "\\Qs":
                 body, cursor = extract_braced(text, cursor)
-                return "question", "", body.strip(), cursor
+                return "question", "", body.strip(), "Qs", cursor
             title, cursor = extract_braced(text, cursor)
             body, cursor = extract_braced(text, cursor)
             kind = {
@@ -314,8 +392,107 @@ def parse_command_at(text: str, pos: int) -> tuple[str, str, str, int] | None:
                 "\\mprop": "proposition",
                 "\\thm": "theorem",
             }[command]
-            return kind, title.strip(), body.strip(), cursor
+            cmd_name = command.lstrip("\\")
+            return kind, title.strip(), body.strip(), cmd_name, cursor
     return None
+
+
+def extract_subsection_intro(raw: str, start: int, end: int) -> str:
+    chunk = raw[start:end]
+    chunk = re.sub(r"\\begin\{myproof\}[\s\S]*?\\end\{myproof\}", "", chunk)
+    chunk = re.sub(r"\\sol\b[\s\S]*?(?=\\Qs|\\qs|\\ex|$)", "", chunk)
+    chunk = re.sub(r"\\subsection\*?\{[^{}]*\}", "", chunk)
+    chunk = re.sub(r"\\section\*?\{[^{}]*\}", "", chunk)
+    chunk = re.sub(r"\\setcounter\{[^}]*\}\{[^}]*\}", "", chunk)
+    chunk = re.sub(r"\\(?:qs|Qs|ex|mprop|thm)\*?\{[\s\S]*$", "", chunk)
+    chunk = chunk.strip()
+    if not chunk:
+        return ""
+    return chunk
+
+
+def merge_qs_blocks(blocks: list[ParsedBlock], file_stem: str) -> list[ParsedBlock]:
+    merged: list[ParsedBlock] = []
+    index = 0
+    cursor = 0
+    while cursor < len(blocks):
+        block = blocks[cursor]
+        if block.kind != "question" or block.command != "Qs":
+            if block.kind == "question":
+                index += 1
+                block.number = build_standalone_number(file_stem, block, index)
+            merged.append(block)
+            cursor += 1
+            continue
+
+        group = [block]
+        next_cursor = cursor + 1
+        while next_cursor < len(blocks):
+            candidate = blocks[next_cursor]
+            if (
+                candidate.kind == "question"
+                and candidate.command == "Qs"
+                and candidate.subsection == block.subsection
+                and candidate.source_file == block.source_file
+            ):
+                group.append(candidate)
+                next_cursor += 1
+            else:
+                break
+
+        merged.append(merge_qs_group(group, file_stem))
+        cursor = next_cursor
+    return merged
+
+
+def build_standalone_number(file_stem: str, block: ParsedBlock, index: int) -> str:
+    if block.subsection:
+        return f"{file_stem}-{block.subsection}"
+    if block.title and block.title.lower().startswith("week"):
+        return f"{block.title.replace(' ', '')}-{index}"
+    return f"{file_stem}-{index}"
+
+
+def merge_qs_group(group: list[ParsedBlock], file_stem: str) -> ParsedBlock:
+    intro = group[0].intro
+    number_parts = [file_stem, group[0].subsection]
+    number = "-".join(part for part in number_parts if part)
+
+    if len(group) == 1:
+        body = group[0].body
+        if intro and intro not in body:
+            body = f"{intro}\n\n{body}"
+        solution = group[0].solution
+    else:
+        stem_parts: list[str] = []
+        if intro:
+            stem_parts.append(intro)
+        for part_index, item in enumerate(group, start=1):
+            stem_parts.append(f"({part_index}) {item.body}")
+        body = "\n\n".join(stem_parts)
+
+        solution_parts: list[str] = []
+        for part_index, item in enumerate(group, start=1):
+            if item.solution.strip():
+                solution_parts.append(f"({part_index}) {item.solution}")
+            else:
+                solution_parts.append(f"({part_index}) {PENDING_SOLUTION}")
+        solution = "\n\n".join(solution_parts)
+        if all(not item.solution.strip() for item in group):
+            solution = PENDING_SOLUTION
+
+    return ParsedBlock(
+        kind="question",
+        title="",
+        body=body,
+        label=group[0].label,
+        source_file=group[0].source_file,
+        number=number,
+        solution=solution,
+        command="Qs",
+        subsection=group[0].subsection,
+        intro=intro,
+    )
 
 
 def extract_solution_after(text: str, start: int) -> tuple[str, int]:
@@ -328,7 +505,7 @@ def extract_solution_after(text: str, start: int) -> tuple[str, int]:
         if not match:
             return "", len(text)
         absolute = cursor + match.start()
-        if QUESTION_CMD_PATTERN.search(text, start, absolute):
+        if INTERRUPT_PATTERN.search(text, start, absolute):
             return "", absolute
         token = match.group(0)
         if token.startswith("\\begin{myproof}") or token.startswith("\\begin{proof}"):
@@ -340,8 +517,8 @@ def extract_solution_after(text: str, start: int) -> tuple[str, int]:
             return body.strip(), absolute + end.end()
         if token == "\\sol":
             cursor = absolute + len(token)
-            next_break = QUESTION_CMD_PATTERN.search(text, cursor)
-            end = next_break.start() + cursor if next_break else len(text)
+            next_break = INTERRUPT_PATTERN.search(text, cursor)
+            end = next_break.start() if next_break else len(text)
             return text[cursor:end].strip(), end
         if token == "\\pf{":
             cursor = absolute + len(token)
@@ -369,6 +546,7 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
     section_title = ""
     subsection_title = ""
     pending_context = ""
+    subsection_start = 0
     index = 0
 
     pos = 0
@@ -389,6 +567,7 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
             continue
         if subsection_match and subsection_match.start() == next_pos:
             subsection_title = subsection_match.group(1).strip()
+            subsection_start = subsection_match.end()
             pos = subsection_match.end()
             continue
 
@@ -396,7 +575,7 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
         if not parsed:
             pos = next_pos + 1
             continue
-        kind, title, body, cursor = parsed
+        kind, title, body, command, cursor = parsed
         label_match = LABEL_PATTERN.search(raw, cursor, cursor + 120)
         label = label_match.group(1) if label_match else None
 
@@ -417,8 +596,10 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
             continue
 
         index += 1
-        number_parts = [part for part in (file_stem, subsection_title, str(index)) if part]
-        number = "-".join(number_parts)
+        intro = ""
+        if command == "Qs":
+            intro = extract_subsection_intro(raw, subsection_start, next_pos)
+
         if title and title not in body[:40]:
             stem = f"**{title}**\n\n{body}" if title else body
         else:
@@ -427,19 +608,15 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
             stem = f"{pending_context}\n\n{stem}"
             pending_context = ""
 
-        intro_start = max(0, next_pos - 1200)
-        intro_chunk = raw[intro_start:next_pos]
-        intro_chunk = re.sub(r"\\begin\{myproof\}[\s\S]*", "", intro_chunk)
-        intro_match = re.search(r"\\noindent([\s\S]*?)$", intro_chunk)
-        if intro_match and raw.startswith("\\Qs", next_pos):
-            intro = latex_to_content(intro_match.group(1), macros)
-            if intro and intro not in stem:
-                stem = f"{intro}\n\n{stem}"
-        if section_title and section_title.lower().startswith("week"):
-            number = f"{section_title.replace(' ', '')}-{index}"
-
         solution, solution_end = extract_solution_after(raw, cursor)
         pos = solution_end if solution_end > cursor else cursor
+
+        if section_title and section_title.lower().startswith("week"):
+            number = f"{section_title.replace(' ', '')}-{index}"
+        elif command == "Qs":
+            number = "-".join(part for part in (file_stem, subsection_title) if part)
+        else:
+            number = "-".join(part for part in (file_stem, subsection_title, str(index)) if part)
 
         blocks.append(
             ParsedBlock(
@@ -450,10 +627,13 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
                 source_file=path.name,
                 number=number,
                 solution=solution,
+                command=command,
+                subsection=subsection_title,
+                intro=intro,
             )
         )
 
-    return blocks
+    return merge_qs_blocks(blocks, file_stem)
 
 
 def collect_tex_files() -> list[tuple[str, Path]]:

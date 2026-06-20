@@ -51,7 +51,7 @@
       .replace(/\*([^*]+)\*/g, "<em>$1</em>");
   }
 
-  function renderMarkdown(text) {
+  function renderTextMarkdown(text) {
     if (!text) return "";
 
     var lines = text.replace(/\r\n/g, "\n").split("\n");
@@ -99,6 +99,29 @@
     });
 
     flushList();
+    return html.join("");
+  }
+
+  function renderMarkdown(text) {
+    if (!text) return "";
+
+    var pattern = /(\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\))/g;
+    var html = [];
+    var lastIndex = 0;
+    var match;
+
+    while ((match = pattern.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        html.push(renderTextMarkdown(text.slice(lastIndex, match.index)));
+      }
+      html.push(match[0]);
+      lastIndex = pattern.lastIndex;
+    }
+
+    if (lastIndex < text.length) {
+      html.push(renderTextMarkdown(text.slice(lastIndex)));
+    }
+
     return html.join("");
   }
 

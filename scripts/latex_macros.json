@@ -87,5 +87,14 @@
   "\\injto": "\\hookrightarrow",
   "\\qedsymbol": "",
   "\\qedhere": "",
-  "\\qedd": ""
+  "\\qedd": "",
+  "\\ri": "\\mathrm{I}",
+  "\\rii": "\\mathrm{I}\\mathrm{I}",
+  "\\riii": "\\mathrm{I}\\mathrm{I}\\mathrm{I}",
+  "\\co": "\\cos",
+  "\\si": "\\sin",
+  "\\tg": "\\tan",
+  "\\arccosh": "\\operatorname{arccosh}",
+  "\\sA": "\\operatorname{Area}",
+  "\\defeq": "\\overset{\\mathrm{def}}{=}"
 }

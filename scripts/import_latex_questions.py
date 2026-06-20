@@ -64,6 +64,7 @@ class ParsedBlock:
     command: str = ""
     subsection: str = ""
     intro: str = ""
+    subject: str = ""
 
 
 @dataclass
@@ -71,6 +72,9 @@ class ImportState:
     macros: dict[str, str] = field(default_factory=dict)
     label_db: dict[str, str] = field(default_factory=dict)
     questions: list[dict[str, Any]] = field(default_factory=list)
+    questions_by_file: dict[str, list[ParsedBlock]] = field(default_factory=dict)
+    content_by_id: dict[str, str] = field(default_factory=dict)
+    solution_by_id: dict[str, str] = field(default_factory=dict)
 
 
 def load_macros() -> dict[str, str]:
@@ -170,17 +174,28 @@ def apply_macros(text: str, macros: dict[str, str]) -> str:
 
 
 def convert_lists(text: str) -> str:
-    def convert_block(match: re.Match[str]) -> str:
-        env = match.group("env")
+    itemize_pattern = re.compile(
+        r"\\begin\{(?P<env>itemize\*?)(?:\[[^\]]*\])?\}(?P<body>.*?)\\end\{(?P=env)\}",
+        re.DOTALL,
+    )
+    enumerate_pattern = re.compile(
+        r"\\begin\{(?P<env>enumerate\*?)(?:\[[^\]]*\])?\}(?P<body>.*?)\\end\{(?P=env)\}",
+        re.DOTALL,
+    )
+
+    def convert_itemize_block(match: re.Match[str]) -> str:
         body = match.group("body")
-        ordered = env.startswith("enumerate")
+        segments = re.split(r"\\item(?:\[[^\]]*\])?", body)
+        items = [segment.strip() for segment in segments[1:] if segment.strip()]
+        if items:
+            items[-1] = re.sub(r"\\end\{(?:enumerate|itemize)\*?\}\s*$", "", items[-1]).strip()
+        return "\n".join(f"- {item}" for item in items)
+
+    def convert_enumerate_block(match: re.Match[str]) -> str:
+        body = match.group("body")
+        body = itemize_pattern.sub(convert_itemize_block, body)
         segments = re.split(r"\\item(?:\[[^\]]*\])?", body)
         preamble = segments[0].strip() if segments else ""
-        preamble = re.sub(
-            r"^\\begin\{(?:enumerate|itemize)\*?\}(?:\[[^\]]*\])?\s*",
-            "",
-            preamble,
-        )
         items = [segment.strip() for segment in segments[1:] if segment.strip()]
         if items:
             items[-1] = re.sub(r"\\end\{(?:enumerate|itemize)\*?\}\s*$", "", items[-1]).strip()
@@ -188,19 +203,16 @@ def convert_lists(text: str) -> str:
         if preamble:
             lines.append(preamble)
         for index, item in enumerate(items, start=1):
-            prefix = f"{index}. " if ordered else "- "
-            lines.append(prefix + item)
+            nested = itemize_pattern.sub(convert_itemize_block, item)
+            lines.append(f"{index}. {nested}")
         return "\n".join(lines)
 
-    list_pattern = re.compile(
-        r"\\begin\{(?P<env>enumerate\*?|itemize\*?)(?:\[[^\]]*\])?\}(?P<body>.*?)\\end\{(?P=env)\}",
-        re.DOTALL,
-    )
     previous = None
     current = text
     while previous != current:
         previous = current
-        current = list_pattern.sub(convert_block, current)
+        current = itemize_pattern.sub(convert_itemize_block, current)
+        current = enumerate_pattern.sub(convert_enumerate_block, current)
     return current
 
 
@@ -287,7 +299,6 @@ def cleanup_content(text: str) -> str:
     text = re.sub(r"\\end\{myproof\}", "", text)
     text = re.sub(r"\\begin\{proof\}", "", text)
     text = re.sub(r"\\end\{proof\}", "", text)
-    text = re.sub(r"\\item\b", "", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
@@ -325,37 +336,174 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     return text
 
 
-def lookup_reference(key: str, label_db: dict[str, str]) -> str | None:
+def lookup_reference(key: str, state: ImportState) -> str | None:
     key = key.strip().rstrip("()")
-    if key in label_db:
-        return label_db[key]
+    if key in state.label_db:
+        return state.label_db[key]
+
+    parsed = parse_ex_key(key)
+    if parsed:
+        _kind, chapter, section, number = parsed
+        block = resolve_exercise_block(state, chapter, section, number)
+        if block:
+            qid = question_id_for_block(block.subject, block)
+            return state.content_by_id.get(qid, block.body)
+
     match = re.match(r"^(ex|prop|thm|eq):([\d.]+)(?:\(([^)]*)\))?$", key)
     if not match:
         return None
     base = f"{match.group(1)}:{match.group(2)}"
     suffix = match.group(3)
-    content = label_db.get(base)
+    content = state.label_db.get(base)
     if not content:
         return None
     if suffix:
-        return f"{content}（第 {suffix} 小问）"
+        part = extract_numbered_part(content, suffix)
+        return part or f"{content}（第 {suffix} 小问）"
     return content
 
 
-def expand_references(text: str, label_db: dict[str, str], depth: int = 0) -> str:
+def question_id_for_block(subject: str, block: ParsedBlock) -> str:
+    return f"{subject}-{block.number}".replace(" ", "")
+
+
+def parse_ex_key(key: str) -> tuple[str, int, int, int] | None:
+    match = re.match(r"^(ex|prop|thm):(\d+)\.(\d+)\.(\d+)$", key.strip())
+    if not match:
+        return None
+    return match.group(1), int(match.group(2)), int(match.group(3)), int(match.group(4))
+
+
+def resolve_exercise_block(state: ImportState, chapter: int, section: int, number: int) -> ParsedBlock | None:
+    for filename, questions in state.questions_by_file.items():
+        stem = Path(filename).stem
+        candidates = (
+            stem == str(section),
+            stem == f"{chapter}-{section}",
+            stem.replace("-", ".") == f"{chapter}.{section}",
+        )
+        if any(candidates) and 1 <= number <= len(questions):
+            return questions[number - 1]
+    return None
+
+
+def extract_numbered_part(text: str, part: str) -> str | None:
+    part = str(part).strip().rstrip(".")
+    patterns = [
+        rf"\({part}\)\s*(.*?)(?=\n\(\d+\)\s|\n\d+\.\s|\Z)",
+        rf"(?:^|\n){part}\.\s*(.*?)(?=\n\d+\.\s|\n\(\d+\)\s|\Z)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, re.DOTALL)
+        if match and match.group(1).strip():
+            return match.group(1).strip()
+    return None
+
+
+def payload_for_reference(
+    state: ImportState,
+    key: str,
+    part: str | None,
+    *,
+    use_solution: bool,
+) -> str:
+    macros = state.macros
+    parsed = parse_ex_key(key)
+    if parsed:
+        _kind, chapter, section, number = parsed
+        block = resolve_exercise_block(state, chapter, section, number)
+        if block:
+            qid = question_id_for_block(block.subject, block)
+            store = state.solution_by_id if use_solution else state.content_by_id
+            payload = store.get(qid, "")
+            if not payload and use_solution:
+                payload = state.content_by_id.get(qid, block.body)
+            if part and payload:
+                extracted = extract_numbered_part(payload, part)
+                if extracted:
+                    return extracted
+            if payload:
+                return payload
+
+    raw = state.label_db.get(key)
+    if not raw:
+        return f"（{key}）"
+    processed = latex_to_content(raw, macros)
+    if part:
+        extracted = extract_numbered_part(processed, part)
+        if extracted:
+            return extracted
+    return processed
+
+
+def expand_references(text: str, state: ImportState, depth: int = 0) -> str:
     if depth > 3:
         return text
 
     def repl(match: re.Match[str]) -> str:
         key = match.group(1).strip().rstrip("()")
-        content = lookup_reference(key, label_db)
+        part_match = re.match(r"^(ex|prop|thm|eq):([\d.]+)\(([^)]*)\)$", key)
+        part = part_match.group(3) if part_match else None
+        base_key = key.split("(")[0] if part else key
+        content = lookup_reference(base_key, state)
         if not content:
-            readable = key.replace(":", " ").replace("ex", "习题").replace("prop", "命题").replace("thm", "定理")
-            return f"（{readable}）"
-        expanded = latex_to_content(content, load_macros())
+            readable = base_key.replace(":", " ").replace("ex", "习题").replace("prop", "命题").replace("thm", "定理")
+            return f"（{readable}{f' 第 {part} 小问' if part else ''}）"
+        if content in state.content_by_id.values() or content in state.solution_by_id.values():
+            if part:
+                extracted = extract_numbered_part(content, part)
+                return extracted or content
+            return content
+        expanded = latex_to_content(content, state.macros)
+        if part:
+            extracted = extract_numbered_part(expanded, part)
+            return extracted or expanded
         return expanded
 
     return REF_PATTERN.sub(repl, text)
+
+
+def expand_prose_references(
+    text: str,
+    state: ImportState,
+    source_file: str,
+    question_index: int,
+) -> str:
+    questions = state.questions_by_file.get(source_file, [])
+    if question_index > 1 and "同上题" in text:
+        prev = questions[question_index - 2]
+        qid = question_id_for_block(prev.subject, prev)
+        replacement = state.solution_by_id.get(qid) or state.content_by_id.get(qid, "")
+        if replacement:
+            text = text.replace("同上题", replacement)
+
+    text = re.sub(
+        r"同习题\s*\\ref\{([^}]+)\}(?:\(([^)]*)\))?(?:\.)?",
+        lambda match: payload_for_reference(
+            state, match.group(1).strip(), match.group(2), use_solution=True
+        ),
+        text,
+    )
+    text = re.sub(
+        r"由习题\s*\\ref(?:eq)?\{([^}]+)\}(?:\(([^)]*)\))?(?:的)?结论",
+        lambda match: payload_for_reference(
+            state, match.group(1).strip(), match.group(2), use_solution=False
+        ),
+        text,
+    )
+    text = re.sub(
+        r"(?:见|参见)习题\s*\\ref(?:eq)?\{([^}]+)\}(?:\(([^)]*)\))?",
+        lambda match: payload_for_reference(
+            state, match.group(1).strip(), match.group(2), use_solution=False
+        ),
+        text,
+    )
+    text = re.sub(
+        r"（习题\s*[\d.]+\s*(?:第\s*[\d.]+\s*题)?）(?:\(([^)]*)\))?",
+        "",
+        text,
+    )
+    return text
 
 
 def enrich_stem_with_solution_context(stem: str, solution: str) -> str:
@@ -600,10 +748,7 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
         if command == "Qs":
             intro = extract_subsection_intro(raw, subsection_start, next_pos)
 
-        if title and title not in body[:40]:
-            stem = f"**{title}**\n\n{body}" if title else body
-        else:
-            stem = body
+        stem = body
         if pending_context and re.search(r"命题|定理|练习", body) and not re.search(r"\\ref(?:eq)?\{", body):
             stem = f"{pending_context}\n\n{stem}"
             pending_context = ""
@@ -630,6 +775,7 @@ def parse_tex_file(path: Path, subject: str, macros: dict[str, str]) -> list[Par
                 command=command,
                 subsection=subsection_title,
                 intro=intro,
+                subject=subject,
             )
         )
 
@@ -661,13 +807,16 @@ def register_label_aliases(state: ImportState, raw_blocks: list[tuple[str, Parse
     props_by_file: dict[str, list[ParsedBlock]] = {}
     questions_by_file: dict[str, list[ParsedBlock]] = {}
 
-    for _subject, block in raw_blocks:
+    for subject, block in raw_blocks:
         if block.kind == "proposition":
             props_by_file.setdefault(block.source_file, []).append(block)
         elif block.kind == "question":
             questions_by_file.setdefault(block.source_file, []).append(block)
+            block.subject = subject
         if block.label:
             state.label_db[block.label] = block.body
+
+    state.questions_by_file = questions_by_file
 
     for filename, props in props_by_file.items():
         section = file_section_key(Path(filename).stem)
@@ -676,8 +825,14 @@ def register_label_aliases(state: ImportState, raw_blocks: list[tuple[str, Parse
 
     for filename, questions in questions_by_file.items():
         section = file_section_key(Path(filename).stem)
+        stem = Path(filename).stem
         for index, block in enumerate(questions, start=1):
             state.label_db[f"ex:{section}.{index}"] = block.body
+            if stem.isdigit():
+                state.label_db[f"ex:7.{stem}.{index}"] = block.body
+            parts = stem.split("-")
+            if len(parts) == 2 and all(part.isdigit() for part in parts):
+                state.label_db[f"ex:{parts[0]}.{parts[1]}.{index}"] = block.body
 
 
 def build_questions(macros: dict[str, str]) -> ImportState:
@@ -690,19 +845,35 @@ def build_questions(macros: dict[str, str]) -> ImportState:
 
     register_label_aliases(state, raw_blocks)
 
+    prepared: list[tuple[str, ParsedBlock, str, str, int]] = []
     for subject, block in raw_blocks:
         if block.kind != "question":
             continue
         stem = latex_to_content(block.body, macros)
-        stem = expand_references(stem, state.label_db)
         solution_raw = block.solution
         solution = latex_to_content(solution_raw, macros) if solution_raw.strip() else PENDING_SOLUTION
         stem = enrich_stem_with_solution_context(stem, solution)
-        stem = expand_references(stem, state.label_db)
-        if solution != PENDING_SOLUTION:
-            solution = expand_references(solution, state.label_db)
+        question_index = state.questions_by_file.get(block.source_file, []).index(block) + 1
+        prepared.append((subject, block, stem, solution, question_index))
 
-        question_id = f"{subject}-{block.number}".replace(" ", "")
+    for subject, block, stem, solution, _question_index in prepared:
+        qid = question_id_for_block(subject, block)
+        state.content_by_id[qid] = stem
+        if solution != PENDING_SOLUTION:
+            state.solution_by_id[qid] = solution
+
+    for subject, block, stem, solution, question_index in prepared:
+        stem = expand_prose_references(stem, state, block.source_file, question_index)
+        stem = expand_references(stem, state)
+        if solution != PENDING_SOLUTION:
+            solution = expand_prose_references(solution, state, block.source_file, question_index)
+            solution = expand_references(solution, state)
+
+        question_id = question_id_for_block(subject, block)
+        state.content_by_id[question_id] = stem
+        if solution != PENDING_SOLUTION:
+            state.solution_by_id[question_id] = solution
+
         state.questions.append(
             {
                 "id": question_id,

@@ -1181,7 +1181,14 @@ mark.search-mark {
 }
 
 .practice-block--solution {
-  margin-top: 1.25rem;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.practice-divider {
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--text-secondary) 28%, transparent);
+  margin: 1.5rem 0 1.25rem;
 }
 
 .practice-block__label {

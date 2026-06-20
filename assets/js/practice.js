@@ -13,6 +13,7 @@
   var questionEl = document.getElementById("practiceQuestion");
   var numberEl = document.getElementById("practiceNumber");
   var solutionPanel = document.getElementById("practiceSolutionPanel");
+  var dividerEl = document.getElementById("practiceDivider");
   var solutionEl = document.getElementById("practiceSolutionBody");
   var currentQuestion = null;
   var metaLoaded = false;
@@ -127,6 +128,7 @@
 
   function clearSolution() {
     if (solutionPanel) solutionPanel.hidden = true;
+    if (dividerEl) dividerEl.hidden = true;
     if (solutionEl) solutionEl.innerHTML = "";
   }
 
@@ -252,6 +254,7 @@
         setStatus("");
         if (!solutionPanel || !solutionEl) return;
         solutionEl.innerHTML = renderMarkdown(payload.solution || "") || "<p>暂无解析。</p>";
+        if (dividerEl) dividerEl.hidden = false;
         solutionPanel.hidden = false;
         return typeset([solutionEl]);
       })

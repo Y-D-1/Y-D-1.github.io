@@ -130,6 +130,33 @@ def remove_environments(text: str) -> str:
     return current
 
 
+def collapse_inline_math_newlines(text: str) -> str:
+    parts: list[str] = []
+    cursor = 0
+    while cursor < len(text):
+        start = text.find(r"\(", cursor)
+        if start < 0:
+            parts.append(text[cursor:])
+            break
+        parts.append(text[cursor:start])
+        end = start + 2
+        depth = 1
+        while end < len(text) and depth > 0:
+            if text.startswith(r"\(", end):
+                depth += 1
+                end += 2
+                continue
+            if text.startswith(r"\)", end):
+                depth -= 1
+                end += 2
+                continue
+            end += 1
+        block = text[start:end].replace("\n", " ")
+        parts.append(block)
+        cursor = end
+    return "".join(parts)
+
+
 def normalize_whitespace(text: str) -> str:
     text = text.replace("\r\n", "\n")
     text = re.sub(r"\\\s*\n", " ", text)
@@ -331,6 +358,7 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = convert_text_markup(text)
     text = strip_stray_markup(text)
     text = cleanup_content(text)
+    text = collapse_inline_math_newlines(text)
     text = fix_display_math_nesting(text)
     text = normalize_whitespace(text)
     return text

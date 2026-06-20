@@ -103,24 +103,53 @@
     return html.join("");
   }
 
+  function findLatexDelimiterEnd(text, start, openToken, closeToken) {
+    var pos = start + openToken.length;
+    var depth = 1;
+    while (pos < text.length && depth > 0) {
+      if (text.startsWith(openToken, pos)) {
+        depth += 1;
+        pos += openToken.length;
+        continue;
+      }
+      if (text.startsWith(closeToken, pos)) {
+        depth -= 1;
+        if (depth === 0) {
+          return pos + closeToken.length;
+        }
+        pos += closeToken.length;
+        continue;
+      }
+      pos += 1;
+    }
+    return -1;
+  }
+
   function renderMarkdown(text) {
     if (!text) return "";
 
-    var pattern = /(\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\))/g;
     var html = [];
-    var lastIndex = 0;
-    var match;
+    var cursor = 0;
 
-    while ((match = pattern.exec(text)) !== null) {
-      if (match.index > lastIndex) {
-        html.push(renderTextMarkdown(text.slice(lastIndex, match.index)));
+    while (cursor < text.length) {
+      var displayStart = text.indexOf("\\[", cursor);
+      if (displayStart < 0) {
+        html.push(renderTextMarkdown(text.slice(cursor)));
+        break;
       }
-      html.push(match[0]);
-      lastIndex = pattern.lastIndex;
-    }
 
-    if (lastIndex < text.length) {
-      html.push(renderTextMarkdown(text.slice(lastIndex)));
+      if (displayStart > cursor) {
+        html.push(renderTextMarkdown(text.slice(cursor, displayStart)));
+      }
+
+      var displayEnd = findLatexDelimiterEnd(text, displayStart, "\\[", "\\]");
+      if (displayEnd < 0) {
+        html.push(renderTextMarkdown(text.slice(displayStart)));
+        break;
+      }
+
+      html.push(text.slice(displayStart, displayEnd));
+      cursor = displayEnd;
     }
 
     return html.join("");

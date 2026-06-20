@@ -1,7 +1,6 @@
 (function () {
   "use strict";
 
-  var CLOUD_COUNT = 8;
   var REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var REVEAL_SELECTOR = [
     ".exam-course-item",
@@ -10,44 +9,15 @@
     ".archive",
   ].join(", ");
 
-  function initClouds() {
-    var layer = document.getElementById("terraCloudLayer");
-    if (!layer) return;
-
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < CLOUD_COUNT; i++) {
-      var cloud = document.createElement("span");
-      var width = 48 + Math.floor(Math.random() * 80);
-      var height = 16 + Math.floor(Math.random() * 20);
-      var top = 5 + Math.random() * 45;
-
-      cloud.className = "terra-cloud";
-      cloud.style.width = width + "px";
-      cloud.style.height = height + "px";
-      cloud.style.top = top + "%";
-      cloud.style.left = Math.random() * 100 + "%";
-      cloud.style.opacity = String(0.35 + Math.random() * 0.35);
-
-      if (!REDUCED_MOTION) {
-        cloud.style.animationDuration = 45 + Math.random() * 55 + "s";
-        cloud.style.animationDelay = Math.random() * -60 + "s";
-      }
-
-      fragment.appendChild(cloud);
-    }
-
-    layer.appendChild(fragment);
-  }
-
   function initScrollReveal() {
     if (REDUCED_MOTION || !("IntersectionObserver" in window)) return;
 
     var elements = document.querySelectorAll(REVEAL_SELECTOR);
     if (!elements.length) return;
 
-    elements.forEach(function (element) {
+    elements.forEach(function (element, index) {
       element.classList.add("is-reveal-pending");
+      element.style.transitionDelay = Math.min(index * 0.06, 0.36) + "s";
     });
 
     var observer = new IntersectionObserver(
@@ -58,7 +28,7 @@
           observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.08 }
+      { threshold: 0.06, rootMargin: "0px 0px -40px 0px" }
     );
 
     elements.forEach(function (element) {
@@ -67,7 +37,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    initClouds();
     initScrollReveal();
   });
 })();

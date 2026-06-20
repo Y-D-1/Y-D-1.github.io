@@ -11,17 +11,23 @@ layout: compress
     {% include head/custom.html %}
   </head>
 
-  <body{% if site.pixel_theme %} class="pixel-site"{% endif %}>
+  <body{% if site.pixel_theme %} class="cyber-site"{% endif %}>
 
     {% if site.pixel_theme %}
-    <a class="pixel-skip-link" href="#main">跳到内容</a>
-    <div class="terra-sky-layer" id="terraCloudLayer" aria-hidden="true"></div>
+    <div class="cyber-bg" aria-hidden="true">
+      <div class="cyber-bg-gradient"></div>
+      <div class="cyber-bg-grid"></div>
+      <div class="cyber-bg-scan"></div>
+    </div>
+    <a class="cyber-skip-link" href="#main">跳到内容</a>
     {% endif %}
 
     {% include browser-upgrade.html %}
     {% include masthead.html %}
 
-    {{ content }}
+    <div class="cyber-body-content">
+      {{ content }}
+    </div>
 
     <div class="page__footer">
       <footer>

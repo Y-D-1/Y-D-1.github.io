@@ -212,11 +212,23 @@ def convert_lists(text: str) -> str:
 
     def convert_itemize_block(match: re.Match[str]) -> str:
         body = match.group("body")
-        segments = re.split(r"\\item(?:\[[^\]]*\])?", body)
-        items = [segment.strip() for segment in segments[1:] if segment.strip()]
-        if items:
-            items[-1] = re.sub(r"\\end\{(?:enumerate|itemize)\*?\}\s*$", "", items[-1]).strip()
-        return "\n".join(f"- {item}" for item in items)
+        items: list[str] = []
+        for item_match in re.finditer(
+            r"\\item(?:\[([^\]]*)\])?\s*(.*?)(?=\\item\b|$)",
+            body,
+            re.DOTALL,
+        ):
+            label = (item_match.group(1) or "").strip()
+            content = item_match.group(2).strip()
+            content = re.sub(r"\\end\{(?:enumerate|itemize)\*?\}\s*$", "", content).strip()
+            if not content:
+                continue
+            if label:
+                prefix = label if label.startswith("(") else f"({label})"
+                items.append(f"{prefix} {content}")
+            else:
+                items.append(f"- {content}")
+        return "\n".join(items)
 
     def convert_enumerate_block(match: re.Match[str]) -> str:
         body = match.group("body")
@@ -364,14 +376,33 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     return text
 
 
-def lookup_reference(key: str, state: ImportState) -> str | None:
+def normalize_reference_key(key: str) -> str:
     key = key.strip().rstrip("()")
+    if key.startswith("th:"):
+        return f"thm:{key[3:]}"
+    return key
+
+
+def format_missing_reference(key: str, part: str | None = None) -> str:
+    key = normalize_reference_key(key)
+    match = re.match(r"^(ex|prop|thm|eq):(.+)$", key)
+    if match:
+        kind_labels = {"ex": "习题", "prop": "命题", "thm": "定理", "eq": "公式"}
+        label = f"{kind_labels[match.group(1)]} {match.group(2)}"
+    else:
+        label = key.replace(":", " ")
+    suffix = f" 第 {part} 小问" if part else ""
+    return f"{label}{suffix}"
+
+
+def lookup_reference(key: str, state: ImportState) -> str | None:
+    key = normalize_reference_key(key)
     if key in state.label_db:
         return state.label_db[key]
 
     parsed = parse_ex_key(key)
     if parsed:
-        _kind, chapter, section, number = parsed
+        chapter, section, number = parsed
         block = resolve_exercise_block(state, chapter, section, number)
         if block:
             qid = question_id_for_block(block.subject, block)
@@ -395,11 +426,12 @@ def question_id_for_block(subject: str, block: ParsedBlock) -> str:
     return f"{subject}-{block.number}".replace(" ", "")
 
 
-def parse_ex_key(key: str) -> tuple[str, int, int, int] | None:
-    match = re.match(r"^(ex|prop|thm):(\d+)\.(\d+)\.(\d+)$", key.strip())
+def parse_ex_key(key: str) -> tuple[int, int, int] | None:
+    key = normalize_reference_key(key)
+    match = re.match(r"^ex:(\d+)\.(\d+)\.(\d+)$", key.strip())
     if not match:
         return None
-    return match.group(1), int(match.group(2)), int(match.group(3)), int(match.group(4))
+    return int(match.group(1)), int(match.group(2)), int(match.group(3))
 
 
 def resolve_exercise_block(state: ImportState, chapter: int, section: int, number: int) -> ParsedBlock | None:
@@ -436,9 +468,10 @@ def payload_for_reference(
     use_solution: bool,
 ) -> str:
     macros = state.macros
+    key = normalize_reference_key(key)
     parsed = parse_ex_key(key)
     if parsed:
-        _kind, chapter, section, number = parsed
+        chapter, section, number = parsed
         block = resolve_exercise_block(state, chapter, section, number)
         if block:
             qid = question_id_for_block(block.subject, block)
@@ -464,19 +497,25 @@ def payload_for_reference(
     return processed
 
 
+def cleanup_reference_citations(text: str) -> str:
+    text = re.sub(r"\bProp\s+", "", text)
+    text = re.sub(r"\bThm\s+", "", text)
+    text = re.sub(r"（\s*（([^）]+)）\s*）", r"（\1）", text)
+    return text
+
+
 def expand_references(text: str, state: ImportState, depth: int = 0) -> str:
     if depth > 3:
         return text
 
     def repl(match: re.Match[str]) -> str:
-        key = match.group(1).strip().rstrip("()")
+        key = normalize_reference_key(match.group(1).strip().rstrip("()"))
         part_match = re.match(r"^(ex|prop|thm|eq):([\d.]+)\(([^)]*)\)$", key)
         part = part_match.group(3) if part_match else None
         base_key = key.split("(")[0] if part else key
         content = lookup_reference(base_key, state)
         if not content:
-            readable = base_key.replace(":", " ").replace("ex", "习题").replace("prop", "命题").replace("thm", "定理")
-            return f"（{readable}{f' 第 {part} 小问' if part else ''}）"
+            return format_missing_reference(base_key, part)
         if content in state.content_by_id.values() or content in state.solution_by_id.values():
             if part:
                 extracted = extract_numbered_part(content, part)
@@ -488,7 +527,7 @@ def expand_references(text: str, state: ImportState, depth: int = 0) -> str:
             return extracted or expanded
         return expanded
 
-    return REF_PATTERN.sub(repl, text)
+    return cleanup_reference_citations(REF_PATTERN.sub(repl, text))
 
 
 def expand_prose_references(

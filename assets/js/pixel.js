@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var STAR_COUNT = 50;
+  var CLOUD_COUNT = 8;
   var REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var REVEAL_SELECTOR = [
     ".exam-course-item",
@@ -10,31 +10,34 @@
     ".archive",
   ].join(", ");
 
-  function initStarField() {
-    var field = document.getElementById("pixelStarField");
-    if (!field) return;
+  function initClouds() {
+    var layer = document.getElementById("terraCloudLayer");
+    if (!layer) return;
 
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < STAR_COUNT; i++) {
-      var star = document.createElement("span");
-      var size = Math.random() > 0.5 ? 4 : 2;
+    for (var i = 0; i < CLOUD_COUNT; i++) {
+      var cloud = document.createElement("span");
+      var width = 48 + Math.floor(Math.random() * 80);
+      var height = 16 + Math.floor(Math.random() * 20);
+      var top = 5 + Math.random() * 45;
 
-      star.className = "pixel-bg-star";
-      star.style.left = Math.random() * 100 + "%";
-      star.style.top = Math.random() * 100 + "%";
-      star.style.width = size + "px";
-      star.style.height = size + "px";
+      cloud.className = "terra-cloud";
+      cloud.style.width = width + "px";
+      cloud.style.height = height + "px";
+      cloud.style.top = top + "%";
+      cloud.style.left = Math.random() * 100 + "%";
+      cloud.style.opacity = String(0.35 + Math.random() * 0.35);
 
       if (!REDUCED_MOTION) {
-        star.style.animationDelay = Math.random() * 3 + "s";
-        star.style.animationDuration = 1.5 + Math.random() * 2 + "s";
+        cloud.style.animationDuration = 45 + Math.random() * 55 + "s";
+        cloud.style.animationDelay = Math.random() * -60 + "s";
       }
 
-      fragment.appendChild(star);
+      fragment.appendChild(cloud);
     }
 
-    field.appendChild(fragment);
+    layer.appendChild(fragment);
   }
 
   function initScrollReveal() {
@@ -64,7 +67,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    initStarField();
+    initClouds();
     initScrollReveal();
   });
 })();

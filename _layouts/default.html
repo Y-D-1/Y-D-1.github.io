@@ -15,17 +15,9 @@ layout: compress
 
     {% if site.pixel_theme %}
     <div class="cyber-bg" aria-hidden="true">
-      <div class="cyber-bg-gradient"></div>
-      <div class="cyber-bg-grid cyber-bg-grid-a"></div>
-      <div class="cyber-bg-grid cyber-bg-grid-b"></div>
-      <div class="cyber-bg-orbs">
-        <span class="cyber-orb cyber-orb-1"></span>
-        <span class="cyber-orb cyber-orb-2"></span>
-        <span class="cyber-orb cyber-orb-3"></span>
-      </div>
-      <div class="cyber-bg-scan"></div>
+      <div class="cyber-bg-base"></div>
+      <div class="cyber-bg-aurora"></div>
     </div>
-    <div class="cyber-cursor-glow" id="cyberCursorGlow" aria-hidden="true"></div>
     <a class="cyber-skip-link" href="#main">跳到内容</a>
     {% endif %}
 
@@ -44,6 +36,10 @@ layout: compress
     </div>
 
     {% include scripts.html %}
+
+    {% if site.pixel_theme %}
+    <canvas id="cyberTrailCanvas" class="cyber-trail-canvas" aria-hidden="true"></canvas>
+    {% endif %}
 
   </body>
 </html>

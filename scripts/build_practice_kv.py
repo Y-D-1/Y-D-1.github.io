@@ -22,7 +22,6 @@ def subject_name(question: dict[str, Any]) -> str:
 def public_question(question: dict[str, Any]) -> dict[str, Any]:
     return {
         "id": question["id"],
-        "number": question.get("number") or "",
         "subject": subject_name(question),
         "content": question.get("content") or "",
     }

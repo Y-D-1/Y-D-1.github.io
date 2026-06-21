@@ -11,7 +11,6 @@
   var statusEl = document.getElementById("practiceStatus");
   var questionSection = document.getElementById("practiceQuestionSection");
   var questionEl = document.getElementById("practiceQuestion");
-  var numberEl = document.getElementById("practiceNumber");
   var solutionPanel = document.getElementById("practiceSolutionPanel");
   var dividerEl = document.getElementById("practiceDivider");
   var solutionEl = document.getElementById("practiceSolutionBody");
@@ -238,10 +237,6 @@
 
     if (!questionEl || !questionSection) return;
 
-    if (numberEl) {
-      numberEl.textContent = question.number ? "（" + question.number + "）" : "";
-    }
-
     questionEl.innerHTML = renderMarkdown(question.content || "") || "<p>暂无题目内容。</p>";
     questionSection.hidden = false;
 
@@ -324,7 +319,6 @@
     setStatus("");
     clearSolution();
     if (questionSection) questionSection.hidden = true;
-    if (numberEl) numberEl.textContent = "";
 
     var query = "/api/random?subject=" + encodeURIComponent(subject);
 

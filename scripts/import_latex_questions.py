@@ -1186,6 +1186,40 @@ def register_label_aliases(state: ImportState, raw_blocks: list[tuple[str, Parse
                 state.label_db[f"ex:{parts[0]}.{parts[1]}.{index}"] = block.body
 
 
+SUBJECT_CODES = {
+    "微分几何": "dg",
+    "泛函分析": "fa",
+}
+
+
+def assign_simple_ids(questions: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for question in questions:
+        grouped.setdefault(question["subject"], []).append(question)
+
+    renumbered: list[dict[str, Any]] = []
+    for subject in SUBJECT_SOURCES:
+        code = SUBJECT_CODES.get(subject)
+        if not code:
+            continue
+        for index, question in enumerate(grouped.get(subject, []), start=1):
+            updated = dict(question)
+            updated["id"] = f"{code}-{index}"
+            updated.pop("number", None)
+            renumbered.append(updated)
+
+    for subject, items in grouped.items():
+        if subject in SUBJECT_CODES:
+            continue
+        code = subject[:2].lower()
+        for index, question in enumerate(items, start=1):
+            updated = dict(question)
+            updated["id"] = f"{code}-{index}"
+            updated.pop("number", None)
+            renumbered.append(updated)
+    return renumbered
+
+
 def build_questions(macros: dict[str, str]) -> ImportState:
     state = ImportState(macros=macros)
     raw_blocks: list[tuple[str, ParsedBlock]] = []
@@ -1241,6 +1275,7 @@ def build_questions(macros: dict[str, str]) -> ImportState:
                 "source": block.source_file,
             }
         )
+    state.questions = assign_simple_ids(state.questions)
     return state
 
 

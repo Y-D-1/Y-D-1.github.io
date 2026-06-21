@@ -180,14 +180,14 @@
     return {
       particles: {
         number: { value: isLight ? 72 : 64, density: { enable: true, value_area: 900 } },
-        color: { value: isLight ? ["#57606a", "#6e7781", "#424a53"] : ["#00ff88", "#00ccff"] },
+        color: { value: isLight ? ["#57606a", "#6e7781", "#424a53"] : ["#8a8a8a", "#6b6b6b", "#a3a3a3"] },
         shape: { type: "circle" },
         opacity: { value: isLight ? 0.68 : 0.45, random: true },
         size: { value: isLight ? 2.4 : 2.5, random: true },
         line_linked: {
           enable: true,
           distance: 140,
-          color: isLight ? "#6e7781" : "#00ccff",
+          color: isLight ? "#6e7781" : "#8a8a8a",
           opacity: isLight ? 0.38 : 0.28,
           width: 1
         },
@@ -328,7 +328,7 @@
         /* private browsing may block storage */
       }
       if (meta) {
-        meta.setAttribute("content", next === "light" ? "#ffffff" : "#0d1117");
+        meta.setAttribute("content", next === "light" ? "#ffffff" : "#0a0a0a");
       }
       if (toggle) {
         toggle.setAttribute("aria-pressed", next === "light" ? "true" : "false");

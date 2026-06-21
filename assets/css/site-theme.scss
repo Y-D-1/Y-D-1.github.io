@@ -3,19 +3,21 @@
 
 :root {
   color-scheme: dark;
-  --bg-primary: #0a192f;
-  --bg-secondary: #112240;
-  --bg-card: rgba(255, 255, 255, 0.06);
-  --text-primary: #e6f1ff;
-  --text-secondary: #c9d1d9;
-  --text-muted: #8892b0;
-  --accent: #00ccff;
-  --accent-secondary: #a371f7;
-  --accent-green: #00ff88;
-  --accent-gradient: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #58a6ff 100%);
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --text-primary: #ececec;
+  --text-secondary: #b3b3b3;
+  --text-muted: #8a8a8a;
+  --accent: #d4d4d4;
+  --accent-secondary: #a3a3a3;
+  --accent-green: #f0f0f0;
+  --accent-gradient: linear-gradient(135deg, #7a7a7a 0%, #a8a8a8 50%, #d0d0d0 100%);
   --border: rgba(255, 255, 255, 0.1);
-  --border-accent: rgba(0, 204, 255, 0.28);
-  --glass-bg: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(255, 255, 255, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --btn-surface: rgba(255, 255, 255, 0.08);
+  --focus-ring: rgba(255, 255, 255, 0.14);
   --radius: 10px;
   --nav-height: 56px;
   --font-display: "Orbitron", "Noto Sans SC", sans-serif;
@@ -101,32 +103,32 @@ body.modern-site.has-custom-cursor .site-cursor {
 body.modern-site.has-custom-cursor .site-cursor-ring {
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(0, 204, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 50%;
-  background: rgba(0, 204, 255, 0.03);
-  box-shadow: 0 0 14px rgba(0, 204, 255, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
   transition: width 0.22s ease, height 0.22s ease, margin 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, opacity 0.2s ease;
 }
 
 body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-ring {
   width: 34px;
   height: 34px;
-  border-color: rgba(163, 113, 247, 0.75);
-  background: rgba(163, 113, 247, 0.05);
-  box-shadow: 0 0 18px rgba(163, 113, 247, 0.22);
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
 }
 
 body.modern-site.has-custom-cursor .site-cursor-dot {
   width: 3px;
   height: 3px;
-  background: rgba(230, 241, 255, 0.95);
+  background: rgba(236, 236, 236, 0.95);
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0, 204, 255, 0.85);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
   will-change: transform;
 }
 
 body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
-  box-shadow: 0 0 8px rgba(163, 113, 247, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 #particles-js {
@@ -149,7 +151,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 .orb-1 {
   width: 500px;
   height: 500px;
-  background: rgba(0, 255, 136, 0.12);
+  background: rgba(255, 255, 255, 0.05);
   top: -150px;
   right: -150px;
 }
@@ -157,7 +159,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 .orb-2 {
   width: 400px;
   height: 400px;
-  background: rgba(0, 204, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   bottom: 10%;
   left: -100px;
   animation-delay: -10s;
@@ -187,7 +189,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 2rem;
-  background: rgba(10, 25, 47, 0.92);
+  background: rgba(10, 10, 10, 0.94);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
@@ -205,7 +207,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   color: var(--accent-green);
   font-family: var(--font-display);
   text-decoration: none;
-  text-shadow: 0 0 12px rgba(0, 255, 136, 0.35);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
 .nav-links a {
@@ -385,8 +387,8 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   letter-spacing: 0.04em;
   color: var(--text-primary);
   text-shadow:
-    0.04em 0 0 rgba(0, 255, 136, 0.75),
-    -0.02em -0.04em 0 rgba(0, 204, 255, 0.75);
+    0.04em 0 0 rgba(255, 255, 255, 0.35),
+    -0.02em -0.04em 0 rgba(160, 160, 160, 0.35);
   animation: glitch-skew 4s infinite linear alternate-reverse;
 }
 
@@ -520,7 +522,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   gap: 0.35rem;
   padding: 0.55rem 1.1rem;
   border-radius: var(--radius);
-  background: rgba(88, 166, 255, 0.12);
+  background: var(--btn-surface);
   border: 1px solid var(--border-accent);
   color: var(--accent);
   text-decoration: none;
@@ -561,9 +563,9 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 }
 
 .about-card:hover {
-  border-color: var(--accent-green);
+  border-color: var(--border-accent);
   transform: translateY(-6px) rotateY(4deg);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 255, 136, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .about-icon {
@@ -585,7 +587,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 }
 
 .quote-box {
-  background: linear-gradient(135deg, rgba(88, 166, 255, 0.06), rgba(163, 113, 247, 0.04));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
   border-left: 3px solid var(--accent);
   padding: 0.85rem 1.1rem;
   border-radius: 0 var(--radius) var(--radius) 0;
@@ -653,7 +655,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   font-size: 0.72rem;
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
-  background: rgba(88, 166, 255, 0.1);
+  background: var(--btn-surface);
   border: 1px solid var(--border-accent);
   color: var(--text-muted);
 }
@@ -899,7 +901,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   font-size: 0.78rem;
   padding: 0.2rem 0.55rem;
   border-radius: 4px;
-  background: rgba(88, 166, 255, 0.1);
+  background: var(--btn-surface);
   border: 1px solid var(--border-accent);
   color: var(--text-muted);
 }
@@ -976,7 +978,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 
 .search-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .search-input::placeholder { color: var(--text-muted); }
@@ -1047,7 +1049,7 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   font-size: 0.72rem;
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
-  background: rgba(88, 166, 255, 0.1);
+  background: var(--btn-surface);
   border: 1px solid var(--border-accent);
   color: var(--text-muted);
 }
@@ -1116,7 +1118,7 @@ mark.search-mark {
   padding: 0.3rem 0.65rem;
   border-radius: 4px;
   border: 1px solid var(--border-accent);
-  background: rgba(88, 166, 255, 0.1);
+  background: var(--btn-surface);
   color: var(--accent);
   transition: all 0.2s;
 }
@@ -1209,7 +1211,7 @@ mark.search-mark {
 
 .practice-select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.12);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .practice-select:disabled {
@@ -1223,9 +1225,9 @@ mark.search-mark {
 }
 
 .practice-btn--secondary {
-  background: rgba(163, 113, 247, 0.12);
-  border: 1px solid rgba(163, 113, 247, 0.35);
-  color: #d2a8ff;
+  background: var(--btn-surface);
+  border: 1px solid var(--border-accent);
+  color: var(--text-primary);
 }
 
 .practice-btn--secondary:hover:not(:disabled) {
@@ -1330,7 +1332,7 @@ mark.search-mark {
     right: 0;
     flex-direction: column;
     gap: 0;
-    background: rgba(13, 17, 23, 0.98);
+    background: rgba(10, 10, 10, 0.98);
     border-bottom: 1px solid var(--border);
     padding: 0.5rem 0;
   }
@@ -1388,7 +1390,7 @@ button:focus-visible {
   color-scheme: light;
   --bg-primary: #ffffff;
   --bg-secondary: #f6f8fa;
-  --bg-card: rgba(27, 31, 36, 0.09);
+  --bg-card: rgba(27, 31, 36, 0.06);
   --text-primary: #1f2328;
   --text-secondary: #424a53;
   --text-muted: #656d76;
@@ -1398,7 +1400,7 @@ button:focus-visible {
   --accent-gradient: linear-gradient(135deg, #d0d7de 0%, #afb8c1 50%, #8c959f 100%);
   --border: rgba(27, 31, 36, 0.12);
   --border-accent: rgba(27, 31, 36, 0.2);
-  --glass-bg: rgba(27, 31, 36, 0.09);
+  --glass-bg: rgba(27, 31, 36, 0.06);
   --btn-bg: #eaeef2;
   --btn-bg-hover: #d0d7de;
   --btn-border: #d0d7de;

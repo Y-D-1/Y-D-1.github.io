@@ -214,40 +214,44 @@
     };
   }
 
-  function destroyParticles() {
-    if (window.pJSDom && window.pJSDom.length) {
-      for (var i = window.pJSDom.length - 1; i >= 0; i -= 1) {
-        var instance = window.pJSDom[i];
-        var pJS = instance && instance.pJS;
-        if (pJS && pJS.fn && pJS.fn.drawAnimFrame) {
-          cancelAnimationFrame(pJS.fn.drawAnimFrame);
-        }
-        if (pJS && pJS.canvas && pJS.canvas.el) {
-          pJS.canvas.el.remove();
-        }
+  function ensureParticles(theme) {
+    if (reducedMotion || !document.getElementById("particles-js") || !window.particlesJS) return;
+
+    if (!window.pJSDom || !Array.isArray(window.pJSDom) || !window.pJSDom.length || !window.pJSDom[0].pJS) {
+      if (!Array.isArray(window.pJSDom)) {
+        window.pJSDom = [];
       }
+      window.particlesJS("particles-js", particlesConfig(theme));
+      return;
     }
 
-    // particles.js destroypJS sets pJSDom=null, which breaks the next init.
-    window.pJSDom = [];
-
-    var container = document.getElementById("particles-js");
-    if (container) {
-      container.innerHTML = "";
-    }
+    syncParticleTheme(theme);
   }
 
-  function refreshParticles(theme) {
-    if (reducedMotion || !document.getElementById("particles-js") || !window.particlesJS) return;
-    destroyParticles();
-    window.particlesJS("particles-js", particlesConfig(theme));
+  function syncParticleTheme(theme) {
+    if (!window.pJSDom || !window.pJSDom.length || !window.pJSDom[0].pJS || typeof hexToRgb !== "function") {
+      ensureParticles(theme);
+      return;
+    }
+
+    var pJS = window.pJSDom[0].pJS;
+    var config = particlesConfig(theme);
+    var colors = config.particles.color.value;
+
+    pJS.particles.color.value = colors;
+    pJS.particles.line_linked.color = config.particles.line_linked.color;
+    pJS.particles.line_linked.opacity = config.particles.line_linked.opacity;
+
+    for (var i = 0; i < pJS.particles.array.length; i += 1) {
+      pJS.particles.array[i].color.rgb = hexToRgb(colors[i % colors.length]);
+    }
   }
 
   function initParticles() {
     if (reducedMotion || !document.getElementById("particles-js")) return;
 
     function boot() {
-      refreshParticles(getTheme());
+      ensureParticles(getTheme());
     }
 
     if (window.particlesJS) {
@@ -327,15 +331,15 @@
       if (toggle) {
         toggle.setAttribute("aria-pressed", next === "light" ? "true" : "false");
       }
-      if (options && options.refreshParticles) {
-        refreshParticles(next);
+      if (options && options.syncParticles) {
+        syncParticleTheme(next);
       }
     }
 
     if (toggle) {
       toggle.addEventListener("click", function () {
         var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
-        applyTheme(current === "light" ? "dark" : "light", { refreshParticles: true });
+        applyTheme(current === "light" ? "dark" : "light", { syncParticles: true });
         var links = document.getElementById("navLinks");
         var navToggle = document.querySelector(".nav-toggle");
         if (links) links.classList.remove("is-open");

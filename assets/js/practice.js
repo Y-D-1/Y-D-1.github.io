@@ -67,34 +67,37 @@
     return -1;
   }
 
+  function findNextMathDelimiter(text, start) {
+    for (var pos = start; pos < text.length; pos += 1) {
+      if (text.startsWith("\\(", pos)) {
+        return { index: pos, token: ["\\(", "\\)"] };
+      }
+      if (text.startsWith("\\[", pos)) {
+        return { index: pos, token: ["\\[", "\\]"] };
+      }
+      if (text[pos] === "$") {
+        if (text[pos + 1] === "$") {
+          return { index: pos, token: ["$$", "$$"] };
+        }
+        return { index: pos, token: ["$", "$"] };
+      }
+    }
+    return null;
+  }
+
   function splitMathSegments(text) {
     var segments = [];
     var cursor = 0;
 
     while (cursor < text.length) {
-      var next = -1;
-      var token = null;
-
-      if (text.startsWith("\\(", cursor)) {
-        next = cursor;
-        token = ["\\(", "\\)"];
-      } else if (text.startsWith("\\[", cursor)) {
-        next = cursor;
-        token = ["\\[", "\\]"];
-      } else if (text[cursor] === "$") {
-        if (text[cursor + 1] === "$") {
-          next = cursor;
-          token = ["$$", "$$"];
-        } else {
-          next = cursor;
-          token = ["$", "$"];
-        }
-      }
-
-      if (next < 0) {
+      var found = findNextMathDelimiter(text, cursor);
+      if (!found) {
         segments.push({ type: "text", value: text.slice(cursor) });
         break;
       }
+
+      var next = found.index;
+      var token = found.token;
 
       if (next > cursor) {
         segments.push({ type: "text", value: text.slice(cursor, next) });

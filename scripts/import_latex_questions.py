@@ -294,6 +294,68 @@ def fix_spacing_artifacts(text: str) -> str:
     return text
 
 
+def wrap_prose_with_inline_math(prose: str) -> str:
+    prose = re.sub(r"\\\s+", " ", prose)
+    prose = re.sub(r"[ \t]+", " ", prose).strip()
+    if not prose:
+        return prose
+
+    prefix_match = re.match(r"^[\u4e00-\u9fff\s，、：；]+", prose)
+    if prefix_match and re.search(r"(\\[a-zA-Z]+|[=_^]|\\in\b|\\mathbb\b)", prose):
+        prefix = prefix_match.group(0).strip()
+        math_expr = prose[prefix_match.end() :].strip().rstrip(".")
+        suffix = "." if prose.rstrip().endswith(".") else ""
+        return f"{prefix} \\({math_expr}\\){suffix}"
+    return prose
+
+
+def split_prose_inside_display_math(text: str) -> str:
+    prose_start = re.compile(
+        r"(?:,\s*|\\(?:quad|qquad)\s*|\n\s*)"
+        r"(?=[\u4e00-\u9fff])"
+    )
+
+    def repl(match: re.Match[str]) -> str:
+        body = match.group(1)
+        if r"\begin{" in body:
+            return match.group(0)
+
+        text_cmd = re.search(r"\\text\{([^{}]*)\}", body)
+        if text_cmd:
+            math_part = body[: text_cmd.start()].rstrip().rstrip(",")
+            math_part = re.sub(r"\\(?:quad|qquad)\s*$", "", math_part).strip()
+            after_text = body[text_cmd.end() :].strip()
+            prefix = text_cmd.group(1).replace(r"\ ", " ").strip()
+            prose_raw = f"{prefix} {after_text}".strip().rstrip(".")
+            if not math_part:
+                return wrap_prose_with_inline_math(prose_raw)
+            return rf"\[{math_part}\]" + "\n\n" + wrap_prose_with_inline_math(prose_raw)
+
+        split_at = -1
+        prose_start_at = 0
+        prose_match = prose_start.search(body)
+        if prose_match:
+            split_at = prose_match.start()
+            prose_start_at = prose_match.end()
+        else:
+            cjk = re.search(r"[\u4e00-\u9fff]", body)
+            if cjk and cjk.start() > 0:
+                split_at = cjk.start()
+                prose_start_at = cjk.start()
+
+        if split_at < 0:
+            return match.group(0)
+
+        math_part = body[:split_at].rstrip().rstrip(",")
+        math_part = re.sub(r"\\(?:quad|qquad)\s*$", "", math_part).strip()
+        prose_part = body[prose_start_at:].strip()
+        if not math_part or not prose_part:
+            return match.group(0)
+        return rf"\[{math_part}\]" + "\n\n" + wrap_prose_with_inline_math(prose_part)
+
+    return re.sub(r"\\\[([\s\S]*?)\\\]", repl, text)
+
+
 def separate_prose_after_display_math(text: str) -> str:
     text = re.sub(r"\\\]\s*([\u4e00-\u9fff(（])", r"\\]\n\n\1", text)
     text = re.sub(r"请通过\s*\\\[", "请通过\n\n\\[", text)
@@ -473,22 +535,19 @@ def strip_stray_markup(text: str) -> str:
 
 
 def convert_text_markup(text: str) -> str:
-    text = re.sub(r"\\textbf\{([^{}]*)\}", r"**\1**", text)
-    text = re.sub(r"\\textit\{([^{}]*)\}", r"*\1*", text)
-    text = re.sub(r"\\emph\{([^{}]*)\}", r"*\1*", text)
-    text = re.sub(r"\\text\{([^{}]*)\}", r"\1", text)
-    text = re.sub(r"\\mathrm\{([^{}]*)\}", r"\\mathrm{\1}", text)
-    text = re.sub(r"\\operatorname\{([^{}]*)\}", r"\\operatorname{\1}", text)
-    text = DING_PATTERN.sub(lambda m: DING_MAP.get(int(m.group(1)), "•"), text)
-    text = text.replace("\\noindent", "")
-
-    def outside_markup(chunk: str) -> str:
+    def transform(chunk: str) -> str:
+        chunk = re.sub(r"\\textbf\{([^{}]*)\}", r"**\1**", chunk)
+        chunk = re.sub(r"\\textit\{([^{}]*)\}", r"*\1*", chunk)
+        chunk = re.sub(r"\\emph\{([^{}]*)\}", r"*\1*", chunk)
+        chunk = re.sub(r"\\text\{([^{}]*)\}", r"\1", chunk)
+        chunk = DING_PATTERN.sub(lambda m: DING_MAP.get(int(m.group(1)), "•"), chunk)
+        chunk = chunk.replace("\\noindent", "")
         chunk = re.sub(r"\\hfill", " ", chunk)
         chunk = re.sub(r"\\newline\b", "\n", chunk)
         chunk = re.sub(r"\\\\\s*", "\n", chunk)
         return chunk
 
-    return apply_outside_math(text, outside_markup)
+    return apply_outside_math(text, transform)
 
 
 def parse_reference_key(raw_key: str) -> tuple[str, str | None]:
@@ -643,6 +702,7 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = fix_display_math_nesting(text)
     text = fix_matrix_row_breaks(text)
     text = merge_continued_display_math(text)
+    text = split_prose_inside_display_math(text)
     text = separate_prose_after_display_math(text)
     text = fix_spacing_artifacts(text)
     text = normalize_whitespace(text)
@@ -1252,6 +1312,7 @@ def build_questions(macros: dict[str, str]) -> ImportState:
         stem = expand_references(stem, state)
         stem = demote_display_math_in_prose(stem)
         stem = merge_continued_display_math(stem)
+        stem = split_prose_inside_display_math(stem)
         stem = separate_prose_after_display_math(stem)
         stem = fix_matrix_row_breaks(stem)
         stem = join_orphan_inline_math_lines(stem)

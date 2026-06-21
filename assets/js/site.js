@@ -171,46 +171,72 @@
     tick();
   }
 
+  function getTheme() {
+    return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  }
+
+  function particlesConfig(theme) {
+    var isLight = theme === "light";
+    return {
+      particles: {
+        number: { value: isLight ? 72 : 64, density: { enable: true, value_area: 900 } },
+        color: { value: isLight ? ["#8c959f", "#afb8c1", "#d0d7de"] : ["#00ff88", "#00ccff"] },
+        shape: { type: "circle" },
+        opacity: { value: isLight ? 0.55 : 0.45, random: true },
+        size: { value: isLight ? 2.2 : 2.5, random: true },
+        line_linked: {
+          enable: true,
+          distance: 140,
+          color: isLight ? "#afb8c1" : "#00ccff",
+          opacity: isLight ? 0.32 : 0.28,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: isLight ? 1.5 : 1.8,
+          direction: "none",
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        detect_on: "window",
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "push" },
+          resize: true
+        },
+        modes: {
+          repulse: { distance: isLight ? 90 : 100, duration: 0.35 },
+          push: { particles_nb: 3 }
+        }
+      },
+      retina_detect: true
+    };
+  }
+
+  function destroyParticles() {
+    if (window.pJSDom && window.pJSDom.length) {
+      for (var i = window.pJSDom.length - 1; i >= 0; i -= 1) {
+        if (window.pJSDom[i] && window.pJSDom[i].pJS && window.pJSDom[i].pJS.fn.vendors.destroypJS) {
+          window.pJSDom[i].pJS.fn.vendors.destroypJS();
+        }
+      }
+    }
+    var container = document.getElementById("particles-js");
+    if (container) container.innerHTML = "";
+  }
+
+  function refreshParticles(theme) {
+    if (reducedMotion || !document.getElementById("particles-js") || !window.particlesJS) return;
+    destroyParticles();
+    window.particlesJS("particles-js", particlesConfig(theme));
+  }
+
   function initParticles() {
     if (reducedMotion || !document.getElementById("particles-js")) return;
 
     function boot() {
-      if (!window.particlesJS) return;
-      window.particlesJS("particles-js", {
-        particles: {
-          number: { value: 64, density: { enable: true, value_area: 900 } },
-          color: { value: ["#00ff88", "#00ccff"] },
-          shape: { type: "circle" },
-          opacity: { value: 0.45, random: true },
-          size: { value: 2.5, random: true },
-          line_linked: {
-            enable: true,
-            distance: 140,
-            color: "#00ccff",
-            opacity: 0.28,
-            width: 1
-          },
-          move: {
-            enable: true,
-            speed: 1.8,
-            direction: "none",
-            out_mode: "out"
-          }
-        },
-        interactivity: {
-          detect_on: "window",
-          events: {
-            onhover: { enable: true, mode: "repulse" },
-            onclick: { enable: true, mode: "push" },
-            resize: true
-          },
-          modes: {
-            repulse: { distance: 100, duration: 0.35 },
-            push: { particles_nb: 3 }
-          }
-        },
-        retina_detect: true
-      });
+      refreshParticles(getTheme());
     }
 
     if (window.particlesJS) {
@@ -276,7 +302,7 @@
     var toggle = document.querySelector(".theme-toggle");
     var meta = document.getElementById("themeColorMeta");
 
-    function applyTheme(theme) {
+    function applyTheme(theme, options) {
       var next = theme === "light" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       try {
@@ -290,12 +316,15 @@
       if (toggle) {
         toggle.setAttribute("aria-pressed", next === "light" ? "true" : "false");
       }
+      if (options && options.refreshParticles) {
+        refreshParticles(next);
+      }
     }
 
     if (toggle) {
       toggle.addEventListener("click", function () {
         var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
-        applyTheme(current === "light" ? "dark" : "light");
+        applyTheme(current === "light" ? "dark" : "light", { refreshParticles: true });
         var links = document.getElementById("navLinks");
         var navToggle = document.querySelector(".nav-toggle");
         if (links) links.classList.remove("is-open");

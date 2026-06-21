@@ -1379,9 +1379,14 @@ button:focus-visible {
   --btn-text: #24292f;
 }
 
-[data-theme="light"] #particles-js,
-[data-theme="light"] .glow-orb {
-  display: none;
+[data-theme="light"] .orb-1 {
+  background: rgba(175, 184, 193, 0.38);
+  opacity: 0.55;
+}
+
+[data-theme="light"] .orb-2 {
+  background: rgba(208, 215, 222, 0.5);
+  opacity: 0.5;
 }
 
 [data-theme="light"] .navbar {

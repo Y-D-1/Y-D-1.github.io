@@ -180,15 +180,15 @@
     return {
       particles: {
         number: { value: isLight ? 72 : 64, density: { enable: true, value_area: 900 } },
-        color: { value: isLight ? ["#8c959f", "#afb8c1", "#d0d7de"] : ["#00ff88", "#00ccff"] },
+        color: { value: isLight ? ["#57606a", "#6e7781", "#424a53"] : ["#00ff88", "#00ccff"] },
         shape: { type: "circle" },
-        opacity: { value: isLight ? 0.55 : 0.45, random: true },
-        size: { value: isLight ? 2.2 : 2.5, random: true },
+        opacity: { value: isLight ? 0.82 : 0.45, random: true },
+        size: { value: isLight ? 2.4 : 2.5, random: true },
         line_linked: {
           enable: true,
           distance: 140,
-          color: isLight ? "#afb8c1" : "#00ccff",
-          opacity: isLight ? 0.32 : 0.28,
+          color: isLight ? "#6e7781" : "#00ccff",
+          opacity: isLight ? 0.5 : 0.28,
           width: 1
         },
         move: {
@@ -239,11 +239,13 @@
     var colors = config.particles.color.value;
 
     pJS.particles.color.value = colors;
+    pJS.particles.opacity.value = config.particles.opacity.value;
     pJS.particles.line_linked.color = config.particles.line_linked.color;
     pJS.particles.line_linked.opacity = config.particles.line_linked.opacity;
 
     for (var i = 0; i < pJS.particles.array.length; i += 1) {
       pJS.particles.array[i].color.rgb = hexToRgb(colors[i % colors.length]);
+      pJS.particles.array[i].opacity.value = config.particles.opacity.value;
     }
   }
 
@@ -347,7 +349,7 @@
       });
     }
 
-    applyTheme(root.getAttribute("data-theme") || "dark");
+    applyTheme(root.getAttribute("data-theme") || "light");
   }
 
   document.addEventListener("DOMContentLoaded", function () {

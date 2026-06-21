@@ -38,6 +38,17 @@ body.modern-site {
   min-height: 100vh;
 }
 
+.home-no-select,
+.home-no-select * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.home-no-select a,
+.home-no-select button {
+  cursor: pointer;
+}
+
 body.modern-site.has-custom-cursor {
   cursor: none;
 }

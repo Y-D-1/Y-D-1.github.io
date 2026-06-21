@@ -1,5 +1,5 @@
 ---
-title: "代数学I"
+title: "代数学I(H)"
 collection: notes
 type: "Undergraduate course"
 permalink: /notes/algebra_1

@@ -250,15 +250,24 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   line-height: 1;
 }
 
-.theme-toggle__icon--light { display: none; }
+.theme-toggle__icon--light,
+.theme-toggle__icon--dark {
+  display: none;
+}
 
-[data-theme="dark"] .theme-toggle__icon--dark,
-[data-theme="light"] .theme-toggle__icon--light {
+[data-theme="dark"] .theme-toggle__icon--light {
   display: block;
 }
 
 [data-theme="light"] .theme-toggle__icon--dark {
-  display: none;
+  display: block;
+}
+
+.navbar__tools {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
 }
 
 /* Hero */
@@ -1286,6 +1295,7 @@ mark.search-mark {
   html.modern-html { font-size: 14px; }
   .navbar { padding: 0.7rem 1.2rem; }
   .nav-toggle { display: inline-flex; }
+  .navbar__tools { flex-shrink: 0; }
   .nav-links {
     display: none;
     position: absolute;

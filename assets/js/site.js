@@ -279,7 +279,11 @@
     function applyTheme(theme) {
       var next = theme === "light" ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      localStorage.setItem("site-theme", next);
+      try {
+        localStorage.setItem("site-theme", next);
+      } catch (error) {
+        /* private browsing may block storage */
+      }
       if (meta) {
         meta.setAttribute("content", next === "light" ? "#ffffff" : "#0d1117");
       }

@@ -13,8 +13,13 @@ layout: compress
     <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
     <script>
       (function () {
-        var theme = localStorage.getItem("site-theme");
-        document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+        var theme = "dark";
+        try {
+          theme = localStorage.getItem("site-theme") === "light" ? "light" : "dark";
+        } catch (error) {
+          theme = "dark";
+        }
+        document.documentElement.setAttribute("data-theme", theme);
       })();
     </script>
     {% include modern/head.html %}

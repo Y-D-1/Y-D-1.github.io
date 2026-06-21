@@ -103,5 +103,10 @@
   "\\tv": "{\\tilde{v}}",
   "\\tx": "{\\tilde{x}}",
   "\\ty": "{\\tilde{y}}",
-  "\\defeq": "\\overset{\\mathrm{def}}{=}"
+  "\\defeq": "\\overset{\\mathrm{def}}{=}",
+  "\\sV": "\\mathscr{V}",
+  "\\hes": "\\operatorname{Hess}",
+  "\\Isom": "\\operatorname{Isom}",
+  "\\rightrightarrows": "\\rightrightarrows",
+  "\\bbK": "\\mathbb{K}"
 }

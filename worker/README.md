@@ -113,7 +113,7 @@ npx wrangler dev
 ## API 接口
 
 - `GET /api/meta` — 科目、题量统计
-- `GET /api/random?subject=微分几何` — 随机一题（不含解析）
+- `GET /api/random?subject=微分几何` — 随机一题（不含解析）；`subject` 亦可为 `泛函分析`、`数学分析`
 - `GET /api/solution?id=<题目ID>` — 获取解析
 
 ## 更新题库

@@ -25,6 +25,21 @@ SUBJECT_SOURCES: dict[str, list[Path]] = {
     ],
 }
 
+CHAPTER_EXERCISE_SOURCES: dict[str, Path] = {
+    "数学分析": Path("/Users/yudongyi/Desktop/Latex/EarlierNotes/Analysis3"),
+}
+
+CHAPTER_EXERCISE_SKIP = {
+    "chapter0.tex",
+    "ex.tex",
+    "analysis.tex",
+    "preamble.tex",
+    "macros.tex",
+    "letterfonts.tex",
+    "say.tex",
+    "test.tex",
+}
+
 SKIP_FILES = {
     "no.tex",
     "collection.tex",
@@ -45,6 +60,8 @@ SUBSECTION_PATTERN = re.compile(r"\\subsection\*?\{([^{}]*)\}")
 LABEL_PATTERN = re.compile(r"\\label\{([^}]+)\}")
 QUESTION_CMD_PATTERN = re.compile(r"\\(?:qs|Qs|ex)\*?\{")
 INTERRUPT_PATTERN = re.compile(r"\\(?:qs|Qs|ex)\*?\{|\\subsection\*?\{|\\section\*?\{")
+EXERCISE_SECTION_PATTERN = re.compile(r"\\section\*?\{习题\}")
+CHAPTER_EXERCISE_ITEM_PATTERN = re.compile(r"\\item\[\\textbf\{题(\d+)\}\]")
 PROP_PATTERN = re.compile(r"\\mprop\*?\{")
 THEOREM_PATTERN = re.compile(r"\\thm\*?\{")
 REF_PATTERN = re.compile(r"\\ref(?:eq)?\{([^}]+)\}")
@@ -1087,6 +1104,62 @@ def extract_solution_after(text: str, start: int) -> tuple[str, int]:
     return "", len(text)
 
 
+def subject_import_order() -> list[str]:
+    order = list(SUBJECT_SOURCES.keys())
+    for subject in CHAPTER_EXERCISE_SOURCES:
+        if subject not in order:
+            order.append(subject)
+    return order
+
+
+def parse_chapter_exercises_file(path: Path, subject: str) -> list[ParsedBlock]:
+    raw = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+    section_match = EXERCISE_SECTION_PATTERN.search(raw)
+    if not section_match:
+        return []
+
+    after_section = raw[section_match.end() :]
+    description_start = after_section.find(r"\begin{description}")
+    if description_start < 0:
+        return []
+
+    description_body = after_section[description_start + len(r"\begin{description}") :]
+    description_end = description_body.find(r"\end{description}")
+    if description_end >= 0:
+        description_body = description_body[:description_end]
+
+    items = list(CHAPTER_EXERCISE_ITEM_PATTERN.finditer(description_body))
+    if not items:
+        return []
+
+    chapter_match = re.match(r"chapter(\d+)", path.stem)
+    chapter_num = chapter_match.group(1) if chapter_match else path.stem
+    blocks: list[ParsedBlock] = []
+
+    for index, match in enumerate(items):
+        content_start = match.end()
+        content_end = items[index + 1].start() if index + 1 < len(items) else len(description_body)
+        body = description_body[content_start:content_end].strip()
+        if not body:
+            continue
+        question_num = match.group(1)
+        blocks.append(
+            ParsedBlock(
+                kind="question",
+                title="",
+                body=body,
+                label=f"ma:ch{chapter_num}:{question_num}",
+                source_file=path.name,
+                number=f"{chapter_num}-{question_num}",
+                solution="",
+                command="chapter-ex",
+                intro=f"（第{chapter_num}章习题）",
+                subject=subject,
+            )
+        )
+    return blocks
+
+
 def find_next_marker(text: str, start: int) -> int | None:
     markers = [QUESTION_CMD_PATTERN, PROP_PATTERN, THEOREM_PATTERN]
     positions = []
@@ -1207,6 +1280,19 @@ def collect_tex_files() -> list[tuple[str, Path]]:
     return files
 
 
+def collect_chapter_exercise_files() -> list[tuple[str, Path]]:
+    files: list[tuple[str, Path]] = []
+    for subject, directory in CHAPTER_EXERCISE_SOURCES.items():
+        if not directory.is_dir():
+            print(f"warning: missing directory {directory}", file=sys.stderr)
+            continue
+        for path in sorted(directory.glob("chapter*.tex")):
+            if path.name in CHAPTER_EXERCISE_SKIP:
+                continue
+            files.append((subject, path))
+    return files
+
+
 def file_section_key(file_stem: str) -> str:
     parts = file_stem.split("-")
     if len(parts) == 2 and all(part.isdigit() for part in parts):
@@ -1249,6 +1335,7 @@ def register_label_aliases(state: ImportState, raw_blocks: list[tuple[str, Parse
 SUBJECT_CODES = {
     "微分几何": "dg",
     "泛函分析": "fa",
+    "数学分析": "ma",
 }
 
 
@@ -1258,7 +1345,7 @@ def assign_simple_ids(questions: list[dict[str, Any]]) -> list[dict[str, Any]]:
         grouped.setdefault(question["subject"], []).append(question)
 
     renumbered: list[dict[str, Any]] = []
-    for subject in SUBJECT_SOURCES:
+    for subject in subject_import_order():
         code = SUBJECT_CODES.get(subject)
         if not code:
             continue
@@ -1288,6 +1375,10 @@ def build_questions(macros: dict[str, str]) -> ImportState:
         for block in parse_tex_file(path, subject, macros):
             raw_blocks.append((subject, block))
 
+    for subject, path in collect_chapter_exercise_files():
+        for block in parse_chapter_exercises_file(path, subject):
+            raw_blocks.append((subject, block))
+
     register_label_aliases(state, raw_blocks)
 
     prepared: list[tuple[str, ParsedBlock, str, str, int]] = []
@@ -1295,6 +1386,8 @@ def build_questions(macros: dict[str, str]) -> ImportState:
         if block.kind != "question":
             continue
         stem = latex_to_content(block.body, macros)
+        if block.intro:
+            stem = f"{block.intro}\n\n{stem}"
         solution_raw = block.solution
         solution = latex_to_content(solution_raw, macros) if solution_raw.strip() else PENDING_SOLUTION
         stem = enrich_stem_with_solution_context(stem, solution)

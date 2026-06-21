@@ -96,5 +96,12 @@
   "\\tg": "\\tan",
   "\\arccosh": "\\operatorname{arccosh}",
   "\\sA": "\\operatorname{Area}",
+  "\\rank": "\\operatorname{rank}",
+  "\\rk": "\\operatorname{rank}",
+  "\\Sym": "\\operatorname{Sym}",
+  "\\tu": "{\\tilde{u}}",
+  "\\tv": "{\\tilde{v}}",
+  "\\tx": "{\\tilde{x}}",
+  "\\ty": "{\\tilde{y}}",
   "\\defeq": "\\overset{\\mathrm{def}}{=}"
 }

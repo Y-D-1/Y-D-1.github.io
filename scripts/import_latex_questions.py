@@ -288,6 +288,12 @@ def merge_continued_display_math(text: str) -> str:
     return text
 
 
+def fix_spacing_artifacts(text: str) -> str:
+    text = re.sub(r"\\g\\left", r"g\\left", text)
+    text = re.sub(r"\[1\.5ex\]", "", text)
+    return text
+
+
 def separate_prose_after_display_math(text: str) -> str:
     text = re.sub(r"\\\]\s*([\u4e00-\u9fff(（])", r"\\]\n\n\1", text)
     text = re.sub(r"请通过\s*\\\[", "请通过\n\n\\[", text)
@@ -437,7 +443,13 @@ def convert_math_environments(text: str) -> str:
 
 
 def strip_spacing_commands(text: str) -> str:
-    text = re.sub(r"\\\[[0-9]+(?:\.[0-9]+)?ex\]", "", text)
+    spacing = r"\\\\\[[0-9]+(?:\.[0-9]+)?(?:ex|pt|em)\]"
+    text = re.sub(spacing, r" \\\\ ", text)
+    text = re.sub(
+        r"\\\[[0-9]+(?:\.[0-9]+)?(?:ex|pt|em)\]",
+        r" \\\\ ",
+        text,
+    )
     text = re.sub(r"\\vspace\*?\{[^{}]*\}", "", text)
     text = re.sub(r"\\hspace\*?\{[^{}]*\}", "", text)
     text = re.sub(r"\\(small|med|big)skip\b", "", text)
@@ -632,6 +644,7 @@ def latex_to_content(text: str, macros: dict[str, str]) -> str:
     text = fix_matrix_row_breaks(text)
     text = merge_continued_display_math(text)
     text = separate_prose_after_display_math(text)
+    text = fix_spacing_artifacts(text)
     text = normalize_whitespace(text)
     return text
 
@@ -640,14 +653,22 @@ def normalize_reference_key(key: str) -> str:
     key = key.strip().rstrip("()")
     if key.startswith("th:"):
         return f"thm:{key[3:]}"
+    if key.startswith("rmk:"):
+        return key
     return key
 
 
 def format_missing_reference(key: str, part: str | None = None) -> str:
     key = normalize_reference_key(key)
-    match = re.match(r"^(ex|prop|thm|eq):(.+)$", key)
+    match = re.match(r"^(ex|prop|thm|rmk|eq):(.+)$", key)
     if match:
-        kind_labels = {"ex": "习题", "prop": "命题", "thm": "定理", "eq": "公式"}
+        kind_labels = {
+            "ex": "习题",
+            "prop": "命题",
+            "thm": "定理",
+            "rmk": "注记",
+            "eq": "公式",
+        }
         label = f"{kind_labels[match.group(1)]} {match.group(2)}"
     else:
         label = key.replace(":", " ")
@@ -764,6 +785,7 @@ def cleanup_reference_citations(text: str) -> str:
     text = re.sub(r"习题\s+习题", "习题", text)
     text = re.sub(r"定理\s+定理", "定理", text)
     text = re.sub(r"命题\s+命题", "命题", text)
+    text = re.sub(r"Rmk\\?\s+", "", text)
     return text
 
 
@@ -773,7 +795,7 @@ def expand_references(text: str, state: ImportState, depth: int = 0) -> str:
 
     def repl(match: re.Match[str]) -> str:
         base_key, part = parse_reference_key(match.group(1))
-        if base_key.startswith(("ex:", "prop:", "thm:")) and not part:
+        if base_key.startswith(("ex:", "prop:", "thm:", "rmk:")) and not part:
             return format_missing_reference(base_key)
         content = lookup_reference(base_key, state)
         if not content:

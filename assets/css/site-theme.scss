@@ -1006,18 +1006,27 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
 .search-results.no-results { color: #f85149; }
 
 .notes-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
 }
 
 .exam-course-item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: var(--glass-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1rem 1.1rem;
   backdrop-filter: blur(10px);
   transition: all 0.25s;
+}
+
+.exam-course-item .archive__item {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .exam-course-item:hover {
@@ -1052,15 +1061,6 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   background: var(--btn-surface);
   border: 1px solid var(--border-accent);
   color: var(--text-muted);
-}
-
-.course-notice {
-  margin-top: 0.65rem;
-  padding-top: 0.55rem;
-  border-top: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 0.78rem;
-  text-align: center;
 }
 
 mark.search-mark {
@@ -1344,7 +1344,8 @@ mark.search-mark {
   .hero { padding-top: calc(var(--nav-height) + 1rem); }
   .title { font-size: 1.6rem; }
   .about-grid,
-  .notes-grid { grid-template-columns: 1fr; }
+  .notes-grid,
+  .notes-list { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .links-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-content {

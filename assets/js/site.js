@@ -217,13 +217,24 @@
   function destroyParticles() {
     if (window.pJSDom && window.pJSDom.length) {
       for (var i = window.pJSDom.length - 1; i >= 0; i -= 1) {
-        if (window.pJSDom[i] && window.pJSDom[i].pJS && window.pJSDom[i].pJS.fn.vendors.destroypJS) {
-          window.pJSDom[i].pJS.fn.vendors.destroypJS();
+        var instance = window.pJSDom[i];
+        var pJS = instance && instance.pJS;
+        if (pJS && pJS.fn && pJS.fn.drawAnimFrame) {
+          cancelAnimationFrame(pJS.fn.drawAnimFrame);
+        }
+        if (pJS && pJS.canvas && pJS.canvas.el) {
+          pJS.canvas.el.remove();
         }
       }
     }
+
+    // particles.js destroypJS sets pJSDom=null, which breaks the next init.
+    window.pJSDom = [];
+
     var container = document.getElementById("particles-js");
-    if (container) container.innerHTML = "";
+    if (container) {
+      container.innerHTML = "";
+    }
   }
 
   function refreshParticles(theme) {

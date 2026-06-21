@@ -1388,7 +1388,7 @@ button:focus-visible {
   color-scheme: light;
   --bg-primary: #ffffff;
   --bg-secondary: #f6f8fa;
-  --bg-card: rgba(27, 31, 36, 0.04);
+  --bg-card: rgba(27, 31, 36, 0.09);
   --text-primary: #1f2328;
   --text-secondary: #424a53;
   --text-muted: #656d76;
@@ -1398,11 +1398,23 @@ button:focus-visible {
   --accent-gradient: linear-gradient(135deg, #d0d7de 0%, #afb8c1 50%, #8c959f 100%);
   --border: rgba(27, 31, 36, 0.12);
   --border-accent: rgba(27, 31, 36, 0.2);
-  --glass-bg: rgba(27, 31, 36, 0.04);
+  --glass-bg: rgba(27, 31, 36, 0.09);
   --btn-bg: #eaeef2;
   --btn-bg-hover: #d0d7de;
   --btn-border: #d0d7de;
   --btn-text: #24292f;
+}
+
+[data-theme="light"] .section-stats .stat-number {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: #1f2328;
+  color: #1f2328;
+}
+
+[data-theme="light"] .section-stats .stat-label {
+  color: #1f2328;
 }
 
 [data-theme="light"] .orb-1 {

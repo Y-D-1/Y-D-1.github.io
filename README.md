@@ -8,8 +8,7 @@
 
 - **首页**：个人简介、资源链接
 - **课程笔记**（[/notes/](https://Y-D-1.github.io/notes/)）：LaTeX 编写的 PDF 笔记，支持站内预览
-- **考试资料**（[/exams/](https://Y-D-1.github.io/exams/)）：施工中
-- **设计说明**（[/credits/](https://Y-D-1.github.io/credits/)）：界面参考来源与许可信息
+- **考试资料**（[/exams/](https://Y-D-1.github.io/exams/)）：随机练习与题库
 
 ## 技术栈
 
@@ -54,4 +53,4 @@ assets/          主题 CSS / JS
 
 站点内容为个人学习笔记，仅供交流参考，请勿用于商业用途。
 
-界面设计参考 [wexuo/home](https://github.com/wexuo/home) 与 [JieYueGo/me](https://github.com/JieYueGo/me)（MIT），详见站内 [设计说明](https://Y-D-1.github.io/credits/)。
+界面设计参考 [wexuo/home](https://github.com/wexuo/home) 与 [JieYueGo/me](https://github.com/JieYueGo/me)（MIT）。

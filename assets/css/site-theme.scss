@@ -44,8 +44,23 @@ body.modern-site {
   -webkit-user-select: none;
 }
 
+body.is-home #app,
+body.is-home #app * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  user-select: none !important;
+}
+
+body.is-home #app ::selection,
+body.is-home #app *::selection {
+  background: transparent;
+  color: inherit;
+}
+
 .home-no-select a,
-.home-no-select button {
+body.is-home #app a,
+.home-no-select button,
+body.is-home #app button {
   cursor: pointer;
 }
 

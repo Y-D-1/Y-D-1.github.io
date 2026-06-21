@@ -2,6 +2,7 @@
 permalink: /
 title: "鱼栋一"
 layout: modern-home
+body_class: is-home
 author_profile: false
 redirect_from: 
   - /about/

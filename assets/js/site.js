@@ -182,13 +182,13 @@
         number: { value: isLight ? 72 : 64, density: { enable: true, value_area: 900 } },
         color: { value: isLight ? ["#57606a", "#6e7781", "#424a53"] : ["#00ff88", "#00ccff"] },
         shape: { type: "circle" },
-        opacity: { value: isLight ? 0.82 : 0.45, random: true },
+        opacity: { value: isLight ? 0.68 : 0.45, random: true },
         size: { value: isLight ? 2.4 : 2.5, random: true },
         line_linked: {
           enable: true,
           distance: 140,
           color: isLight ? "#6e7781" : "#00ccff",
-          opacity: isLight ? 0.5 : 0.28,
+          opacity: isLight ? 0.38 : 0.28,
           width: 1
         },
         move: {
@@ -352,9 +352,19 @@
     applyTheme(root.getAttribute("data-theme") || "light");
   }
 
+  function initHomeNoSelect() {
+    if (!document.body.classList.contains("is-home")) return;
+    var app = document.getElementById("app");
+    if (!app) return;
+    app.addEventListener("selectstart", function (event) {
+      event.preventDefault();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initTheme();
     initNav();
+    initHomeNoSelect();
     initCustomCursor();
     initTypeWriter();
     initParticles();

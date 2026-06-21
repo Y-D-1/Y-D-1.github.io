@@ -29,7 +29,7 @@ layout: compress
     {% include head/custom.html %}
   </head>
 
-  <body class="modern-site">
+<body class="modern-site{% if page.body_class %} {{ page.body_class }}{% endif %}">
     <div class="site-cursor" aria-hidden="true">
       <span class="site-cursor-ring"></span>
       <span class="site-cursor-dot"></span>

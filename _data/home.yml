@@ -9,7 +9,7 @@ profile:
     - "大道至简"
 
 about:
-  intro: "我是鱼栋一，华东师范大学数学与应用数学专业在读。建这个主页，首要目的是整理并分享课程笔记；后续也可能更新一些自编的考试模拟题，供学弟学妹参考。"
+  intro: "主页东西很少，随缘施工ing"
   cards:
     - icon: "ri-book-2-line"
       title: "课程笔记"
@@ -61,10 +61,10 @@ social:
     url: "https://github.com/Y-D-1"
   - name: "知乎"
     icon: "ri-zhihu-fill"
-    url: "https://www.zhihu.com"
+    url: "https://www.zhihu.com/people/xuan-xiao-yu-dong-yi"
   - name: "小红书"
     icon: "ri-heart-line"
-    url: "https://www.xiaohongshu.com"
+    url: "https://xhslink.com/m/1XftYIhDQDS"
   - name: "Email"
     icon: "ri-mail-fill"
     url: "mailto:jp20103117@163.com"

@@ -48,43 +48,32 @@ layout: modern
     </div>
     <div class="about-grid">
       {% for card in home.about.cards %}
-        <div class="star-border-container">
-          {% include star-border-glow.html %}
-          <div class="about-card star-border-inner">
-            <div class="about-icon"><i class="{{ card.icon }}" aria-hidden="true"></i></div>
-            <h3>{{ card.title }}</h3>
-            <p>{{ card.desc }}</p>
-          </div>
+        <div class="about-card">
+          <div class="about-icon"><i class="{{ card.icon }}" aria-hidden="true"></i></div>
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.desc }}</p>
         </div>
       {% endfor %}
     </div>
   </section>
 
-  <section id="stats" class="section">
-    <div class="star-border-container star-border-container--wide">
-      {% include star-border-glow.html %}
-      <div class="section-stats star-border-inner">
-        <div class="stats-grid">
-          {% for stat in home.stats %}
-            <div class="stat-item">
-              <div class="stat-number"{% if stat.id %} id="{{ stat.id }}"{% endif %}>
-                {% if stat.label == "门课程笔记" %}{{ site.notes.size }}{% else %}{{ stat.value }}{% endif %}
-              </div>
-              <div class="stat-label">{{ stat.label }}</div>
-            </div>
-          {% endfor %}
+  <section id="stats" class="section section-stats">
+    <div class="stats-grid">
+      {% for stat in home.stats %}
+        <div class="stat-item">
+          <div class="stat-number"{% if stat.id %} id="{{ stat.id }}"{% endif %}>
+            {% if stat.label == "门课程笔记" %}{{ site.notes.size }}{% else %}{{ stat.value }}{% endif %}
+          </div>
+          <div class="stat-label">{{ stat.label }}</div>
         </div>
-      </div>
+      {% endfor %}
     </div>
   </section>
 
   <section id="poetry" class="section section-poetry">
-    <div class="star-border-container star-border-container--wide">
-      {% include star-border-glow.html %}
-      <div class="poetry-box star-border-inner">
-        <i class="ri-quill-pen-line" aria-hidden="true"></i>
-        <p id="poetry">加载中…</p>
-      </div>
+    <div class="poetry-box">
+      <i class="ri-quill-pen-line" aria-hidden="true"></i>
+      <p id="poetry">加载中…</p>
     </div>
   </section>
 
@@ -96,14 +85,11 @@ layout: modern
     </div>
     <div class="links-grid">
       {% for link in home.links %}
-        <div class="star-border-container">
-          {% include star-border-glow.html %}
-          <a class="link-card star-border-inner" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
-            <i class="{{ link.icon }}" aria-hidden="true"></i>
-            <span>{{ link.name }}</span>
-            <p>{{ link.desc }}</p>
-          </a>
-        </div>
+        <a class="link-card" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+          <i class="{{ link.icon }}" aria-hidden="true"></i>
+          <span>{{ link.name }}</span>
+          <p>{{ link.desc }}</p>
+        </a>
       {% endfor %}
     </div>
   </section>

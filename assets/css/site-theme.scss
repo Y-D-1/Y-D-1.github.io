@@ -40,29 +40,22 @@ body.modern-site {
   min-height: 100vh;
 }
 
-.home-no-select,
-.home-no-select * {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-body.is-home #app,
-body.is-home #app * {
+body.modern-site #app,
+body.modern-site #app *:not(input):not(textarea):not(select):not([contenteditable="true"]) {
   -webkit-user-select: none !important;
   -moz-user-select: none !important;
   user-select: none !important;
+  -webkit-touch-callout: none;
 }
 
-body.is-home #app ::selection,
-body.is-home #app *::selection {
+body.modern-site #app ::selection,
+body.modern-site #app *:not(input):not(textarea):not(select):not([contenteditable="true"])::selection {
   background: transparent;
   color: inherit;
 }
 
-.home-no-select a,
-body.is-home #app a,
-.home-no-select button,
-body.is-home #app button {
+body.modern-site #app a,
+body.modern-site #app button {
   cursor: pointer;
 }
 

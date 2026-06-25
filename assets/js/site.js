@@ -451,11 +451,29 @@
     applyTheme(root.getAttribute("data-theme") || "light");
   }
 
-  function initHomeNoSelect() {
-    if (!document.body.classList.contains("is-home")) return;
+  function isEditableTarget(target) {
+    if (!target || !target.closest) return false;
+    return Boolean(
+      target.closest("input, textarea, select, [contenteditable='true'], [contenteditable='']")
+    );
+  }
+
+  function initNoSelect() {
     var app = document.getElementById("app");
     if (!app) return;
+
     app.addEventListener("selectstart", function (event) {
+      if (isEditableTarget(event.target)) return;
+      event.preventDefault();
+    });
+
+    app.addEventListener("copy", function (event) {
+      if (isEditableTarget(event.target)) return;
+      event.preventDefault();
+    });
+
+    app.addEventListener("cut", function (event) {
+      if (isEditableTarget(event.target)) return;
       event.preventDefault();
     });
   }
@@ -463,7 +481,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initTheme();
     initNav();
-    initHomeNoSelect();
+    initNoSelect();
     initCustomCursor();
     initTypeWriter();
     initParticles();

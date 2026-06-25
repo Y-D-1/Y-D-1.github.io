@@ -18,6 +18,8 @@
   --glass-bg: rgba(255, 255, 255, 0.05);
   --btn-surface: rgba(255, 255, 255, 0.08);
   --focus-ring: rgba(255, 255, 255, 0.14);
+  --star-border-glow: rgba(220, 220, 220, 0.95);
+  --star-border-bg: #0a0a0a;
   --radius: 10px;
   --nav-height: 56px;
   --font-display: "Orbitron", "Noto Sans SC", sans-serif;
@@ -584,6 +586,85 @@ body.modern-site.has-custom-cursor.is-cursor-active .site-cursor-dot {
   color: var(--text-muted);
   font-size: 0.82rem;
   line-height: 1.6;
+}
+
+/* Star border glow (homepage cards) */
+.star-border-container {
+  display: block;
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 100%;
+}
+
+.star-border-container--wide {
+  width: 100%;
+}
+
+.border-gradient-bottom,
+.border-gradient-top {
+  position: absolute;
+  width: 300%;
+  height: 50%;
+  opacity: 0.7;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--star-border-glow) 0%, transparent 70%);
+}
+
+.border-gradient-bottom {
+  bottom: -12px;
+  right: -250%;
+  animation: star-movement-bottom 5s linear infinite alternate;
+}
+
+.border-gradient-top {
+  top: -12px;
+  left: -250%;
+  animation: star-movement-top 5s linear infinite alternate;
+}
+
+.star-border-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.star-border-container .about-card,
+.star-border-container .link-card,
+.star-border-container .section-stats,
+.star-border-container .poetry-box {
+  background: var(--star-border-bg);
+}
+
+@keyframes star-movement-bottom {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100%, 0%);
+    opacity: 0;
+  }
+}
+
+@keyframes star-movement-top {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100%, 0%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-gradient-bottom,
+  .border-gradient-top {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 .quote-box {
@@ -1419,6 +1500,8 @@ button:focus-visible {
   --btn-bg-hover: #d0d7de;
   --btn-border: #d0d7de;
   --btn-text: #24292f;
+  --star-border-glow: rgba(87, 96, 106, 0.75);
+  --star-border-bg: #ffffff;
 }
 
 [data-theme="light"] .section-stats .stat-number {

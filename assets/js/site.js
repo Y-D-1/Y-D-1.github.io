@@ -175,6 +175,97 @@
     return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
   }
 
+  var PARTICLE_PER_CLICK = 1;
+  var PARTICLE_MAX = { light: 72, dark: 64 };
+  var particleVanishLoopRunning = false;
+
+  function getParticleMax(theme) {
+    return theme === "light" ? PARTICLE_MAX.light : PARTICLE_MAX.dark;
+  }
+
+  function particleEdgeDistance(particle, width, height) {
+    return Math.min(particle.x, particle.y, width - particle.x, height - particle.y);
+  }
+
+  function startParticleVanishLoop() {
+    if (particleVanishLoopRunning) return;
+    particleVanishLoopRunning = true;
+
+    function tick() {
+      var pJS = window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS;
+      if (!pJS || !pJS.particles || !Array.isArray(pJS.particles.array)) {
+        particleVanishLoopRunning = false;
+        return;
+      }
+
+      var stillVanishing = false;
+      var particles = pJS.particles.array;
+
+      for (var i = particles.length - 1; i >= 0; i -= 1) {
+        var particle = particles[i];
+        if (!particle.__vanishing) continue;
+
+        stillVanishing = true;
+        particle.opacity.value = Math.max(0, particle.opacity.value - 0.045);
+        if (particle.opacity.value <= 0.02) {
+          particles.splice(i, 1);
+        }
+      }
+
+      if (stillVanishing) {
+        requestAnimationFrame(tick);
+      } else {
+        particleVanishLoopRunning = false;
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  function vanishEdgeParticles(pJS, count) {
+    if (!count || !pJS.particles || !Array.isArray(pJS.particles.array)) return;
+
+    var width = pJS.canvas.w;
+    var height = pJS.canvas.h;
+    var candidates = pJS.particles.array.filter(function (particle) {
+      return !particle.__vanishing;
+    });
+
+    candidates.sort(function (a, b) {
+      return particleEdgeDistance(a, width, height) - particleEdgeDistance(b, width, height);
+    });
+
+    for (var i = 0; i < count && i < candidates.length; i += 1) {
+      candidates[i].__vanishing = true;
+    }
+
+    if (count > 0) {
+      startParticleVanishLoop();
+    }
+  }
+
+  function trimParticlesToMax(pJS, max) {
+    if (!pJS.particles || !Array.isArray(pJS.particles.array)) return;
+    var activeCount = pJS.particles.array.filter(function (particle) {
+      return !particle.__vanishing;
+    }).length;
+    var excess = activeCount - max;
+    if (excess > 0) {
+      vanishEdgeParticles(pJS, excess);
+    }
+  }
+
+  function bindParticleClickLimit(pJS) {
+    if (!pJS || pJS.__clickCapBound || !pJS.fn || !pJS.fn.modes || !pJS.fn.modes.pushParticles) return;
+    pJS.__clickCapBound = true;
+
+    var originalPush = pJS.fn.modes.pushParticles;
+    pJS.fn.modes.pushParticles = function (count, position) {
+      originalPush.call(this, count, position);
+      trimParticlesToMax(pJS, getParticleMax(getTheme()));
+    };
+  }
+
   function particlesConfig(theme) {
     var isLight = theme === "light";
     return {
@@ -207,7 +298,7 @@
         },
         modes: {
           repulse: { distance: isLight ? 90 : 100, duration: 0.35 },
-          push: { particles_nb: 3 }
+          push: { particles_nb: PARTICLE_PER_CLICK }
         }
       },
       retina_detect: true
@@ -222,9 +313,14 @@
         window.pJSDom = [];
       }
       window.particlesJS("particles-js", particlesConfig(theme));
+      if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
+        bindParticleClickLimit(window.pJSDom[0].pJS);
+        trimParticlesToMax(window.pJSDom[0].pJS, getParticleMax(theme));
+      }
       return;
     }
 
+    bindParticleClickLimit(window.pJSDom[0].pJS);
     syncParticleTheme(theme);
   }
 
@@ -244,9 +340,12 @@
     pJS.particles.line_linked.opacity = config.particles.line_linked.opacity;
 
     for (var i = 0; i < pJS.particles.array.length; i += 1) {
+      if (pJS.particles.array[i].__vanishing) continue;
       pJS.particles.array[i].color.rgb = hexToRgb(colors[i % colors.length]);
       pJS.particles.array[i].opacity.value = config.particles.opacity.value;
     }
+
+    trimParticlesToMax(pJS, getParticleMax(theme));
   }
 
   function initParticles() {
